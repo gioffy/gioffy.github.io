@@ -1,0 +1,451 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/19/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/05/10/esecuzione-parallela-di-unit-test-in-visual-studio-2010/" itemprop="url">Esecuzione parallela di Unit Test in Visual Studio 2010</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-05-10T15:45:00Z"  itemprop="datePublished">May 10, 2010</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/05/10/esecuzione-parallela-di-unit-test-in-visual-studio-2010/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-05-10-esecuzione-parallela-di-unit-test-in-visual-studio-2010.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Molto probabilmente ne avranno parlato in tanti, ma scopro solo ora che in <a title="Visual Studio 2010" href="http://tostring.it/tags/archive/visual+studio+2010" target="_blank">Visual Studio 2010</a> è possibile eseguire più Unit Test contemporaneamente se si ha a disposizione una o più CPU MultiCore; ma partiamo con ordine e vediamo come nasce questa esigenza e in quali casi tale approccio può aiutarci.     <br />Dato il continuo aumentare dei test in Dexter, alcuni dei quali impiegano un tempo piuttosto alto (es: gli Smock Test, che verificano il funzionamento di tutte le skin e dei metodi asincroni), mi sono chiesto se era possibile far sì che l’esecuzione di tutti questi test non fosse seriale ma parallela, in modo da ridurre il tempo di esecuzione. Fortunatamente “sbingando” un po’ ho trovato <a title="Executing Unit Tests in parallel on a multi-CPU/core machine" href="http://blogs.msdn.com/vstsqualitytools/archive/2009/12/01/executing-unit-tests-in-parallel-on-a-multi-cpu-core-machine.aspx" rel="nofollow" target="_blank">questo</a> interessantissimo post che spiega come la cosa sia fattibile con Visual Studio 2010.</p>  <p>I test sono una cosa seria :), e prima di scegliere un approccio del genere è necessario sapere che l’esecuzione parallela dei test richiede che alcune regole siano rispettate, quindi è bene sapere che essa:</p>  <ul>   <li>è utilizzabile solo in macchine multi Core/CPU; </li>    <li>richiede che tutti i test siano Thread Safe; </li>    <li>è utilizzabile solo per gli Unit Test (quindi gli Smock Test non ne trarrebbero beneficio); </li>    <li>è utilizzabile solo per i test in esecuzione sulla propria macchina; </li>    <li>richiede che i Data Adapter siano disabilitati; </li> </ul>  <p>Per tutta questa serie di motivi questa opportunità non è attiva di default, e quindi è necessario andare specificare che tutte le regole sopra elencate sono state rispettate e che vogliamo eseguire più test in parallelo.</p>  <p>Per prima cosa è necessario andare a modificare la configurazione dei nostri test e disabilitare i “Data Adapter”; per far ciò è sufficiente fare doppio Click sul file “.testsetting” presente all’interno della nostra solutions: a questo punto dovrebbe aprirsi una finestra come la seguente, dove dobbiamo disabilitare tutte le checkbox presenti all’interno della scheda “Data and Diagnostics”:</p>  <p><a href="http://tostring.it/Content/Uploaded/image//imperugo/image.png" rel="shadowbox[UnitTestParallel]"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="image" border="0" alt="image" src="http://tostring.it/Content/Uploaded/image//imperugo/image_thumb.png" width="244" height="185" /></a> </p>  <p>Completato questo step è ora necessario modificare nuovamente lo stesso file, ma tramite l’editorXML, in quanto l’opzione che andremo ad impostare non è configurabile tramite la UI presente in Visual Studio.    <br />Quindi click con il destro sullo stesso file e selezione della voce “Open With”, ed a quel punto scelta della voce “XML (text) Editor”; da qui in poi è possibile andare a cambiare la configurazione dei test e modificare il nodo Execution, specificando l’attributo “parallelTestCount” ed impostandogli come valore il numero di Core/CPU che si intende utilizzare per l’esecuzione dei test (impostando 0 come valore, sarà il sistema a stabile il numero di Core/CPU da utilizzare).</p>  <p>A questo punto siamo abili ed arruolati per eseguire UnitTest in parallelo.    <br />VS2010 Rulez!</p>  <p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/05/05/alcuni-problemi-con-lantiforgerytoken-in-asp-net-mvc-2/" itemprop="url">Alcuni problemi con l’AntiForgeryToken in ASP.NET MVC 2</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-05-05T15:37:00Z"  itemprop="datePublished">May  5, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/05/05/alcuni-problemi-con-lantiforgerytoken-in-asp-net-mvc-2/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-05-05-alcuni-problemi-con-lantiforgerytoken-in-asp-net-mvc-2.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>È un po’ che ho “in canna” questo post, ma l’ultimo periodo è stato veramente intenso e non mi ha concesso molto tempo per poter postare.</p>  <p>L’argomento in questione è l’utilizzo dell’attributo (o l’helper) AntiForgeryToken sul porting di applicazioni MVC2, che può causare non pochi problemi in fase di deploy di applicazioni distribuite.</p>  <p>Nello specifico si rischia di incappare in una serie di errori 500 come quello mostrato di seguito:</p>  <pre class="brush: csharp; ruler: true;">[InvalidCastException: Unable to cast object of type 'System.Web.UI.Triplet' to type 'System.Object[]'.]
+   System.Web.Mvc.AntiForgeryDataSerializer.Deserialize(String serializedToken) +104
+
+[HttpAntiForgeryException (0x80004005): A required anti-forgery token was not supplied or was invalid.]
+   System.Web.Mvc.AntiForgeryDataSerializer.Deserialize(String serializedToken) +368
+   System.Web.Mvc.HtmlHelper.GetAntiForgeryTokenAndSetCookie(String salt, String domain, String path) +209
+   System.Web.Mvc.HtmlHelper.AntiForgeryToken(String salt, String domain, String path) +16
+   System.Web.Mvc.HtmlHelper.AntiForgeryToken() +10
+  &lt;snip&gt;</pre>
+
+<p>L’eccezione si verifica su tutti gli utenti collegati; ma facciamo un passo indietro e cerchiamo di capire quali fattori possono determinare un problema di questo genere.</p>
+
+<p>Per prima cosa il problema si riscontra solo su applicazioni che sono state aggiornate alla versione 2 di <a title="ASP.NET MVC" href="http://imperugo.tostring.it/Categories/Archive/MVC" target="_blank">ASP.NET MVC</a> (quelle nate da questa versione rimangono estranee al problema) e, nello specifico, in una farm in cui non tutte le applicazioni sono state aggiornate -(quindi una situazione ibrida, stessa applicazione ma su alcuni server in MVC1 e su alcuni su MVC2); per complicare la situazione, e nel caso replicarla, è necessario che il balancer in fronte ai server web sia configurato in Round Robin, e che quindi l’utente, ad ogni richiesta, possa esser rimbalzato da un server ad un altro.</p>
+
+<p>Come potete vedere la casistica è molto ristretta, ma la fortuna sicuramente non è dalla mia parte ed ovviamente ci sono incappato in pieno.</p>
+
+<p>In questo <a title="Beware: Upgrade to ASP.NET MVC 2.0 with care if you use AntiForgeryToken" href="http://weblogs.asp.net/james_crowley/archive/2010/03/18/beware-upgrade-to-asp-net-mvc-2-0-with-care-if-you-use-antiforgerytoken.aspx" rel="nofollow" target="_blank">post</a> <a title="James Crowley&#39;s blog" href="http://weblogs.asp.net/james_crowley/default.aspx" rel="nofollow" target="_blank">James Crowley</a> spiega nel dettaglio la problematica.</p>
+
+<p>Be careful! 
+  <br />Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/04/13/foreach-in-un-ienumerablet/" itemprop="url">ForEach in un IEnumerable&lt;T&gt;</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-04-13T15:50:00Z"  itemprop="datePublished">April 13, 2010</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/04/13/foreach-in-un-ienumerablet/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-04-13-foreach-in-un-ienumerablet.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><a title="Linq" href="http://imperugo.tostring.it/tags/archive/linq" target="_blank">Linq</a> è senza ombra di dubbio una delle features più belle introdotte da <a title="Microsoft Corporation" href="http://www.microsoft.com" rel="nofollow" target="_blank">Microsoft</a> in <a title=".NET Framework" href="http://imperugo.tostring.it/categories/archive/.NET" target="_blank">.NET</a> negli ultimi anni (dopo i Generics); sicuramente anche gli Extension Methods hanno il loro fascino agevolando lo sviluppatore nella scrittura del codice. Purtroppo una cosa che mi manca in Linq (ma in realtà è un extension method) è il ForEach per IEnumerable&lt;T&gt;. In effetti c’è la possibilità di utilizzarlo per IList&lt;T&gt; e per le array, ma non per IEnumerable&lt;T&gt;.     <br />Stufo di scrivere il <em>foreach</em> ogni volta, ho deciso di realizzarmi un’extension method che risolvesse il problema :).</p>  <p>Lo snippet seguente mostra la realizzazione:</p>  <pre class="brush: csharp; ruler: true;">/// &lt;summary&gt;
+/// Eaches the specified enumeration.
+/// &lt;/summary&gt;
+/// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;
+/// &lt;param name=&quot;enumeration&quot;&gt;The enumeration.&lt;/param&gt;
+/// &lt;param name=&quot;action&quot;&gt;The action.&lt;/param&gt;
+public static void ForEach &lt;T&gt; ( this IEnumerable &lt;T&gt; enumeration , Action &lt;T&gt; action )
+{
+    Ensure.That ( enumeration ).IsNotNull ( );
+
+    foreach ( T item in enumeration )
+        action ( item );
+}</pre>
+
+<p>Il suo UnitTest (sempre utilizzando <a title="SharpTestEx Home Page" href="http://sharptestex.codeplex.com/" rel="nofollow" target="_blank">SharpTestEx</a>):</p>
+
+<pre class="brush: csharp; ruler: true;">[TestMethod]
+public void eachTest_with_null_object_shold_throw_argumentNullException()
+{
+    var mockService = MockRepository.GenerateStrictMock&lt;IFakeClass&gt;();
+    ActionAssert.Throws&lt;ArgumentNullException&gt;(() =&gt; ((IEnumerable&lt;string&gt;)null).ForEach(x =&gt; mockService.FakeMethod(&quot;testValue&quot;)));
+}
+
+[TestMethod]
+public void eachTest_with_valid_object()
+{
+    IEnumerable&lt;string&gt; values = new List&lt;string&gt; { &quot;testValue1&quot;, &quot;testValue2&quot;, &quot;testValue3&quot; };
+
+    var mockService = MockRepository.GenerateStub &lt;IFakeClass&gt;();
+
+    values.ForEach(mockService.FakeMethod);
+
+    var calls = mockService.GetArgumentsForCallsMadeOn(obj =&gt; obj.FakeMethod(null));
+
+    calls [ 0 ] [ 0 ].Should ( ).Be.EqualTo ( &quot;testValue1&quot; );
+    calls [ 1 ] [ 0 ].Should ( ).Be.EqualTo ( &quot;testValue2&quot; );
+    calls [ 2 ] [ 0 ].Should ( ).Be.EqualTo ( &quot;testValue3&quot; );
+}</pre>
+
+<p>&#160;</p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/04/12/utilizzare-lantixss-library-per-lautoencode-di-asp-net-mvc2-con-il-net-framework-4-0/" itemprop="url">Utilizzare l’AntiXss Library per l’AutoEncode di ASP.NET / MVC2 con il .NET Framework 4.0</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-04-12T15:50:00Z"  itemprop="datePublished">April 12, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/04/12/utilizzare-lantixss-library-per-lautoencode-di-asp-net-mvc2-con-il-net-framework-4-0/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-04-12-utilizzare-lantixss-library-per-lautoencode-di-asp-net-mvc2-con-il-net-framework-4-0.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Con il <a title=".NET Framework 4.0" href="http://imperugo.tostring.it/tags/archive/.net+framework+4.0" target="_blank">.NET Framework 4.0</a> è stato introdotto l’AutoEncode per i codeblocks di <a title="ASP.NET" href="http://imperugo.tostring.it/categories/archive/ASP.NET" target="_blank">ASP.NET</a>/<a title="Category: MVC" href="http://tostring.it/Categories/Archive/MVC" target="_blank">MVC</a>, come già detto <a title="AutoEncode in ASP.NET 4.0" href="http://tostring.it/blog/post/autoencode-in-aspnet-40" target="_blank">qui</a>; proprio in quel post concludevo dicendo:</p>  <blockquote>   <p>Sarebbe bello poter specificare un provider per cambiare il sistema di encoding, e magari anche sostituire l’HtmlEncode della classe HttpUtility con quello della Anti-XSS.</p> </blockquote>  <p>ed ho scoperto da poco che la cosa è realmente fattibile.</p>  <p>Per realizzare ciò il lavoro è piuttosto semplice, sono sufficienti pochi passaggi per poter estendere l’HtmlEncode offerto dalla classe <a title="HttpUtility Calss" href="http://msdn.microsoft.com/en-us/library/system.web.httputility.aspx" rel="nofollow" target="_blank">HttpUtility</a> con quello più affidabile offerto dalla AntiXss Library.</p>  <p>Per prima cosa è necessario creare una classe che eredita da <em>System.Web.Util.HttpEncoder</em> e che effettua l’override degli opportuni metodi, sostituendo ed implementando l’HtmlEnoding con l’AntiXss Library, come mostrato di seguito:</p>  <pre class="brush: csharp; ruler: true;">public class AutoEncodeWithAntiXss : HttpEncoder
+{
+    protected override void HtmlEncode(string value, TextWriter output)
+    {
+        output.Write(AntiXss.HtmlEncode(value));
+    }
+
+    protected override void HtmlAttributeEncode(string value, TextWriter output)
+    {
+        output.Write(AntiXss.HtmlAttributeEncode(value));
+    }
+}</pre>
+
+<p>Come ultimo step è necessario registrare la nostra classe nel web.config e, dal quel momento in poi, tutto ciò che utilizza l’autoencode introdotto con ASP.NET 4.0 utilizzerà la nostra classe.</p>
+
+<pre class="brush: xml; ruler: true;">&lt;system.web&gt;
+    &lt;httpRuntime encoderType=&quot;Imperugo.Web.Test.AutoEncode.AntiXSS.AutoEncodeWithAntiXss, Imperugo.Web.Test.AutoEncode.AntiXSS&quot;/&gt;</pre>
+
+<p>La classe <em>System.Web.Util.HttpEncoder</em> permette di effettuare l’ovveride di altri metodi, come l’HtmlDecode, ma l’AntiXss Library non supporta l’HtmlDecode; per questo motivo non è stato effettuato l’override. </p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/04/12/qmatteoq-e-online/" itemprop="url">QMatteoQ è online</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-04-12T01:51:52Z"  itemprop="datePublished">April 12, 2010</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/04/12/qmatteoq-e-online/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-04-12-qmatteoq-e-online.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Il buon Matteo, mio collega in <a title="Gaia" href="http://www.gaia.is.it" rel="nofollow" target="_blank">Gaia</a>, ha aperto un blog che potete trovare all’indirizzo <a title="Matteo Pagani&#39;s Blog" href="http://qmatteoq.tostring.it" rel="nofollow" target="_blank">qmatteoq.tostring.it</a> (ovviamente gira su <a title="Dexter Blog Engine" href="http://dexterblogengine.codeplex.com/" rel="nofollow" target="_blank">dexter</a>): chi è interessato al mobile, quindi IPhone, IPad, Windows Phone etc., non può non seguirlo! Un MUST!</p>  <p>Un mega in bocca al lupo per questa sua nuova avventura.</p>  <p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/18" class="prev">Prev</a>
+    
+    
+        <a href="/page/20" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

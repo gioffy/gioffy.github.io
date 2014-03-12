@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Assembly Binding Log Viewer (spettacolo). - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2010/05/11/assembly-binding-log-viewer-spettacolo/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Assembly Binding Log Viewer (spettacolo).</h1>
+	<div class="entry-content" itemprop="articleBody"><p>
+    Ametto la mia totale ignoranza a riguardo, ma purtroppo ho scoperto solo ieri l&rsquo;esistenza di <a href="http://msdn.microsoft.com/en-us/library/e74a18c4(VS.71).aspx#cpgrffusionlogviewerfuslogvwexeanchor8" rel="nofollow" target="_blank" title="Assembly Binding Log Viewer (Fuslogvw.exe)">questo</a> tool (fighissimo) che mi ha permesso di risolvere un problema in pochi istanti; ma partiamo con ordine.</p>
+
+<p>
+    La settimana scorsa mi &egrave; arrivato il portatile aziendale ed ovviamente c&rsquo;&egrave; stata tutta la trafila di installazione di quei tools fondamentali per il lavoro, quindi <a href="http://tostring.it/tags/archive/visual+studio" target="_blank" title="Visual Studio Contents">Visual Studio</a>, Reflector, Sql, etc. <br />
+    Forse perch&egrave; lo uso un po&rsquo; meno, per&ograve; ho tralasciato l&rsquo;installazione di <a href="http://tostring.it/tags/archive/visual+studio" target="_blank" title="Visual Studio Contents">Visual Studio</a> 2008 (in azienda siamo su 2010 e per i miei sfoghi tecnologici non uso sicuramente la 2008).</p>
+
+<p>
+    Una volta reso abile ed arruolato il pc per lavorare, ho deciso di mettermi a scrivere un po&rsquo; di test: tutti i test che precedentemente andavano hanno deciso di non andare e, dalla test detail view, si poteva notare che il problema era riconducibile ad un&rsquo;assemlby ben precisa &ldquo;<strong>Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0</strong>&rdquo;, ed il messaggio di errore era il seguente:</p>
+
+<blockquote>
+    <p>
+        Test method Dexter.Core.UI.Framework.Test.Services.PostServiceTest.Get_list_with_valid_data_should_raise_post_retrieved_list_event threw exception: <br />
+        System.IO.FileNotFoundException: Could not load file or assembly &#39;Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&#39; or one of its dependencies. The system cannot find the file specified.WRN: Assembly binding logging is turned OFF. <br />
+        To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1. <br />
+        Note: There is some performance penalty associated with assembly bind failure logging. <br />
+        To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].</p>
+</blockquote>
+
+<p>
+    La prima domanda &egrave; stata: come mai c&rsquo;&egrave; qualcosa che sta referenziando la versione 9.0.0.0 dello UnitTestFramework quando tutto il progetto &egrave; su .NET Framework 4.0? Ma sopratutto chi lo stava facendo?</p>
+
+<p>
+    Il buon <a href="http://www.codewrecks.com/blog/index.php" rel="nofollow" target="_blank" title="http://www.codewrecks.com/blog/index.php">Gian Maria</a> mi ha indirizzato verso <a href="http://msdn.microsoft.com/en-us/library/e74a18c4(VS.71).aspx#cpgrffusionlogviewerfuslogvwexeanchor8" rel="nofollow" target="_blank" title="Assembly Binding Log Viewer (Fuslogvw.exe)">questo</a> tool (per avviarlo &egrave; sufficiente digitare dal prompt di <a href="http://tostring.it/tags/archive/visual+studio" target="_blank" title="Visual Studio Contents">Visual Studio</a> &ldquo;<strong>fuslogvw&rdquo;</strong>), che permette di abilitare e consultare il Binding Log tramite una UserInterface, senza andare di conseguenza ad agire manualmente sulle chiavi di registro. Di fatto, dopo aver impostato il livello di logging nella finestra dei settings e rieseguito i test, la finestra del tool si &egrave; popolata come da screenshot:</p>
+
+<p>
+    <a href="http://tostring.it/Content/Uploaded/image//imperugo/image8.png" rel="shadowbox[Fuslogvw]"><img alt="image" border="0" height="125" src="http://tostring.it/Content/Uploaded/image//imperugo/image8_thumb.png" style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="image" width="240" /></a></p>
+
+<p>
+    La cosa bella &egrave; che facendo doppio click sulla voce interessata all&rsquo;interno della lista viene aperto un ulteriore dettaglio che permette di individuare chi referenzia l&rsquo;assembly mancante.</p>
+
+<p>
+    <a href="http://tostring.it/Content/Uploaded/image//imperugo/image_3.png" rel="shadowbox[Fuslogvw]"><img alt="image" border="0" height="165" src="http://tostring.it/Content/Uploaded/image//imperugo/image_thumb_3.png" style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="image" width="240" /></a></p>
+
+<p>
+    &nbsp;</p>
+
+<p>
+    &nbsp;</p>
+
+<p>
+    In questo caso SharpTestEx.MSTest.</p>
+
+<p>
+    Ciauz</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Visual Studio" title="">Visual Studio</a>
+	
+	  <a href="/tag#Unit Test" title="">Unit Test</a>
+	
+	  <a href="/tag#Tools" title="">Tools</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2010/05/10/esecuzione-parallela-di-unit-test-in-visual-studio-2010/" title="Previous Post: 
+Esecuzione parallela di Unit Test in Visual Studio 2010">&laquo; Esecuzione parallela di Unit Test in Visual Studio 2010</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2010/05/13/sharptestex-e-visual-studio-2010/" title="next Post: 
+SharpTestEx e Visual Studio 2010">SharpTestEx e Visual Studio 2010 &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2010/05/11/assembly-binding-log-viewer-spettacolo/';
+        var disqus_url = 'http://gioffy.github.io/2010/05/11/assembly-binding-log-viewer-spettacolo/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

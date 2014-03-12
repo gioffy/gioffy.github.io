@@ -1,0 +1,430 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Gestione dei DateTime ed i vari TimeZone - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2011/05/16/gestione-dei-datetime-ed-i-vari-timezone/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Gestione dei DateTime ed i vari TimeZone</h1>
+	<div class="entry-content" itemprop="articleBody"><p>Tra le varie problematiche che ho incontrato nello sviluppare <a title="Dexter Blog Engine Official Site" href="http://dexterblogengine.com/" target="_blank">Dexter</a>, ce n’è una il cui rimedio è divenuto indispensabile nella maggior parte delle applicazioni, ossia una gestione un po’ più avanzata del DateTime all’interno dell’applicazione.     <br />Durante la migrazione tra i vari server, ho riscontrato un problema con i vari DateTime di ciascuno di essi; essendo dislocati in aree geografiche diverse, restituivano infatti valori nettamente differenti per via del fuso orario dal server vecchio a quello nuovo.</p>  <p>Il primo server su cui risiedeva il mio blog era su un provider il cui fuso orario era impostato su <a title="Fuso orario" href="http://it.wikipedia.org/wiki/Fuso_orario#UTC-5_.28EST_-_Eastern_Standard_Time.29" rel="nofollow" target="_blank">EST</a>, che differisce di tre ore rispetto all’orario del nuovo server che è impostato sulla <a title="Fuso Orario" href="http://it.wikipedia.org/wiki/Fuso_orario#UTC-8_.28PST_-_Pacific_Standard_Time.29" rel="nofollow" target="_blank">PST</a>. Questa differenza ha causato un’errata visualizzazione degli orari dei post sul mio blog, che risultavano sfalzati di tre ore</p>  <p>Oltre a sistemare tutti i valori memorizzati nel database con una query, ho deciso di affrontare e risolvere il problema in modo da non avere una dipendenza del fuso orario nelle date memorizzate, essendo quindi libero di gestire l’output dell’ora nel TimeZone a me più congeniale.</p>  <p>Per prima cosa ho realizzato uno UserType per NHibernate che convertisse tutte le date in ingresso verso il databse in formato UTC e, in fase di idratazione della entity, le convertisse nel TimeZone da me configurato. Questa operazione, in codice, si traduce più o meno così:</p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="na">[Serializable]</span>
+<span class="k">internal</span> <span class="k">class</span> <span class="nc">DateTimeUtc</span> <span class="p">:</span> <span class="n">IUserType</span> <span class="p">{</span>
+    <span class="cp">#region IUserType Members</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Determines whether the specified &lt;see cref=&quot;System.Object&quot;/&gt; is equal to this instance.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;x&quot;&gt;The &lt;see cref=&quot;System.Object&quot;/&gt; to compare with this instance.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;y&quot;&gt;The y.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;</span>
+    <span class="c1">///     &lt;c&gt;true&lt;/c&gt; if the specified &lt;see cref=&quot;System.Object&quot;/&gt; is equal to this instance; otherwise, &lt;c&gt;false&lt;/c&gt;.</span>
+    <span class="c1">/// &lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="k">new</span> <span class="kt">bool</span> <span class="nf">Equals</span> <span class="p">(</span> <span class="kt">object</span> <span class="n">x</span> <span class="p">,</span> <span class="kt">object</span> <span class="n">y</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">ReferenceEquals</span> <span class="p">(</span> <span class="n">x</span> <span class="p">,</span> <span class="n">y</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">x</span> <span class="p">==</span> <span class="k">null</span> <span class="p">||</span> <span class="n">y</span> <span class="p">==</span> <span class="k">null</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">.</span><span class="n">Equals</span> <span class="p">(</span> <span class="n">y</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Returns a hash code for this instance.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;x&quot;&gt;The x.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;</span>
+    <span class="c1">/// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. </span>
+    <span class="c1">/// &lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="nf">GetHashCode</span> <span class="p">(</span> <span class="kt">object</span> <span class="n">x</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="p">==</span> <span class="k">null</span>
+                   <span class="p">?</span> <span class="k">typeof</span> <span class="p">(</span> <span class="n">DateTime</span> <span class="p">).</span><span class="n">GetHashCode</span> <span class="p">(</span> <span class="p">)</span> <span class="p">+</span> <span class="m">473</span>
+                   <span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">GetHashCode</span> <span class="p">(</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Retrieve an instance of the mapped class from a JDBC resultset.</span>
+    <span class="c1">/// Implementors should handle possibility of null values.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;rs&quot;&gt;a IDataReader&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;names&quot;&gt;column names&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;owner&quot;&gt;the containing entity&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+    <span class="c1">/// &lt;exception cref=&quot;T:NHibernate.HibernateException&quot;&gt;HibernateException&lt;/exception&gt;</span>
+    <span class="k">public</span> <span class="kt">object</span> <span class="nf">NullSafeGet</span> <span class="p">(</span> <span class="n">IDataReader</span> <span class="n">rs</span> <span class="p">,</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">names</span> <span class="p">,</span> <span class="kt">object</span> <span class="n">owner</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="kt">object</span> <span class="n">obj</span> <span class="p">=</span> <span class="n">NHibernateUtil</span><span class="p">.</span><span class="n">DateTime</span><span class="p">.</span><span class="n">NullSafeGet</span> <span class="p">(</span> <span class="n">rs</span> <span class="p">,</span> <span class="n">names</span><span class="p">[</span> <span class="m">0</span> <span class="p">]</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">obj</span> <span class="p">==</span> <span class="k">null</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">var</span> <span class="n">dbValue</span> <span class="p">=</span> <span class="p">(</span> <span class="n">DateTime</span> <span class="p">)</span> <span class="n">obj</span><span class="p">;</span>
+
+        <span class="n">SiteConfiguration</span> <span class="n">configuration</span> <span class="p">=</span> <span class="n">DexterContainer</span><span class="p">.</span><span class="n">Resolve</span> <span class="p">&lt;</span><span class="n">IConfigurationRepository</span><span class="p">&gt;</span> <span class="p">(</span> <span class="p">).</span><span class="n">Configuration</span><span class="p">;</span>
+
+        <span class="n">dbValue</span> <span class="p">=</span> <span class="n">configuration</span> <span class="p">!=</span> <span class="k">null</span>
+                      <span class="p">?</span> <span class="n">System</span><span class="p">.</span><span class="n">TimeZoneInfo</span><span class="p">.</span><span class="n">ConvertTimeFromUtc</span> <span class="p">(</span> <span class="n">dbValue</span> <span class="p">,</span> <span class="n">configuration</span><span class="p">.</span><span class="n">TimeZone</span> <span class="p">)</span>
+                      <span class="p">:</span> <span class="n">dbValue</span><span class="p">.</span><span class="n">ToUniversalTime</span> <span class="p">(</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">dbValue</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Write an instance of the mapped class to a prepared statement.</span>
+    <span class="c1">/// Implementors should handle possibility of null values.</span>
+    <span class="c1">/// A multi-column type should be written to parameters starting from index.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;cmd&quot;&gt;a IDbCommand&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;value&quot;&gt;the object to write&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;index&quot;&gt;command parameter index&lt;/param&gt;</span>
+    <span class="c1">/// &lt;exception cref=&quot;T:NHibernate.HibernateException&quot;&gt;HibernateException&lt;/exception&gt;</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">NullSafeSet</span> <span class="p">(</span> <span class="n">IDbCommand</span> <span class="n">cmd</span> <span class="p">,</span> <span class="kt">object</span> <span class="k">value</span> <span class="p">,</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">value</span> <span class="p">==</span> <span class="k">null</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="p">(</span> <span class="p">(</span> <span class="n">IDataParameter</span> <span class="p">)</span> <span class="n">cmd</span><span class="p">.</span><span class="n">Parameters</span><span class="p">[</span> <span class="n">index</span> <span class="p">]</span> <span class="p">).</span><span class="n">Value</span> <span class="p">=</span> <span class="n">DBNull</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">myValue</span> <span class="p">=</span> <span class="p">(</span> <span class="n">DateTime</span> <span class="p">)</span> <span class="k">value</span><span class="p">;</span>
+
+            <span class="n">SiteConfiguration</span> <span class="n">configuration</span> <span class="p">=</span> <span class="n">DexterContainer</span><span class="p">.</span><span class="n">Resolve</span><span class="p">&lt;</span><span class="n">IConfigurationRepository</span><span class="p">&gt;</span> <span class="p">(</span> <span class="p">).</span><span class="n">Configuration</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">configuration</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="n">myValue</span> <span class="p">=</span> <span class="n">myValue</span><span class="p">.</span><span class="n">Kind</span> <span class="p">==</span> <span class="n">DateTimeKind</span><span class="p">.</span><span class="n">Unspecified</span>
+                              <span class="p">?</span> <span class="n">System</span><span class="p">.</span><span class="n">TimeZoneInfo</span><span class="p">.</span><span class="n">ConvertTimeToUtc</span> <span class="p">(</span> <span class="n">myValue</span> <span class="p">,</span> <span class="n">configuration</span><span class="p">.</span><span class="n">TimeZone</span> <span class="p">)</span>
+                              <span class="p">:</span> <span class="n">myValue</span><span class="p">.</span><span class="n">ToUniversalTime</span> <span class="p">(</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="n">myValue</span><span class="p">.</span><span class="n">ToUniversalTime</span> <span class="p">(</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="p">(</span> <span class="p">(</span> <span class="n">IDataParameter</span> <span class="p">)</span> <span class="n">cmd</span><span class="p">.</span><span class="n">Parameters</span><span class="p">[</span> <span class="n">index</span> <span class="p">]</span> <span class="p">).</span><span class="n">Value</span> <span class="p">=</span> <span class="n">myValue</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Return a deep copy of the persistent state, stopping at entities and at collections.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;value&quot;&gt;generally a collection element or entity field&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;a copy&lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="kt">object</span> <span class="nf">DeepCopy</span> <span class="p">(</span> <span class="kt">object</span> <span class="k">value</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">value</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// During merge, replace the existing (&lt;paramref name=&quot;target&quot;/&gt;) value in the entity</span>
+    <span class="c1">/// we are merging to with a new (&lt;paramref name=&quot;original&quot;/&gt;) value from the detached</span>
+    <span class="c1">/// entity we are merging. For immutable objects, or null values, it is safe to simply</span>
+    <span class="c1">/// return the first parameter. For mutable objects, it is safe to return a copy of the</span>
+    <span class="c1">/// first parameter. For objects with component values, it might make sense to</span>
+    <span class="c1">/// recursively replace component values.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;original&quot;&gt;the value from the detached entity being merged&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;target&quot;&gt;the value in the managed entity&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;owner&quot;&gt;the managed entity&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;the value to be merged&lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="kt">object</span> <span class="nf">Replace</span> <span class="p">(</span> <span class="kt">object</span> <span class="n">original</span> <span class="p">,</span> <span class="kt">object</span> <span class="n">target</span> <span class="p">,</span> <span class="kt">object</span> <span class="n">owner</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">original</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Reconstruct an object from the cacheable representation. At the very least this</span>
+    <span class="c1">/// method should perform a deep copy if the type is mutable. (optional operation)</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;cached&quot;&gt;the object to be cached&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;owner&quot;&gt;the owner of the cached object&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;</span>
+    <span class="c1">/// a reconstructed object from the cachable representation</span>
+    <span class="c1">/// &lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="kt">object</span> <span class="nf">Assemble</span> <span class="p">(</span> <span class="kt">object</span> <span class="n">cached</span> <span class="p">,</span> <span class="kt">object</span> <span class="n">owner</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">cached</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Transform the object into its cacheable representation. At the very least this</span>
+    <span class="c1">/// method should perform a deep copy if the type is mutable. That may not be enough</span>
+    <span class="c1">/// for some implementations, however; for example, associations must be cached as</span>
+    <span class="c1">/// identifier values. (optional operation)</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;value&quot;&gt;the object to be cached&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;a cacheable representation of the object&lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="kt">object</span> <span class="nf">Disassemble</span> <span class="p">(</span> <span class="kt">object</span> <span class="k">value</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">value</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// The SQL types for the columns mapped by this type.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;value&gt;&lt;/value&gt;</span>
+    <span class="k">public</span> <span class="n">SqlType</span><span class="p">[]</span> <span class="n">SqlTypes</span> <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span>
+                <span class="k">new</span> <span class="nf">SqlType</span> <span class="p">(</span> <span class="n">DbType</span><span class="p">.</span><span class="n">DateTime</span> <span class="p">)</span>
+            <span class="p">};</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// The type returned by &lt;c&gt;NullSafeGet()&lt;/c&gt;</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;value&gt;&lt;/value&gt;</span>
+    <span class="k">public</span> <span class="n">Type</span> <span class="n">ReturnedType</span> <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="k">typeof</span> <span class="p">(</span> <span class="n">DateTime</span> <span class="p">);</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Are objects of this type mutable?</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;value&gt;&lt;/value&gt;</span>
+    <span class="k">public</span> <span class="kt">bool</span> <span class="n">IsMutable</span> <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="k">false</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="cp">#endregion</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Una volta affrontato il problema del salvataggio della data, rimaneva soltanto quello riguardante i filtri delle query che, per i campi DateTime, dovevano effettuare una conversione in formato UTC più o meno in questo modo:</p>
+
+<p><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML2d258d7.png" target="_blank"><img style="background-image: none; border-bottom: 0px; border-left: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top: 0px; border-right: 0px; padding-top: 0px" title="SNAGHTML2d258d7" border="0" alt="SNAGHTML2d258d7" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML2d258d7_thumb.png" width="244" height="158" /></a></p>
+
+<p>Purtroppo mi è capitato più volte di dimenticarmi di effettuare quel ToUniversalDateTime all’assegnazione del parametro di una query, con l’ovvio problema di avere risultati sballati in fase di visualizzazione.</p>
+
+<p>Fortunatamente con la versione 3.2 di NHibernate è stato rivisto parzialmente il Driver di SqlServer, che ora espone un metodo &quot;AdjustCommand” subito prima dell’ExecuteQuery. Il codice seguente mostra come effettuare automaticamente la conversione dal DateTimeKind.Local al DateTimeKind.Utc:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">DexterSqlClientDriver</span> <span class="p">:</span> <span class="n">SqlClientDriver</span> <span class="p">{</span>
+    
+    <span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">AdjustCommand</span> <span class="p">(</span> <span class="n">System</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">IDbCommand</span> <span class="n">command</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">parameter</span> <span class="k">in</span> <span class="n">command</span><span class="p">.</span><span class="n">Parameters</span><span class="p">.</span><span class="n">Cast</span><span class="p">&lt;</span><span class="n">SqlParameter</span><span class="p">&gt;</span> <span class="p">(</span> <span class="p">).</span><span class="n">Where</span> <span class="p">(</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">SqlDbType</span> <span class="p">==</span> <span class="n">SqlDbType</span><span class="p">.</span><span class="n">DateTime</span> <span class="p">&amp;&amp;</span> <span class="p">(</span> <span class="n">x</span><span class="p">.</span><span class="n">Value</span> <span class="k">is</span> <span class="n">DateTime</span> <span class="p">)</span> <span class="p">))</span> <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">dateTimeValue</span> <span class="p">=</span> <span class="p">((</span> <span class="n">DateTime</span> <span class="p">)</span><span class="n">parameter</span><span class="p">.</span><span class="n">Value</span><span class="p">).</span><span class="n">ToUniversalTime</span> <span class="p">(</span>  <span class="p">);</span>
+            <span class="n">parameter</span><span class="p">.</span><span class="n">Value</span> <span class="p">=</span> <span class="n">dateTimeValue</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>A questo punto, il codice di esecuzione della query si semplifica ancor di più poiché il developer non deve sapere, o ricordarsi, che il formato della data sul database è differente, in quanto la conversione avviene in automatico.
+  <br />Il risultato è il seguente:</p>
+
+<p><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML2d2e78f.png" target="_blank"><img style="background-image: none; border-bottom: 0px; border-left: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top: 0px; border-right: 0px; padding-top: 0px" title="SNAGHTML2d2e78f" border="0" alt="SNAGHTML2d2e78f" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML2d2e78f_thumb.png" width="244" height="165" /></a></p>
+
+<p>Comodo no?</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Nhibernate" title="">Nhibernate</a>
+	
+	  <a href="/tag#TimeZone" title="">TimeZone</a>
+	
+	  <a href="/tag#Database" title="">Database</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2011/05/13/alcuni-link-utili/" title="Previous Post: 
+Alcuni link utili">&laquo; Alcuni link utili</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2011/05/19/usare-iexceptionfilter-per-loggare-le-eccezioni/" title="next Post: 
+Usare IExceptionFilter per loggare le eccezioni.">Usare IExceptionFilter per loggare le eccezioni. &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2011/05/16/gestione-dei-datetime-ed-i-vari-timezone/';
+        var disqus_url = 'http://gioffy.github.io/2011/05/16/gestione-dei-datetime-ed-i-vari-timezone/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/29/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/10/14/utilizzare-un-ramdisk-per-lesecuzione-dei-test/" itemprop="url">Utilizzare un RamDisk per l’esecuzione dei Test</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-10-14T00:30:00Z"  itemprop="datePublished">October 14, 2009</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/10/14/utilizzare-un-ramdisk-per-lesecuzione-dei-test/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-10-14-utilizzare-un-ramdisk-per-lesecuzione-dei-test.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    In un paio di post di circa un mesetto fa (li trovate <a href="http://www.nablasoft.com/alkampfer/index.php/2009/08/31/speedup-visual-studio-with-ramdisk/" rel="nofollow" target="_blank" title="Speedup Visual Studio with RAMDIsk">qui</a> e <a href="http://www.nablasoft.com/alkampfer/index.php/2009/09/10/faster-database-test-with-database-in-virtual-disk/" rel="nofollow" target="_blank" title="Faster Database Test With database in Virtual Disk">qui</a>) <a href="http://www.nablasoft.com/alkampfer/" rel="nofollow met colleague" target="_new">Alkampfer</a> aveva mostrato un ottimo tip per migliorare le performances di <a href="http://imperugo.tostring.it/blog/search?q=Visual+Studio&amp;searchButton=Go" target="_blank" title="Search Visual Studio">Visual Studio</a>, spostando i files temporanei della compilazione ed il database di test in un RamDisk.</p>
+
+<p>
+    Inutile parlare dell&rsquo;incredibile aumento di performances che si pu&ograve; ottenere con un approccio di questo tipo; prendendo spunto dall&rsquo;idea mostrata da <a href="http://www.nablasoft.com/alkampfer/" rel="nofollow met colleague" target="_new">Alkampfer</a>, ho pensato di fare lo stesso per la parte di testing. <br />
+    Proprio oggi ho avuto la necessit&agrave; di eseguire pi&ugrave; volte dalla mia macchina diversi test, alcuni di questi molto onerosi in termini di performances, testing su disco, database, ecc, ed ho notato un certo rallentamento nell&rsquo;esecuzione degli stessi. <br />
+    Da qui &egrave; nata l&rsquo;idea di spostare la directory di output dei test, che normalmente si trova nella stessa folder della solution, dal disco fisico al RamDisk, in modo da ridurre al minimo lo swap su disco di tutte quelle informazioni di cui non ho bisogno che rimangano persistite anche dopo il riavvio.</p>
+
+<p>
+    Per effettuare ci&ograve; &egrave; necessario andare modificare il file di configurazione <em><strong>LocalTestRun.testrunconfig</strong></em> presente nello stesso percorso della solution ed aggiungere la seguente riga:</p>
+
+<pre class="brush: xml; ruler: true;"><deployment usedefaultdeploymentroot="false" userdeploymentroot="F:\Test Temp\"></deployment></pre>
+
+<p>
+    In questo modo tutte le cartelle contenenti l&rsquo;output dei test verranno create nel RamDisk con un discreto incremento delle performaces.</p>
+
+<p>
+    Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/10/12/application-start-su-iis7-in-integrated-mode/" itemprop="url">Application Start su IIS7 in Integrated Mode</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-10-12T16:30:00Z"  itemprop="datePublished">October 12, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/10/12/application-start-su-iis7-in-integrated-mode/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-10-12-application-start-su-iis7-in-integrated-mode.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>La settimana scorsa mi sono imbattuto in uno “strano” errore&#160; sollevato da <strong><a title="Internet Information Service" href="http://imperugo.tostring.it/blog/search?q=IIS&amp;searchButton=Go" target="_blank">Internet Information Service 7 (IIS7)</a></strong>: nello specifico veniva sollevata una <em><a title="System.Web.HttpException" href="http://msdn.microsoft.com/en-us/library/system.web.httpexception.aspx" rel="nofollow" target="_blank">System.Web.HttpException</a></em> con il seguente messaggio:</p>  <blockquote>   <p>Request is not available in this context</p> </blockquote>  <p>L’eccezione veniva sollevata dall’ <strong>Application_Start</strong> del <strong>Global.asax</strong>, in quanto cercavo di accedere all’<a title="HttpContext" href="http://msdn.microsoft.com/en-us/library/system.web.httpcontext.aspx" rel="nofollow" target="_blank">HttpContext</a> per effettuare il log di avvio dell’applicazione; in realtà non avevo necessità di accedere all’ HttpContext, ma il logger che utilizzavo di default ad ogni chiamata verificava che il Context non fosse nullo e nel caso aggiungeva info sull’url richiesto (Referrer, ecc), più o meno come mostrato di seguito:</p>  <pre class="brush: csharp; ruler: true;">public static IExtendedLogger General
+{
+    get
+    {
+        AddExtraInformation(general);
+        return general;
+    }
+}
+
+
+private static void AddExtraInformation(IExtendedLogger logger)
+{
+    HttpContext ctx = HttpContext.Current;
+
+    if (ctx != null)
+    {
+        logger.ThreadProperties[&quot;Url&quot;] = ctx.Request.Url;
+        logger.ThreadProperties[&quot;UrlReferrer&quot;] = ctx.Request.UrlReferrer;
+        logger.ThreadProperties[&quot;UserAgent&quot;] = ctx.Request.UserAgent;
+        logger.ThreadProperties[&quot;UserHostName&quot;] = ctx.Request.UserHostName;
+        logger.ThreadProperties[&quot;ServerVariables&quot;] = ServerVariables(ctx.Request.ServerVariables);
+        logger.ThreadProperties[&quot;Form&quot;] = ServerVariables(ctx.Request.Form);
+        logger.ThreadProperties[&quot;RawURL&quot;] = ctx.Request.RawUrl;
+        logger.ThreadProperties[&quot;ServerName&quot;] = ctx.Server.MachineName;
+        logger.ThreadProperties[&quot;ThreadLanguage&quot;] = Thread.CurrentThread.CurrentCulture.DisplayName;
+    }
+}</pre>
+
+<p>In realtà non c’è nulla di strano, di fatto lo stesso codice in un’altro webserver funzionava alla grande. “Sbingando” (cercando con <a title="Bing" href="http://www.bing.com" rel="nofollow" target="_blank">bing</a>) un po’, ho scoperto di non essere l’unico ad avere questo problema e la motivazione scatenante è dovuta da un insieme di fattori:</p>
+
+<ul>
+  <li>IIS 7/7.5; </li>
+
+  <li>Integrated Mode; </li>
+
+  <li>Accesso all’HttpContext dall’Application_Start del global.asax; </li>
+</ul>
+
+<p>L’unica soluzione che ho trovato (al momento) è quella di cambiare uno di questi fattori, quindi o cambiare la modalità da Integrated a Classic, o evitare di utilizzare l’HttpContext nell’Application_Start. 
+  <br />Personalmente ho scelto la seconda, ritengo che l’integrated mode di II7.x sia una delle features più interessanti (maggiori info <a title="IIS7 Integrated Security" href="http://learn.iis.net/page.aspx/244/how-to-take-advantage-of-the-iis7-integrated-pipeline/" rel="nofollow" target="_blank">qui</a>), o per lo meno è sicuramente più utile dell’HttpContext nell’Application_Start per un semplice log di avvio.</p>
+
+<p>Un’altra possibile soluzione può essere quella di “aspettare” che il metodo Application_Start sia concluso per poi accedere all’HttpContext come spiegato da <a title="Mike Volodarsky&#39;s Blog" href="http://mvolo.com/blogs/serverside/default.aspx" rel="nofollow" target="_blank">Mike Volodarsky</a> <a title="IIS7 Integrated mode: Request is not available in this context exception in Application_Start" href="http://mvolo.com/blogs/serverside/archive/2007/11/10/Integrated-mode-Request-is-not-available-in-this-context-in-Application_5F00_Start.aspx" rel="nofollow" target="_blank">qui</a> e mostrato dallo snippet seguente:</p>
+
+<pre class="brush: csharp; ruler: true;">void Application_BeginRequest(Object source, EventArgs e)
+{
+    HttpApplication app = (HttpApplication)source;
+    HttpContext context = app.Context;
+    // Attempt to peform first request initialization
+    FirstRequestInitialization.Initialize(context);
+}
+
+class FirstRequestInitialization
+{
+    private static bool s_InitializedAlready = false;
+    private static Object s_lock = new Object();
+    // Initialize only on the first request
+    public static void Initialize(HttpContext context)
+    {
+        if (s_InitializedAlready)
+        {
+            return;
+        }
+        lock (s_lock)
+        {
+            if (s_InitializedAlready)
+            {
+                return;
+            }
+            // Perform first-request initialization here ...
+            s_InitializedAlready = true;
+        }
+    }
+}</pre>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/10/08/asp-net-controls-per-ie8/" itemprop="url">ASP.NET Controls per IE8</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-10-08T17:00:00Z"  itemprop="datePublished">October  8, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/10/08/asp-net-controls-per-ie8/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-10-08-asp-net-controls-per-ie8.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Da pochi giorni &egrave; stata rilasciata una serie di controlli <a href="http://www.asp.net" rel="nofollow" target="_blank">ASP.NET</a> per Internet Explorer 8.</p>
+
+<ul>
+    <li>
+        <strong>ASP.NET Web Slice control</strong>: permette all&rsquo;utente di sottoscrivere i propri contenuti;</li>
+    <li>
+        <strong>ASP.NET Accelerator control</strong>: facilita l&rsquo;accesso a servizi o applicazioni web da siti esterni;</li>
+    <li>
+        <strong>ASP.NET Visual Search control:</strong> permette di poter effettuare delle ricerche all&rsquo;interno del proprio sito tramite il browser;</li>
+    <li>
+        <strong>ASP.NET Browser Helper control</strong>: permette di capire se l&rsquo;utente collegato utilizza IE8 oppure no;</li>
+</ul>
+
+<p>
+    Per chi non li conoscesse, si tratta di una serie di features introdotta con Internet Explorer 8 per migliorare la navigazione e l&rsquo;interattivit&agrave; dell&rsquo;utente con il sito internet, con il coneguente aumento delle pageview ed del average time:</p>
+
+<p>
+    <a href="http://imperugo.tostring.it/Content/Uploaded/image/x1.jpg" rel="shadowbox"><img alt="Home" border="0" height="154" src="http://imperugo.tostring.it/Content/Uploaded/image/x1_thumb.jpg" style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="Home" width="203" /></a> <a href="http://imperugo.tostring.it/Content/Uploaded/image/slice_2.jpg" rel="shadowbox"><img alt="Web Slice" border="0" height="154" src="http://imperugo.tostring.it/Content/Uploaded/image/slice_thumb.jpg" style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="Web Slice" width="244" /></a>&nbsp; <a href="http://imperugo.tostring.it/Content/Uploaded/image/acc_2.jpg" rel="shadowbox"><img alt="accelerator" border="0" height="154" src="http://imperugo.tostring.it/Content/Uploaded/image/acc_thumb.jpg" style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="accelerator" width="244" /></a> <a href="http://imperugo.tostring.it/Content/Uploaded/image/searc_2.jpg" rel="shadowbox"><img alt="Search" border="0" height="154" src="http://imperugo.tostring.it/Content/Uploaded/image/searc_thumb.jpg" style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="Search" width="244" /></a></p>
+
+<p>
+    Dopo un primo test i controlli sembrano ottimi e facili da utilizzare; giustamente se non si sta visitando il sito con Internet Explorer 8 non appaiono gli appositi pulsanti per aggiungere le webslice, accelerator, ecc evitando cos&igrave; di avere link inutilizzabili con browser differenti. <br />
+    Unico neo &egrave; che il database incluso nel progetto &egrave; per Sql2008 e questo impedisce l&rsquo;utilizzo a chi possiede la 2005 (come me); ovviamente &egrave; un ostacolo facilmente aggirabile grazie all&rsquo;utilizzo della Express Edition.</p>
+
+<p>
+    Il download dei controlli ed il codice di esempio sono disponibili <a href="http://code.msdn.microsoft.com/WebAppToolkitIE8" rel="nofollow" target="_blank" title="Web Application Toolkit for IE8">qui</a>, mentre un screencast di <a href="http://blogs.msdn.com/giorgio/" rel="nofollow" target="_blank" title="Giorgio Sardo's Blog">Giorgio Sardo</a>&nbsp; lo trovate in fondo sul permalink.</p>
+
+<p>
+    FONTE : <a href="http://blogs.msdn.com/giorgio/" rel="nofollow" target="_blank" title="Giorgio Sardo’s Blog">Giorgio Sardo&rsquo;s Blog</a> - <a href="http://blogs.msdn.com/giorgio/archive/2009/09/24/asp-net-controls-for-ie8-released.aspx" rel="nofollow" target="_blank" title="ASP.Net Controls for IE8 released!">ASP.Net Controls for IE8 released!</a></p>
+
+<p>
+    <a class="more" href="http://imperugo.tostring.it/blog/post/aspnet-controls-per-ie8/">continue...</a></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/10/05/asp-net-mvc-2-preview-2/" itemprop="url">ASP.NET MVC 2 Preview 2</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-10-05T16:30:00Z"  itemprop="datePublished">October  5, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/10/05/asp-net-mvc-2-preview-2/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-10-05-asp-net-mvc-2-preview-2.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Da pochi giorni &egrave; stata rilasciata la<strong> Preview 2 di </strong><a href="http://www.asp.net/mvc" rel="nofollow" target="_blank"><strong>ASP.NET MVC</strong></a><strong> 2</strong>, come annunciato dal Program Manager <a href="http://haacked.com/" rel="nofollow" target="_blank">Phil Haack</a> (<a href="http://haacked.com/archive/2009/10/01/asp.net-mvc-preview-2-released.aspx" target="_blank">qui</a>). <br />
+    Come per la Preview 1, anche per questa versione &egrave; richiesto <a href="http://www.asp.net" rel="nofollow" target="_blank"><strong>ASP.NET</strong></a><strong> 3.5 SP1</strong>, mentre nel progetto di installazione trovate tutti i tools di integrazione con Visual Studio.</p>
+
+<p>
+    Dalla release note (disponibile <a href="http://go.microsoft.com/fwlink/?LinkID=157066" rel="nofollow" target="_blank" title="ASP.NET MVC 2 Preview 2 Release Note">qui</a>) notiamo una serie di novit&agrave; interessanti, che trovate elencate di seguito:</p>
+
+<ul>
+    <li>
+        <strong>ModelMetaData e ModelMetaDataProvider</strong>;</li>
+    <li>
+        <strong>Client-Side Validation </strong>e<strong> Model Validator Provider;</strong>;</li>
+    <li>
+        New <strong>Code Snippet</strong> on Visual Studio 2010;</li>
+    <li>
+        New <strong>RequireHttpsAttribute ActionFilter</strong>;</li>
+    <li>
+        <strong>Overrriding the Http Method Verb</strong>;</li>
+    <li>
+        <strong>Single-Project Areas</strong>;</li>
+    <li>
+        New <strong>HiddenInputAttribute</strong> for Templated Helpers;</li>
+</ul>
+
+<p>
+    Molto apprezzata la parte di validazione client-side (assente nella versione 1.0 del Framework), che sfrutta le potenzialit&agrave; della libreria <a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/" rel="nofollow" target="_blank" title="jQuery plugin validation">jQuery Validation</a> e consente di specificare una libreria di validazione custom tramite il <strong>Model Validator Provider</strong>, un po&rsquo; come avviene per il Framework <a href="http://xval.codeplex.com/" rel="nofollow" target="_blank" title="xVal">xVal</a> (di cui ho parlato <a href="http://imperugo.tostring.it/blog/post/rilasciato-xval-v10" target="_blank" title="xVal 1.0 RTM">qui</a>).</p>
+
+<p>
+    Il principio di funzionamento rimane molto simile a quello sfruttato dalla libreria prensente in <a href="http://www.codeplex.com" rel="nofollow" target="_blank" title="CodePlex">Codeplex</a>, ossia si dovr&agrave; decorare il custom Binder tramite le <strong><a href="http://msdn.microsoft.com/en-us/library/dd901590(VS.95).aspx" rel="nofollow" target="_blank" title="Using Data Annotations to Customize Data Classes">DataAnnotation</a></strong> pi&ugrave; adatte (StringLengthAttribute, RequiredAttribute, RegexAttribute, RangeAttribute, ecc).</p>
+
+<p>
+    Ottimo anche il <strong>RequireHttpsAttribute</strong> da poter utilizzare con le actions, che penser&agrave; ad effettuare il redirect allo stesso indirizzo ma forzando l&rsquo;https.</p>
+
+<p>
+    Purtroppo per sfruttare alcune features (come l&rsquo;auto HtmlEncode di cui ho parlato <a href="http://imperugo.tostring.it/blog/post/autoencode-in-aspnet-40" target="_blank" title="Auto HtmlEncode Bloc">qui</a> e altri code snippets) bisogner&agrave; aspettare la prossima beta di <strong><a href="http://imperugo.tostring.it/tags/archive/visual+studio+2010" target="_blank" title="Visual Studio 2010">VisualStudio 2010</a></strong> che, a differenza di quanto accaduto con la preview 1 di ASP.NET MVC, conterr&agrave; gi&agrave; al suo interno questa preview e le rispettive RTM saranno sincronizzate e rilasciate assieme.</p>
+
+<p>
+    Di seguito tutti i downloads:</p>
+
+<ul>
+    <li>
+        <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=d3f06bb9-5f5f-4f46-91e9-813b3fce2db1&amp;displaylang=en" rel="nofollow" target="_blank" title="ASP.NET MVC 2 Preview 2">Download Page</a>;</li>
+    <li>
+        <a href="http://go.microsoft.com/fwlink/?LinkID=157066" target="_blank" title="ASP.NET MVC 2 Preview 2 release notes">Release Notes</a>;</li>
+    <li>
+        <a href="http://aspnet.codeplex.com/Wiki/View.aspx?title=Road%20Map&amp;referringTitle=Home" rel="nofollow" target="_blank" title="ASP.NET MVC 2 Preview 2 RoadMap">Roadmap</a>;</li>
+    <li>
+        <a href="http://aspnet.codeplex.com/Release/ProjectReleases.aspx?ReleaseId=33836" rel="nofollow" target="_blank" title="ASP.NET MVC 2 Preview 2 Source Code and Futures">Source Code and Futures on CodePlex</a>;</li>
+</ul>
+
+<p>
+    Stay tuned!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/10/02/microsoft-mvp-asp-net/" itemprop="url">Microsoft MVP ASP.NET</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-10-02T19:32:00Z"  itemprop="datePublished">October  2, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/10/02/microsoft-mvp-asp-net/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-10-02-microsoft-mvp-asp-net.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    <img align="left" alt="MVP Program" height="61" hspace="5" src="http://imperugo.tostring.it/themes/default/images/mvp.png" vspace="5" width="150" />Direi giorno specialissimo, e non solo perch&egrave; &egrave; festa per tutte le software house, scuole di informatica, ecc (vedi <a href="http://www.weloveraf.com/post/2009/10/01/Fact-7b18BB3C3A-DE44-4418-BF14-4A8953444BBB7d.aspx" rel="nofollow" target="_blank" title="www.weloveraf.com">qui</a>),&nbsp; ma soprattutto perch&egrave; ho trovato nella casella di posta una mail con un subject che mi ha lasciato senza fiato:</p>
+
+<blockquote>
+    <p>
+        [MVP Award Program] Congratulation</p>
+</blockquote>
+
+<p>
+    Devo ammettere che ci ho messo un po&rsquo; a capire cosa stesse realmente accadendo, ma la felicit&agrave; &egrave; stata talmente tanta che sto ancora festeggiando (se passate in zona Lambrate a Milano non guardate alle finestre dei palazzi, vero <a href="http://www.michelelocuratolo.com/" rel="nofollow" target="_blank" title="Michele Locuratolo">Mighell</a>?). <br />
+    Detto ci&ograve;, &egrave; veramente un onore essere stato nominato MVP.</p>
+
+<p>
+    Ovviamente un super grazie a tutte le persone che mi sono state vicine e che hanno contribuito alla mia crescita, tutti voi che mi seguite nel blog, <a href="http://www.facebook.com/imperugo" rel="nofollow" target="_blank" title="My Facebook Profile">facebook</a>, <a href="http://twitter.com/imperugo" rel="nofollow" target="_blank" title="Twitter">twitter</a>, ecc; in particolar modo a: <strong><a href="http://blogs.technet.com/alead_msft/" rel="nofollow" target="_blank" title="Alessandro Teglia">Alessandro Teglia</a></strong> per tutto il supporto, pazienza e molto altro ancora, il vero e unico <strong><a href="http://www.geniodelmale.info/" rel="nofollow" target="_blank" title="Lorenzo Barbieri">Genio del male</a></strong>&nbsp;che sa inventare features incredibili ma sempre realistiche, <strong><a href="http://blogs.ugidotnet.org/janky" rel="nofollow" target="_blank">lo sciuro Sudano</a></strong> che non pu&ograve; mancare mai (anche lui rinnovato MVP), <strong><a href="http://blogs.ugidotnet.org/SalvoDiFazio/Default.aspx" rel="nofollow" target="_blank" title="Il Blog di Salvatore Di Fazio">Salvo</a></strong> che mi segue in ogni mia idea folle (vedi <a href="http://imperugo.tostring.it/Categories/Archive/Dexter" target="_blank" title="Dexter Blog Engine">dexter</a>) senza neanche domandarsi di cosa si tratti, <strong><a href="http://www.michelelocuratolo.com/" rel="nofollow" target="_blank" title="Michele Locuratolo">Mighell</a></strong> che ormai vive sulle due ruote (&egrave; come parlare di .NET con Valentino Rossi), <strong><a href="http://blogs.ugidotnet.org/pape" rel="nofollow" target="_blank" title="Andrea Saltarello">Andrea</a></strong> che continua instancabilmente a darmi preziosissimi consigli tecnici e non, super <strong><a href="http://blogs.ugidotnet.org/raffaele/Default.aspx" rel="nofollow" target="_blank" title="Raffaele Rialdi">Raf</a></strong> che mi fa sempre emozionare per l&rsquo;impegno e l&rsquo;energia che mette nell&rsquo;aiutare le persone.</p>
+
+<p>
+    Un super grazie a tutti e complimenti a tutti gli mvp nuovi e rinnovati.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/28" class="prev">Prev</a>
+    
+    
+        <a href="/page/30" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

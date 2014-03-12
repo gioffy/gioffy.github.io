@@ -1,0 +1,290 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>La WAS in IIS7 - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2009/08/05/la-was-in-iis7/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">La WAS in IIS7</h1>
+	<div class="entry-content" itemprop="articleBody"><p>Con l&rsquo;uscita di <strong>Windows Vista</strong> e <strong>Windows Server 2008</strong> &egrave; stata introdotta la <strong>WAS</strong> (<strong>Windows Activation Service</strong>), che permette di &ldquo;hostare&rdquo; su <strong>IIS (Internet Information Services)</strong> servizi WCF anche per protocolli differenti dal tradizionale SOAP (<strong>basicHttpBinding</strong> e <strong>HttpBinding</strong>).    <br />
+Precedentemente a queste versioni di sistema operativo era necessario realizzare un servizio Windows che &ldquo;hostasse&rdquo; il servizio WCF, complicando cos&igrave; tutta la procedura di deploy.    <br />
+IIS7, con la WAS, abbatte totalmente i problemi legati al rilascio e manutenzione dei servizi in quanto &egrave; sufficiente copiare la singola assembly del servizio all&rsquo;interno del nostro sito web o modificare la sua configurazione e sar&agrave; lui ad occuparsi di tutto il resto.</p>
+
+<p>Sia in Windows Vista che in Windows Server 2008 la WAS non &egrave; presente di default: va quindi installata a mano nell&rsquo;apposita sezione &ldquo;Programs and Features&rdquo;, come mostrato dagli screenshots seguenti:</p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-29-19%20PM_6.png" rel="shadowbox[La-WAS-in-IIS7];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase width="244" height="184" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-29-19%20PM_thumb_2.png" alt="8-1-2009 3-29-19 PM" title="8-1-2009 3-29-19 PM" style="border: 0px none ; display: inline;" singlelineignorecase="" /></a> <a href="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-31-56%20PM_2.png" rel="shadowbox[La-WAS-in-IIS7];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase width="244" height="184" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-31-56%20PM_thumb.png" alt="8-1-2009 3-31-56 PM" title="8-1-2009 3-31-56 PM" style="border: 0px none ; display: inline;" singlelineignorecase="" /></a> <a href="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-33-15%20PM_2.png" rel="shadowbox[La-WAS-in-IIS7];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase width="244" height="184" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-33-15%20PM_thumb.png" alt="8-1-2009 3-33-15 PM" title="8-1-2009 3-33-15 PM" style="border: 0px none ; display: inline;" singlelineignorecase="" /></a></p>
+
+<p>Una volta completata la procedura di installazione verr&agrave; automaticamente configurato il DefaultSite per supportare i protocolli <strong>non-http</strong>, quindi <strong><em>NET.TCP, NET.PIPE e NET.MSMQ</em></strong>.</p>
+
+<p>A dimostrazione di quanto appena detto, se si prova ad editare a mano il file XML contenente la configurazione di IIS7 (%windir%\System32\inetsrv\config\applicationHost.config) e si controlla l&rsquo;apposita area del Default Site, si dovrebbe avere una configurazione come la seguente:</p>
+
+<pre class="brush: xml; ruler: true;">
+&lt;site name=&quot;Default Web Site&quot; id=&quot;1&quot; serverAutoStart=&quot;true&quot;&gt;
+    &lt;application path=&quot;/WCFService&quot; applicationPool=&quot;DefaultAppPool&quot; enabledProtocols=&quot;http,net.tcp,net.pipe,net.msmq&quot;&gt;
+        &lt;virtualDirectory path=&quot;/&quot; physicalPath=&quot;C:\inetpub\wwwroot\WCFService&quot; /&gt;     
+    &lt;/application&gt;
+
+    &lt;bindings&gt;
+        &lt;binding protocol=&quot;https&quot; bindingInformation=&quot;*:443:&quot; /&gt;
+        &lt;binding protocol=&quot;http&quot; bindingInformation=&quot;*:80:&quot; /&gt;
+        &lt;binding protocol=&quot;net.pipe&quot; bindingInformation=&quot;*&quot; /&gt;
+        &lt;binding protocol=&quot;net.msmq&quot; bindingInformation=&quot;localhost&quot; /&gt;
+        &lt;binding protocol=&quot;net.tcp&quot; bindingInformation=&quot;808:*&quot; /&gt;
+    &lt;/bindings&gt;
+&lt;/site&gt; </pre>
+
+<p>Nel caso la configurazione non coincida con quella appena mostrata, &egrave; possibile eseguire manualmente il comando di configurazione ed abilitazione per i nostri siti web.   <br />
+Di seguito potete trovare l&rsquo;elenco dei comandi disponibile per i protocolli non-HTTP:</p>
+
+<blockquote>
+<p><strong><em>%windir%\system32\inetsrv\appcmd.exe set site &quot;Default Web Site&quot; -+bindings.[protocol='net.pipe',bindingInformation='*']</em></strong></p>
+<p><strong><em>%windir%\system32\inetsrv\appcmd.exe set site &quot;Default Web Site&quot; -+bindings.[protocol='net.tcp',bindingInformation='808:*']</em></strong></p>
+<p><strong><em>%windir%\system32\inetsrv\appcmd.exe set site &quot;Default Web Site&quot; -+bindings.[protocol='net.msmq',bindingInformation='localhost']</em></strong></p>
+<p><strong><em>%windir%\system32\inetsrv\appcmd.exe set site &quot;Default Web Site&quot; -+bindings.[protocol='msmq.formatname&quot;',bindingInformation='localhost']</em></strong></p>
+</blockquote>
+
+<p>Una volta completata la configurazione, &egrave; necessario abilitare i protocolli per tutte le applicazioni che necessitano di hostare WCF in modalit&agrave; non-HTTP.   <br />
+Il comando seguente mostra come fare:</p>
+
+<blockquote>
+<p><strong><em>%windir%\system32\inetsrv\appcmd.exe set app &quot;Default Web Site/MyVirtual&quot; /enabledProtocols:http,net.pipe, net.tcp, net.msmq</em></strong></p>
+</blockquote>
+
+<p>A questo punto da Visual Studio, per aggiungere il servizio net.tcp hostato in IIS basta aggiungere l&rsquo;indirizzo del file .svc presente nel web server ed il gioco &egrave; fatto, come mostrato di seguito:</p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/8-3-2009%209-12-37%20PM_2.png" rel="shadowbox[La-WAS-in-IIS7];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase width="244" height="198" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/8-3-2009%209-12-37%20PM_thumb.png" alt="8-3-2009 9-12-37 PM" title="8-3-2009 9-12-37 PM" style="border: 0px none ; display: inline;" singlelineignorecase="" /></a></p>
+
+<p>Anche se si specifica un indirizzo http, questo non vuol dire che il servizio viene esposto in http o il proxy punta ad un binding http, ma sar&agrave; direttamente IIS a comunicare al client il protocollo utilizzato.</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Windows Communication Foundation" title="">Windows Communication Foundation</a>
+	
+	  <a href="/tag#Windows" title="">Windows</a>
+	
+	  <a href="/tag#WAS" title="">WAS</a>
+	
+	  <a href="/tag#Windows Server" title="">Windows Server</a>
+	
+	  <a href="/tag#ASP.NET" title="">ASP.NET</a>
+	
+	  <a href="/tag#Configurazione" title="">Configurazione</a>
+	
+	  <a href="/tag#IIS" title="">IIS</a>
+	
+	  <a href="/tag#Deploy" title="">Deploy</a>
+	
+	  <a href="/tag#IIS 7.5" title="">IIS 7.5</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2009/08/04/urlencode-e-iis7/" title="Previous Post: 
+UrlEncode e IIS7">&laquo; UrlEncode e IIS7</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2009/08/06/configurare-il-routing-di-asp-net-mvc-tramite-xml/" title="next Post: 
+Configurare il Routing di ASP.NET MVC tramite XML">Configurare il Routing di ASP.NET MVC tramite XML &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2009/08/05/la-was-in-iis7/';
+        var disqus_url = 'http://gioffy.github.io/2009/08/05/la-was-in-iis7/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/3/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2012/03/12/problemi-con-razor-e-visual-studio-2011/" itemprop="url">Problemi con Razor e Visual Studio 2011</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2012-03-12T17:05:00Z"  itemprop="datePublished">March 12, 2012</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2012/03/12/problemi-con-razor-e-visual-studio-2011/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2012-03-12-problemi-con-razor-e-visual-studio-2011.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Chi come me si sta divertendo nel testare <a title="ASP.NET MVC" href="http://tostring.it/tags/archive/mvc" target="_blank">ASP.NET MVC</a> 4 e lo sta facendo con <a title="Visual Studio" href="http://tostring.it/tags/archive/visual+studio" target="_blank">Visual Studio</a> 2011, avrà sicuramento riscontrato dei problemi di stabilità da parte dell’editor Razor che causa continui freeze della UI.</p>  <p>Tale problema non si verifica ogni qualvolta si cerca di editare una view realizzata con Razor, ma quando si cerca di indentare il codice HTML.    <br />Inizialmente avevo attribuito il problema a Resharper, in quanto la versione installata è una super preview ma, una volta disinstallato quest’ultimo, ho notato che il problema persisteva e a quel punto è scattato il piano B: Google.</p>  <p>A primo colpo ecco la soluzione:</p>  <p>Basta andare su <strong>Tools</strong> =&gt; <strong>Options</strong> =&gt; <strong>Text Editor</strong> =&gt; <strong>HTML</strong> =&gt; <strong>Tab</strong> ed impostare l’indenting option su <strong>Smart</strong>.</p>  <p>A questo punto Visual Studio torna a funzionare senza particolari crash e con Resharper J</p>  <p>Fonte: <a href="http://blogs.msdn.com/b/webdevtools/archive/2012/03/06/visual-studio-11-beta-razor-editor-issue-workaround.aspx">http://blogs.msdn.com/b/webdevtools/archive/2012/03/06/visual-studio-11-beta-razor-editor-issue-workaround.aspx</a></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2012/02/23/internet-explorer-si-aggiorna/" itemprop="url">Internet Explorer si aggiorna</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2012-02-23T18:00:00Z"  itemprop="datePublished">February 23, 2012</time></span>
+	<span class="categories">web dev</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2012/02/23/internet-explorer-si-aggiorna/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2012-02-23-internet-explorer-si-aggiorna.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Oggigiorno siamo circondati da una quantità di device a dir poco imbarazzante, dalle centinaia (ed anche troppe) distro di Android, fino ad arrivare a computer Windows based. All’interno di ognuno di questi device è presente un browser che, a causa della velocissima crescita dell’<a title="Post su HTML5" href="http://tostring.it/tags/archive/html5" target="_blank">HTML5</a>, richiede continui aggiornamenti per stare al passo con le specifiche che si stanno man mano stabilizzando all’interno del <a title="W3C" href="http://www.w3.org/" rel="nofollow" target="_blank">W3C</a>.</p>  <p>Tempo fa Google con Chrome ha introdotto una sorta di “<strong>Silent update</strong>”, che consiste in un “servizio” Windows che ha il compito di controllare ed installare eventuali aggiornamenti del browser.     <br />L’aspetto positivo di questo approccio è che l’utente non deve preoccuparsi di verificare se esiste una patch o una nuova versione del browser, mentre il lato negativo è il non controllo di ciò che avviene sulla nostra macchina (<strong>l’utente non riceve notifica di nessun aggiornamento</strong>).</p>  <p>Questa strada si è dimostrata molto positiva, e di fatto tutti gli utenti con Chrome hanno installato&#160; l’ultima versione (17.x in questo momento), tant’è che Microsoft ha deciso di intraprendere lo stesso percorso aggiornando automaticamente tutte le versioni di <a title="Internet Explore" href="http://tostring.it/tags/archive/ie9" target="_blank">Internet Explorer</a> alla 9 in maniera del tutto automatica.</p>  <p>Tale aggiornamento offre sicuramente un set di vantaggi lato utente indiscutibili, dalle performance alla sicurezza (<a title="The Nine Reasons Why IE9 is the Best Browser for Business Customers" href="http://windowsteamblog.com/ie/b/ie/archive/2011/03/15/the-nine-reasons-why-ie9-is-the-best-browser-for-business-customers.aspx" rel="nofollow" target="_blank"><strong>Internet Explorer 9 si è dimostrato il browser più sicuro</strong></a>), oltre al supporto per HTML5.</p>  <p>Personalmente sono molto curioso di sapere se Microsoft sfrutterà questa tecnica anche per aggiornare IE9 con un subset di features HTML5 che questo non supporta. Di fatto Microsoft ha deciso di intraprendere una strada diversa da altri vendor tipo Google, implementando solo le specifiche mature i cui cambiamenti da qui alla chiusura dell’HTML5 saranno minimi se non nulli.    <br />Fortunatamente/sfortunatamente (a seconda dei punti di vista) dall’uscita di IE9 molte features (websocket, fileapi, offline, input type, etc) sono “salite di grado” e risultano ora mature, tanto da poter essere promosse su un browser con IE9. La casa di Redmond ha dimostrato il suo interesse verso queste feature, e di fatto possiamo testarle su IE10 e Win8, quindi non mi stupirebbe se ci fosse un upgrade anche verso questo aspetto.</p>  <p>Maggiori informazioni su IE9 e l’auto update sono disponibili in questo bellissimo <a title="Internet Explorer pronto per l&#39;aggiornamento automatico: come e perché?" href="http://quibrowser.it/blog/post/2012/2/21/internet-explorer-pronto-per-laggiornamento-automatico-come-e-perche/" rel="nofollow" target="_blank">post</a>.</p>  <p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/11/04/http-o-https/" itemprop="url">http o https?</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-11-04T17:15:00Z"  itemprop="datePublished">November  4, 2011</time></span>
+	<span class="categories">web dev</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/11/04/http-o-https/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-11-04-http-o-https.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Quando ci troviamo a navigare pagine web con connessione protetta - e per connessione protetta intendo tramite il protocollo https - ed alcune delle sue risorse (immagini, javascript, css, etc) non puntano ad un indirizzo sicuro, rischiamo di avere una fastidiosa notifica da parte del browser che ci obbliga a dare il consenso per mostrare i contenuti non sicuri.</p>  <p>Diamo un occhio all’html seguente per capire meglio di cosa stiamo parlando:</p>  
+
+<div class="highlight"><pre><code class="xml">    
+    
+    
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;author&quot;</span> <span class="na">content=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;http://mysite.com/css/mystyle.css&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;http://mysite.com/js/libs/modernizr-1.7.min.js?v=1.5.0.21&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div>
+
+<p>Finché navighiamo la pagina sopra in http non c’è nessun problema ma, se proviamo ad aprire la stessa pagina in https, un buon browser dovrebbe notificarci il rischio a cui andiamo incontro (sia il css, sia jquery puntano ad una connessione http e non https). 
+  <br />Per evitare il problema ci basta cambiare le url da http://.... ad https://..... nel caso la connessione corrente sia in https, e viceversa. 
+
+  <br />Ovviamente questo cambio deve essere automatico e, riempire il codice di html di <strong><em>if</em></strong> che cambiano il protocollo, non è la soluzione corretta!</p>
+
+<p>Fortunatamente esiste un rimedio più semplice e pulito che consiste nella rimozione dall’url della parte relativa al tipo di protocollo; quindi dobbiamo rimuovere <strong><em>http:</em></strong> o <strong><em>https:</em></strong> e lasciare semplicemente il <strong><em>//</em></strong> come mostrato di seguito.</p>
+
+<p>[xml]
+    &lt;meta name=&quot;description&quot; content=&quot;&quot; /&gt;
+    &lt;meta name=&quot;author&quot; content=&quot;&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;//mysite.com/css/mystyle.css&quot; /&gt;
+    &lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;//mysite.com/js/libs/modernizr-1.7.min.js?v=1.5.0.21&quot;&gt;&lt;/script&gt;
+[/xml]</p>
+
+<p>A questo punto sarà il browser a “switchare” in automatico dalla connessione <strong><em>http/https</em></strong> in base a quella corrente.</p>
+
+<p>Questa tecnica prende il nome di “<strong>network-path reference</strong>” (maggiori info <a title="Relative Reference RFC 3986" href="http://tools.ietf.org/html/rfc3986#section-4.2" rel="nofollow" target="_blank">qui</a>) e funziona anche per i css, come potete vedere sotto:</p>
+
+<p>[css].mycssclass { background: url(//mysite.com/myimage.jpg); }[/css]</p>
+
+<p>Inoltre questo approccio funziona egregiamente con tutti i browser, tranne che con Internet Explorer 7 e 8 dove, solo per i tag <link />o @import, il download della risorsa avviene due volte (maggiori info <a title="5a Missing schema double download" href="http://www.stevesouders.com/blog/2010/02/10/5a-missing-schema-double-download/" rel="nofollow" target="_blank">qui</a>).</p>
+
+<p>Figo no?</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/11/02/attenzione-al-%2520-nelle-url/" itemprop="url">Attenzione al %20 nelle url</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-11-02T17:15:00Z"  itemprop="datePublished">November  2, 2011</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/11/02/attenzione-al-%2520-nelle-url/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-11-02-attenzione-al-%20-nelle-url.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Giorni fa ho avuto a che fare con un piccolo problema riguardante le url di una mia applicazione web. In pratica mi trovavo con delle richieste verso un indirizzo tipo il seguente “<strong>/mycontroller/myaction/myid%20</strong>” (per chi non lo sapesse %20 equivale allo spazio) che, non per volere mio, restituiva sempre un <strong>404</strong> invece di dirottare la chiamata verso il mio controller.</p>  <p>Come si può ben immaginare il problema è dovuto a quel <em>%20</em> che, per qualche strano motivo, non viene digerito dal sistema di routing di <a title="ASP.NET Posts" href="http://tostring.it/tags/archive/asp.net" target="_blank">ASP.NET</a> 3.5 SP1.</p>  <p>Ovviamente un url del genere può sembrare raro in un’applicazione web, e molti di voi si chiederanno il perché di tale indirizzo, quindi provo a spiegarlo di seguito <img style="border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none" class="wlEmoticon wlEmoticon-smile" alt="Smile" src="http://tostring.it/UserFiles/imperugo/wlEmoticon-smile_2_13.png" />.</p>  <p>La settimana scorsa mi trovavo a sviluppare un textbox autocomplete con jquery per un’applicazione ASP.NET MVC; sfortunatamente le features richieste non erano coperte dalle migliaia di esempi presenti in rete, quindi mi sono dovuto armare di coraggio e, a colpi di javascript e json, sono riuscito a realizzare la textbox che trovate <a title="Alumni web site!" href="http://alumni.polimi.it/it/Wall" rel="nofollow" target="_blank">qui</a>.</p>  <p>All’apparenza il funzionamento è identico a quello di tutte le textbox con autocomplete. Per capire il problema sopra mostrato, non è necessario addentrarsi nel codice javascript o nel modo in cui ho implementato la textbox, ma basta capire cosa fa per mostrare i suggerimenti all’utente.</p>  <p>Nel momento in cui l’utente digita qualcosa, questo qualcosa viene inviato ad una Action di un controller MVC che non fa altro che eseguire una query con un like e restituire i primi 7 elementi. Questo vuol dire che ogni volta in cui l’utente digita una lettera all’interno della textbox, via javascript viene inviato il testo digitato per eseguire l’operazione sopra descritta.    <br />Passando alla pratica, quando l’utente digita “Mario”, una chiamata tipo la seguente “<strong>/Search/PersonSuggestion/Mario</strong>” viene effettuata.</p>  <p>Supponiamo ora di voler raffinare la ricerca in quanto troppe persone si chiamano Mario, e noi vogliamo trovare il classicissimo Mario Rossi.</p>  <p>Nel momento in cui l’utente deve aggiungere “ Rossi” (spazio Rossi), la chiamata diventa più o meno così:</p>  <p>“<strong>/Search/PersonSuggestion/Mario%20Rossi</strong>”</p>  <p>Ovviamente prima di arrivare a digitare Rossi c’è uno spazio, quindi verrà effettuata una chiamata come questa: “<strong>/Search/PersonSuggestion/Mario%20</strong>”</p>  <p>Ed eccoci arrivati al problema iniziale: il 404 da parte del server.</p>  <p>Il motivo risiede nel fatto che il runtime di ASP.NET effettua una validazione delle url in entrata, applicando le stesse regole del filesystem. Questo vuol dire che, così come non possiamo creare una folder con lo spazio alla fine (quindi “Mario “), non possiamo neanche avere un url con lo stesso spazio.</p>  <p>Ovviamente questo tipo di validazione è “aggirabile” grazie ad una proprietà dal curioso nome “RelaxedUrlToFileSystemMapping”, da aggiungere alla sezione HttpRuntime del web.config come mostrato di seguito.</p>  
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;system.web&gt;</span>
+    <span class="nt">&lt;httpRuntime</span> 
+            <span class="na">requestValidationMode=</span><span class="s">&quot;2.0&quot;</span> 
+            <span class="na">executionTimeout=</span><span class="s">&quot;20&quot;</span> 
+            <span class="na">requestPathInvalidCharacters=</span><span class="s">&quot;&quot;</span> 
+            <span class="na">relaxedUrlToFileSystemMapping=</span><span class="s">&quot;true&quot;</span> <span class="nt">/&gt;</span>
+</code></pre></div>
+
+<p>Ciauz </p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/10/28/wpc-2011-save-the-date/" itemprop="url">WPC 2011. Save the date!</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-10-28T16:30:00Z"  itemprop="datePublished">October 28, 2011</time></span>
+	<span class="categories">web dev</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/10/28/wpc-2011-save-the-date/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-10-28-wpc-2011-save-the-date.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><a href="http://tostring.it/UserFiles/imperugo/b1_180x150_2.jpg"><img style="background-image: none; border-right-width: 0px; margin: 0px 8px 0px 0px; padding-left: 0px; padding-right: 0px; display: inline; float: left; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="Stampa" border="0" alt="Stampa" align="left" src="http://tostring.it/UserFiles/imperugo/b1_180x150_thumb.jpg" width="184" height="154" /></a> Anche quest’anno (per il terzo anno consecutivo), ho la fortuna di partecipare come speaker alla più importante conferenza italiana sul mondo Microsoft e non solo.     <br />Specifico il “non solo”, perché proprio io sarò lì per parlare di <a title="HTML articles" href="http://tostring.it/tags/archive/html5" target="_blank">HTML5</a> che, come tutti sappiamo, non è una tecnologia Microsoft, ma è sicuramente un percorso importante per il futuro delle applicazione web e non. </p>  <p>Anche il “e non” non è a caso J. Oltre ad una sessione full immersion su HTML5 in cui mostrerò tutto ciò che ad oggi possiamo utilizzare e cosa arriverà a breve, parteciperò sempre come speaker ad un’altra sessione sul data entry in Windows 8 dove, insieme al mitico <a title="Salvatore Di Fazio&#39;s blog" href="http://bitvector.tostring.it/" rel="nofollow" target="_blank">Salvuzzo</a>, mostreremo come accedere e mostrare dati in un’applicazione Metro UI con C# e HTML5+JS.</p>  <p>Direi che di motivi per non mancare ce ne sono tanti. Se non vi bastano date un’occhiata agli <a title="WPC Speakers" href="http://www.wpc2011.it/speakers.aspx" target="_blank">speaker</a> e all’<a title="WPC Agenda" href="http://www.wpc2011.it/agenda.aspx" target="_blank">agenda</a>, aggiungeteci che l’early bird è stata prolungata fino al 31 ottobre, e a questo punto non avete proprio più scuse <img style="border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none" class="wlEmoticon wlEmoticon-smile" alt="Smile" src="http://tostring.it/UserFiles/imperugo/wlEmoticon-smile_2_12.png" /></p>  <p>&#160;</p>  <p>See you there!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/2" class="prev">Prev</a>
+    
+    
+        <a href="/page/4" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

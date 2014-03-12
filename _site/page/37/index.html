@@ -1,0 +1,550 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/37/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/07/23/mettere-un-sito-in-maintenance-mode/" itemprop="url">Mettere un sito in  Maintenance mode.</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-07-23T09:15:50Z"  itemprop="datePublished">July 23, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/07/23/mettere-un-sito-in-maintenance-mode/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-07-23-mettere-un-sito-in-maintenance-mode.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Mentre pianificavo il deploy di una nuova versione di <a href="http://imperugo.tostring.it/About/Dexter" title="Dexter Blog Engine" target="_blank">Dexter</a>, mi &egrave; venuto in mente di realizzare un <a href="http://msdn.microsoft.com/en-us/library/zec9k340(VS.71).aspx" title="HttpModule" target="_blank">HttpModule</a> che bloccasse l&rsquo;accesso al sito a tutti clients non provenienti da un determinanto indirizzo IP, reindirizzandoli verso una pagina temporanea che comunicava all&rsquo;utente che era in corso un aggiornamento.</p>
+
+<p>Fin qui nulla di particolare, un semplice <a href="http://msdn.microsoft.com/en-us/library/zec9k340(VS.71).aspx" title="HttpModule" target="_blank">HttpModule</a> che&nbsp; verifica IPAddress del client e, nel caso questo non sia presente nella &ldquo;white list&rdquo;, effettua un semplice redirect.</p>
+
+<p><strong>Ma cosa accade nel caso in cui un crawler di un search engine passi in quel determinato momento?</strong></p>
+
+<p>Una buona soluzione &egrave; quella di comunicare al bot che il sito non &egrave; momentaneamente disponibile e di rimandare la fase di crawling.</p>
+
+<p>Per far ci&ograve; una possibile soluzione consiste nell&rsquo;effettuare il redirect di ogni pagina verso un&rsquo;altra, ed impostare uno status code differente, cos&igrave; che il search engine non sostituisca nell&rsquo;indice il contenuto della pagina richiesta con quello della pagina temporanea.</p>
+
+<p><strong>Ma quale status code &egrave; pi&ugrave; adatto a questo tipo di operazione?</strong></p>
+
+<p>Leggendo da <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html" title="W3C Status Code" rel="nofollow" target="_blank">W3C</a>, un possibile status code sarebbe il &ldquo;503 Service Unavailable&rdquo;, ma questo non &egrave; customizzabile come spiegato qui:</p>
+
+<blockquote>
+<p>The 503 error cannot be customized because they are handled in the kernel mode by HTTP.sys. This means that user-mode routines cannot be run.</p>
+</blockquote>
+
+<p>Una soluzione alternativa &egrave; effettuare un &ldquo;302 Found&rdquo; ad una pagina html custom, che verr&agrave; esclusa dall&rsquo;indicizzazione tramite l&rsquo;apposito file Robots.txt.</p>
+
+<p>Il redirect con status code 302 indica al client che il contenuto &egrave; stato spostato solo temporaneamente verso il nuovo indirizzo, e che successivamente potr&agrave; trovarlo nuovamente al vecchio url.</p>
+
+<p>Questo permette di reindirizzare il client verso una pagina esclusa dall&rsquo;indicizzazione.</p>
+
+<p>Di seguito potete trovare il codice e l&rsquo;apposita area di configurazione del HttpModule.</p>
+
+<pre class="brush: csharp; ruler: true;">
+public class MaintenanceModule : IHttpModule
+{
+    #region IHttpModule Members
+
+    public void Dispose()
+    {
+    }
+
+    public void Init(HttpApplication context)
+    {
+        if (MaintenanceConfiguration.Instance.EnableMaintenance)
+            context.BeginRequest += context_BeginRequest;
+    }
+
+    #endregion
+
+    private void context_BeginRequest(object sender, EventArgs e)
+    {
+        HttpContext context = HttpContext.Current;
+
+        if (context.Request.Url.AbsolutePath == MaintenanceConfiguration.Instance.AbsolutePagePath)
+            return;
+
+        if (MaintenanceConfiguration.Instance.AllowedIP.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Contains(context.Request.UserHostAddress))
+            return;
+
+        context.Response.StatusCode = 302;
+        context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        context.Response.AddHeader(&quot;Location&quot;, MaintenanceConfiguration.Instance.AbsolutePagePath);
+    }
+}</pre>
+
+<p>&nbsp;</p>
+
+<pre class="brush: csharp; ruler: true;">
+/// &lt;summary&gt;
+/// Maintenance Configuration class.
+/// &lt;/summary&gt;
+public static class MaintenanceConfiguration
+{
+    private static readonly MaintenanceConfigurationSection section;
+
+    /// &lt;summary&gt;
+    /// Initializes the &lt;see cref=&quot;MaintenanceConfiguration&quot;/&gt; class.
+    /// &lt;/summary&gt;
+    static MaintenanceConfiguration()
+    {
+        section = ConfigurationManager.GetSection(&quot;dexter.maintenance.configurationSection&quot;) as MaintenanceConfigurationSection;
+
+        if (section == null)
+            throw new MaintenanceSettingException(&quot;Maintenance section not found in the configuration file.&quot;);
+    }
+
+    /// &lt;summary&gt;
+    /// Gets the instance of MaintenanceConfigurationSection class.
+    /// &lt;/summary&gt;
+    /// &lt;value&gt;The instance.&lt;/value&gt;
+    public static MaintenanceConfigurationSection Instance
+    {
+        get { return section; }
+    }
+}
+
+/// &lt;summary&gt;
+/// Log Configuration Section class.
+/// &lt;/summary&gt;
+public sealed class MaintenanceConfigurationSection : ConfigurationSection
+{
+    [ConfigurationProperty(&quot;enableMaintenance&quot;, DefaultValue = false, IsRequired = true)]
+    public bool EnableMaintenance
+    {
+        get { return (bool) this[&quot;enableMaintenance&quot;]; }
+        set { this[&quot;enableMaintenance&quot;] = value; }
+    }
+
+    [ConfigurationProperty(&quot;allowedIP&quot;, IsRequired = true)]
+    public string AllowedIP
+    {
+        get { return (string) this[&quot;allowedIP&quot;]; }
+        set { this[&quot;allowedIP&quot;] = value; }
+    }
+
+    [ConfigurationProperty(&quot;absolutePagePath&quot;, IsRequired = true)]
+    public string AbsolutePagePath
+    {
+        get { return (string) this[&quot;absolutePagePath&quot;]; }
+        set { this[&quot;absolutePagePath&quot;] = value; }
+    }
+}
+
+public class MaintenanceSettingException : Exception
+{
+    /// &lt;summary&gt;
+    /// Initializes a new instance of the &lt;see cref=&quot;MaintenanceSettingException&quot;/&gt; class.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;message&quot;&gt;The message.&lt;/param&gt;
+    public MaintenanceSettingException(string message) : base(message)
+    {
+    }
+
+    /// &lt;summary&gt;
+    /// Initializes a new instance of the &lt;see cref=&quot;MaintenanceSettingException&quot;/&gt; class.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;message&quot;&gt;The message.&lt;/param&gt;
+    /// &lt;param name=&quot;innerException&quot;&gt;The inner exception.&lt;/param&gt;
+    public MaintenanceSettingException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+
+    /// &lt;summary&gt;
+    /// Initializes a new instance of the &lt;see cref=&quot;MaintenanceSettingException&quot;/&gt; class.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;info&quot;&gt;The &lt;see cref=&quot;T:System.Runtime.Serialization.SerializationInfo&quot;/&gt; that holds the serialized object data about the exception being thrown.&lt;/param&gt;
+    /// &lt;param name=&quot;context&quot;&gt;The &lt;see cref=&quot;T:System.Runtime.Serialization.StreamingContext&quot;/&gt; that contains contextual information about the source or destination.&lt;/param&gt;
+    /// &lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;
+    /// The &lt;paramref name=&quot;info&quot;/&gt; parameter is null.
+    /// &lt;/exception&gt;
+    /// &lt;exception cref=&quot;T:System.Runtime.Serialization.SerializationException&quot;&gt;
+    /// The class name is null or &lt;see cref=&quot;P:System.Exception.HResult&quot;/&gt; is zero (0).
+    /// &lt;/exception&gt;
+    public MaintenanceSettingException(SerializationInfo info, StreamingContext context)
+        : base(info, context)
+    {
+    }
+}</pre>
+
+<pre class="brush: xml; ruler: true;">
+&lt;dexter.maintenance.configurationSection 
+            enableMaintenance=&quot;true&quot; 
+            allowedIP=&quot;127.0.0.1&quot; 
+            absolutePagePath=&quot;/Maintenance.aspx&quot; /&gt;</pre>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/07/22/deploy-di-applicazioni-mvc/" itemprop="url">Deploy di Applicazioni MVC</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-07-22T03:01:11Z"  itemprop="datePublished">July 22, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/07/22/deploy-di-applicazioni-mvc/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-07-22-deploy-di-applicazioni-mvc.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Molte persone mi hanno chiesto quale server utilizzo per hostare il mio blog realizzato in MVC.    <br />In realtà, per hostare un’applicazione basata sul Framework <a href="http://www.asp.net/mvc" rel="nofollow" target="_blank">ASP.NET MVC</a> non è necessario aver installato quest’ultimo sul web server: ma basta avere il .NET Framework 3.5 SP1 e copiare le DLL di <a href="http://www.asp.net/mvc" rel="nofollow" target="_blank">ASP.NET MVC</a> (<strong>System.Web.Mvc</strong>, <strong>System.Web.Routing</strong>, <strong>System.Web.Abstractions</strong>) nell’apposita folder <em>Bin,</em> come spiegato dal PM di MVC <a href="http://haacked.com/" rel="nofollow" target="_blank">Phil Haack</a>.</p>  <p>Un’altra cosa necessaria è configurare correttamente IIS per sfruttare il Routing introdotto con la SP1 del .NET Framework 3.5. </p>  <p>Di seguito riporto una serie di link che spiegano come effettuare il deploy e la configurazione di <a href="http://www.asp.net/mvc" rel="nofollow" target="_blank">ASP.NET MVC</a>.</p>  <ul>   <li><strong>Deploy di un’applicazione MVC</strong> <a title="Bin deploy aspnetmvc" href="http://haacked.com/archive/2008/11/03/bin-deploy-aspnetmvc.aspx" rel="nofollow" target="_blank">link</a>. </li>    <li><strong>Configurare IIS6 per MVC</strong> <a title="asp.net mvc on iis6 walkthrough" href="http://haacked.com/archive/2008/11/26/asp.net-mvc-on-iis-6-walkthrough.aspx" rel="nofollow" target="_blank">link</a>. </li>    <li><strong>Configurare IIS7 per MVC</strong> <a title="Deploying an aspnet mvc web application to iis7" href="http://blogs.dovetailsoftware.com/blogs/kmiller/archive/2008/10/07/deploying-an-asp-net-mvc-web-application-to-iis7.aspx" rel="nofollow" target="_blank">link</a>. </li> </ul>  <p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/07/21/scott-guthrie-spiega-asp-net-mvc/" itemprop="url">Scott Guthrie spiega ASP.NET MVC</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-07-21T13:59:15Z"  itemprop="datePublished">July 21, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/07/21/scott-guthrie-spiega-asp-net-mvc/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-07-21-scott-guthrie-spiega-asp-net-mvc.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Di seguito potete trovare due video di una sessione tenuta da <a target="_blank" rel="nofollow" href="http://weblogs.asp.net/scottgu/" title="Scott Guthrie's Blog">Scott Guhrie</a> a Londra poche settimane fa, su <a target="_blank" rel="nofollow" href="http://www.asp.net/mvc">ASP.NET MVC</a>.</p>
+
+<p><a class="more" href="http://imperugo.tostring.it/blog/post/scott-guthrie-spiega-aspnet-mvc/">continue...</a></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/07/20/dexter-cresce/" itemprop="url">Dexter cresce</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-07-20T23:45:03Z"  itemprop="datePublished">July 20, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/07/20/dexter-cresce/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-07-21-dexter-cresce.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Come gi&agrave; detto in passato, <a href="http://imperugo.tostring.it/About/Dexter" target="_blank">Dexter</a> &egrave; un blog engine sviluppato interamente in <a href="http://www.asp.net/mvc" rel="nofollow" target="_blank">ASP.NET MVC</a>, NHibernate e con altre caratteristiche interessanti che trovate elencate <a href="http://imperugo.tostring.it/About/Dexter" target="_blank" title="Dexter features">qui</a>.</p>
+
+<p>
+    &Egrave; un po&rsquo; che ci sto lavorando sopra, ed &egrave; quasi pronta una versione accettabile che presto aprir&agrave; i battenti su <a href="http://www.codeplex.com" rel="nofollow" target="_blank" title="CodePlex">Codeplex</a> a tutti gli interessati. <br />
+    Proprio in questo weekend, insieme a <a href="http://blogs.ugidotnet.org/SalvoDiFazio/Default.aspx" rel="nofollow" target="_blank" title="Il Blog di Salvatore Di Fazio">Salvo</a> (anche lui sviluppatore di Dexter), ho caricato una nuova build sul blog, con un ottimo bugfixing ed alcune features, come il <a href="http://recaptcha.net/" rel="nofollow" target="_blank" title="reCaptcha">ReCaptcha</a>, <a href="http://www.castleproject.org/" rel="nofollow" target="_blank" title="Catle Project">Castle</a> e <a href="http://xval.codeplex.com/" rel="nofollow" target="_blank" title="xVal MVC Validation Framework">xVal</a>&nbsp; per la validazione client-side, ecc. <br />
+    Proprio quest&rsquo;ultimo ha qualche &ldquo;problemino&rdquo; che stiamo cercando di risolvere, oltre al backoffice in cui mancano proprio delle sezioni. <br />
+    <br />
+    L&rsquo;idea &egrave; di riuscire a pubblicare una versione funzionante di <a href="http://imperugo.tostring.it/About/Dexter" target="_blank" title="Dexter Blog Engine">Dexter</a> su <a href="http://www.codeplex.com" rel="nofollow" target="_blank" title="CodePlex">Codeplex</a> per fine mese, ma pi&ugrave; probabilmente questo avverr&agrave; a settembre. <br />
+    Ovviamente ringrazio tutte le persone che mi hanno segnalato problemi ed aspetto sempre feedback.</p>
+
+<p>
+    Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/07/20/nhibernate-2-1-in-rtm/" itemprop="url">NHibernate 2.1 in RTM</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-07-20T15:29:03Z"  itemprop="datePublished">July 20, 2009</time></span>
+	<span class="categories">orm</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/07/20/nhibernate-2-1-in-rtm/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-07-20-nhibernate-2-1-in-rtm.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Forse sar&agrave; una settimana intensa di RTM (Release to Manufacturing), ma intanto godiamoci la version 2.1 di <strong>NHibernate</strong> appena annunciata da <a target="_blank" rel="nofollow" href="http://ayende.com" title="Ayende's Blog">Ayende</a> <a target="_blank" rel="nofollow" href="http://ayende.com/Blog/archive/2009/07/20/nhibernate-2.1-is-out.aspx" title="NHibernate 2.1 is out!">qui</a>.</p>
+
+<p>Come detto da lui &egrave; consigliato fare l&rsquo;upgrade alla nuova versione che corregge numerosi Bug.</p>
+
+<p>Il download lo trovate <a target="_blank" rel="nofollow" href="http://sourceforge.net/projects/nhibernate/files/" title="NHibernate 2.1 download.">qui</a>.</p>
+
+<p>Enjoy.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/36" class="prev">Prev</a>
+    
+    
+        <a href="/page/38" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

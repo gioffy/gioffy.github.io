@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>ASP Combine - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2009/04/28/asp-combine/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">ASP Combine</h1>
+	<div class="entry-content" itemprop="articleBody"><p>Con l&rsquo;uscita del <strong>Service Pack 1</strong> per il <strong>.NET Framework 3.5</strong> &egrave; stata introdotta una nuova ed utilissima funzionalit&agrave; che permette di ridurre il numero di chiamate verso file Javascript effettuate dal browser verso il server, ottimizzando cos&igrave; il traffico e le performance della pagina.    <br />
+Ormai si fa sempre pi&ugrave; uso di <strong>Javascript</strong>, che siano queste semplici chiamate <strong>AJAX</strong> o complesse animazioni, ed il numero di librerie esistenti (<a target="_blank" href="http://jquery.com/">JQuery</a>, <a target="_blank" href="http://www.shadowbox-js.com/">ShadowBox</a>, <a target="_blank" href="http://www.prototypejs.org/">Prototype</a>, ecc) ci impone di aggiungere reference continue alle nostre pagine, riducendone cos&igrave; le performance ed aumentado il traffico di rete.    <br />
+Una soluzione consiste nel riunire tutti i file Javascript in un unico file, riducendo cos&igrave; il numero di chiamate dal browser verso il server.    <br />
+Si provi ad immaginare la situazione in cui la nostra pagina web abbia le seguenti reference javascript</p>
+
+<pre class="brush: xml; ruler: true;">
+&lt;script src=&quot;Scripts/jquery-1.3.2.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;Scripts/shadowbox.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;Scripts/jquery.validate.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;Scripts/customFunction.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;Scripts/jquery.cookie.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;Scripts/jquery.delegate-1.1.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;Scripts/MicrosoftMvcAjax.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;Scripts/shadowbox-jquery.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</pre>
+
+<p>Come si pu&ograve; vedere si hanno ben 8 file Javascript e, se nella stessa pagina &egrave; presente anche lo <strong>Script Manager di ASP.NET AJAX</strong>, il numero sale fino a 11, come mostrato dallo screenshot seguente:</p>
+
+<p><a rel="shadowbox[ASP-Combine];options={counterType:'skip',continuous:true,animSequence:'sync'}" href="http://imperugo.tostring.it/Content/Uploaded/image/old22-04-2009%2021.04_2.png"><img singleline="" title="old22-04-2009 21.04" style="border-right: 0px; border-top: 0px; display: inline; border-left: 0px; border-bottom: 0px" height="180" alt="old22-04-2009 21.04" width="554" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/old22-04-2009%2021.04_thumb.png" /></a></p>
+
+<p>Per ottimizzare le chiamate nello script manager &egrave; stata aggiunta una nuova sezione (CompisiteScript) che offre la possibilit&agrave; di specificare tutti i file Javascript che devono essere accorpati in un unico file, come mostrato dallo snippet seguente:</p>
+
+<pre class="brush: xml; ruler: true;">
+&lt;asp:ScriptManager ID=&quot;sm&quot; runat=&quot;server&quot; ScriptMode=&quot;Release&quot; CompositeScript-ScriptMode=&quot;Release&quot;&gt;
+    &lt;CompositeScript&gt;
+        &lt;Scripts&gt;
+            &lt;asp:ScriptReference Path=&quot;Scripts/jquery-1.3.2.min.js&quot; /&gt;
+            &lt;asp:ScriptReference Path=&quot;Scripts/shadowbox.js&quot; /&gt;
+            &lt;asp:ScriptReference Path=&quot;Scripts/jquery.validate.min.js&quot; /&gt;
+            &lt;asp:ScriptReference Path=&quot;Scripts/customFunction.js&quot;  /&gt;
+            &lt;asp:ScriptReference Path=&quot;Scripts/jquery.cookie.js&quot; /&gt;
+            &lt;asp:ScriptReference Path=&quot;Scripts/jquery.delegate-1.1.min.js&quot; /&gt;
+            &lt;asp:ScriptReference Path=&quot;Scripts/MicrosoftMvcAjax.js&quot; /&gt;
+            &lt;asp:ScriptReference Path=&quot;Scripts/shadowbox-jquery.js&quot;  /&gt;
+        &lt;/Scripts&gt;
+    &lt;/CompositeScript&gt;
+&lt;/asp:ScriptManager&gt;</pre>
+
+<p>Questo permette di ridurre pesantemente le chiamate del browser da 11 a 5 (4 dello script manager ed 1 per tutti i file sopra specificati), come mostrato qui di seguito.</p>
+
+<p>&nbsp;<a rel="shadowbox[ASP-Combine];options={counterType:'skip',continuous:true,animSequence:'sync'}" href="http://imperugo.tostring.it/Content/Uploaded/image/22-04-2009%2021.21_2.png"><img singleline="" title="22-04-2009 21.21" style="border-right: 0px; border-top: 0px; display: inline; border-left: 0px; border-bottom: 0px" height="96" alt="22-04-2009 21.21" width="554" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/22-04-2009%2021.21_thumb.png" /></a></p>
+
+<p>Anche se il test &egrave; stato effettuato su una macchina di sviluppo e non in una condizione reale, si pu&ograve; gia notare come il tempo di esecuzione della pagina si sia ridotto da 12.77 secondi a 5.44 secondi, come mostrato dall&rsquo;immagine seguente:</p>
+
+<p><a rel="shadowbox[ASP-Combine];options={counterType:'skip',continuous:true,animSequence:'sync'}" href="http://imperugo.tostring.it/Content/Uploaded/image/22-04-2009%2021.04_2.png"><img singleline="" title="22-04-2009 21.04" style="border-right: 0px; border-top: 0px; display: inline; border-left: 0px; border-bottom: 0px" height="75" alt="22-04-2009 21.04" width="554" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/22-04-2009%2021.04_thumb.png" /></a></p>
+
+<p>Ovviamente il tutto pu&ograve; essere impostato anche lato <strong>Object Oriented</strong>, eliminando per&ograve; la possibilit&agrave; di effettuare cambiamenti a runtime.</p>
+
+<pre class="brush: csharp; ruler: true;">
+sm.CompositeScript.Scripts.Add(new ScriptReference(&quot;Scripts/jquery-1.3.2.min.js&quot;));
+sm.CompositeScript.Scripts.Add(new ScriptReference(&quot;Scripts/shadowbox.js&quot;));
+sm.CompositeScript.Scripts.Add(new ScriptReference(&quot;Scripts/jquery.validate.min.js&quot;));
+sm.CompositeScript.Scripts.Add(new ScriptReference(&quot;Scripts/customFunction.js&quot;));
+sm.CompositeScript.Scripts.Add(new ScriptReference(&quot;Scripts/jquery.cookie.js&quot;));
+sm.CompositeScript.Scripts.Add(new ScriptReference(&quot;Scripts/jquery.delegate-1.1.min.js&quot;));
+sm.CompositeScript.Scripts.Add(new ScriptReference(&quot;Scripts/MicrosoftMvcAjax.js&quot;));sm.CompositeScript.Scripts.Add(new ScriptReference(&quot;Scripts/shadowbox-jquery.js&quot;));</pre>
+
+<p>Successivamente si vedr&agrave; come implementare lo stesso tipo di ottimizzazione in un&rsquo;applicativo che fa uso del nuovo framework <strong>ASP.NET MVC</strong>, andando a migliorare l&rsquo;output dei file javascript.</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#ASP.NET" title="">ASP.NET</a>
+	
+	  <a href="/tag#.NET" title="">.NET</a>
+	
+	  <a href="/tag#Deploy" title="">Deploy</a>
+	
+	  <a href="/tag#Ajax" title="">Ajax</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2009/04/22/accesso-ai-membri-internal/" title="Previous Post: 
+Accesso ai membri internal.">&laquo; Accesso ai membri internal.</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2009/05/05/dexter-is-back/" title="next Post: 
+Dexter is Back!">Dexter is Back! &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2009/04/28/asp-combine/';
+        var disqus_url = 'http://gioffy.github.io/2009/04/28/asp-combine/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/23/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/01/30/verificare-se-lapplicazione-e-in-out-of-browser/" itemprop="url">Verificare se l’applicazione è in Out Of Browser</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-01-30T11:48:06Z"  itemprop="datePublished">January 30, 2010</time></span>
+	<span class="categories">silverlight</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/01/30/verificare-se-lapplicazione-e-in-out-of-browser/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-01-30-verificare-se-lapplicazione-e-in-out-of-browser.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Gi&agrave; da quanto scritto precedentemente (<a href="http://tostring.it/blog/post/life-cycle-di-unapplicazione-out-of-browser-in-silverlight-4-intro" rel="Life cycle di un’applicazione Out Of Browser in Silverlight 4 - Intro" target="_blank">qui</a>) si intuiva l&rsquo;arrivo di una serie di post su <a href="http://imperugo.tostring.it/categories/archive/Silverlight" target="_blank" title="Silverlight">Silverlight</a> 4. Sto infatti studiando la possibilit&agrave; di utilizzo di Silverlight 4 per un&rsquo;applicazione Out Of Browser che rispecchi almeno i requisiti descritti nel precedente post. <br />
+    <br />
+    Per questo motivo oggi mi trovo a rispondere alla prima domanda: &ldquo;<strong>Come faccio a verificare se l&rsquo;applicazione Silverlight in esecuzione &egrave; in modalit&agrave; OOB&rdquo;?</strong></p>
+
+<p>
+    Beh, devo dire che &egrave; veramente semplice. Quando si crea una nuova applicazione Silverlight, al suo interno &egrave; presente un file <strong><em>App.xml</em></strong> che &egrave; il file principale dell&rsquo;applicazione; per effettuare un paragone con il mondo <a href="http://imperugo.tostring.it/categories/archive/ASP.NET" target="_blank" title="ASP.NET">ASP.NET</a> si potrebbe definire il file <strong><em>App.xml</em></strong> un po&rsquo; come il <strong><em>Global.asax</em></strong>. <br />
+    <br />
+    Questa classe, che eredita da <strong><em>System.Windows.Application</em></strong>, espone la propriet&agrave; <strong><em>IsRunningOutOfBrowser,</em></strong> che &egrave; indispensabile se si vogliono creare interazioni particolari e mostrare oggetti solo in modalit&agrave; OOB; basta quindi accedere alla propriet&agrave;, come mostrato dallo snippet seguente:</p>
+
+<pre class="brush: csharp; ruler: true;">bool isOOB = App.Current.IsRunningOutOfBrowser;</pre>
+
+<p>
+    Un esempio pratico potrebbe essere il semplice pulsante di setup, che dovr&agrave; essere visualizzato soltanto nel caso l&rsquo;applicazione stia girando all&rsquo;interno del browser.</p>
+
+<p>
+    Al prossimo giro vedremo come installare un&rsquo;applicazione Silverlight sul client tramite C#.</p>
+
+<p>
+    Stay tuned!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/01/28/tfs-i-power-tools-ed-il-team-explorer/" itemprop="url">TFS, i Power Tools ed il Team Explorer</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-01-28T17:38:30Z"  itemprop="datePublished">January 28, 2010</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/01/28/tfs-i-power-tools-ed-il-team-explorer/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-01-28-tfs-i-power-tools-ed-il-team-explorer.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Primo post su <strong>TFS</strong>, <strong>TeamExplorer</strong> e <strong>famigghia</strong>. <br />
+    Questo non &egrave; un cambio di genere e non ho intenzione (anche perch&egrave; sarebbe impossibile) fare &ldquo;concorrenza&rdquo; al buon <a href="http://www.codewrecks.com/blog/index.php" rel="nofollow friend met co-worker colleague" target="_new">Gian Maria</a> ed al buon <a href="http://geniodelmale.info/" rel="nofollow friend met colleague" target="_new">Lorenzo</a>; molto probabilmente quello che andrete a leggere lo avranno gi&agrave; mostrato, spiegato, decompilato e riscritto loro parecchia anni fa, sta di fatto che lo scrivo lo stesso xch&egrave; a qualcuno potrebbe essere sfuggito (tipo a me).</p>
+
+<p>
+    Ormai sono un paio di anni che uso Team Foundation Server in azienda insieme a <a href="http://imperugo.tostring.it/blog/search?q=Visual+Studio&amp;searchButton=Go" target="_blank" title="Search Visual Studio">Visual Studio</a> e al Team Explorer. Lavorando quotidianamente con lo stesso server all&rsquo;interno della stessa rete, non ho mai avuto nessun problema con il fatto che il Team Eplorer cerchi di connettersi all&rsquo;ultimo TFS utilizzato ogni volta che si avvia <a href="http://imperugo.tostring.it/blog/search?q=Visual+Studio&amp;searchButton=Go" target="_blank" title="Search Visual Studio">Visual Studio</a>. <br />
+    Ultimamente per&ograve; il mio lavoro &egrave; un po&rsquo; cambiato, e mi trovo a dovermi connettere a diversi TFS sparsi per il mondo e, in casi ancora peggiori, mi ritrovo senza connessione. Queste situazioni vanno di parecchio in conflitto con la feature precedentemente descritta (l&rsquo;autocollegamento a TFS durante l&rsquo;avvio di Visual Studio), quindi mi sono deciso a fare una ricerca in rete per capire come risolvere il problema.</p>
+
+<p>
+    Neanche a dirlo gi&agrave; milioni di persone avevano bloggato il problema e mostrato una soluzione, che consiste nel modificare il registro di configurazione di Windows (maggiori info <a href="http://msmvps.com/blogs/vstsblog/archive/2009/06/29/disable-auto-connect-to-tfs-on-vs-startup.aspx" rel="nofollow" target="_blank" title="Disable auto-connect to TFS on VS startup">qui</a>).</p>
+
+<p>
+    Soluzione questa sicuramente funzionante e di semplice implementazione. Ma ne esiste una ancor pi&ugrave; carina ed elegate.</p>
+
+<p>
+    I ragazzi del team dei <strong>PowerTools</strong> hanno pensato di fare una comodissima UI per cambiare quest&rsquo;impostazione. Di fatto, una volta installati i <strong>PowerTools</strong> (che trovate <a href="http://msdn.microsoft.com/en-us/teamsystem/bb980963.aspx" rel="nofollow" target="_blank" title="Team Foundation Server Power Tools">qui</a>), ci basta digitare il comando seguente dal prompt del DOS:</p>
+
+<blockquote>
+    <p>
+        <strong><em>tfpt tweakui</em></strong></p>
+</blockquote>
+
+<p>
+    a questo punto dovrebbe aprirsi una finestra, come quella mostrata di seguito, che ci permette di disabilitare questa opzione.</p>
+
+<p>
+    <a href="http://imperugo.tostring.it/Content/Uploaded/image//imperugo/90646082-6b47-44c6-9b0d-ab403e042f1a.png" rel="shadowbox"><img alt="image" border="0" height="244" src="http://imperugo.tostring.it/Content/Uploaded/image//imperugo/b2ab2b32-139b-443a-80ae-6335c402e9e2.png" style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="image" width="210" /></a></p>
+
+<p>
+    Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/01/27/v-ugialt-conference-recap/" itemprop="url">V UgiAlt Conference – recap</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-01-27T17:30:00Z"  itemprop="datePublished">January 27, 2010</time></span>
+	<span class="categories">eventi</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/01/27/v-ugialt-conference-recap/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-01-27-v-ugialt-conference-recap.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Sabato ho avuto il piacere di poter partecipare come speaker alla <a title="V° Ugi Alt Net Conference" href="http://www.ugialt.net/V%20UgiALT.net%20Conference.ashx" rel="nofollow" target="_blank">V° Ugi Alt Net Conference</a> e, nello specifico, ho parlato un po’ di <a title="Category: MVC" href="http://tostring.it/Categories/Archive/MVC" target="_blank">MVC</a>, un po’ di <a title="xVal" href="http://xval.codeplex.com/" target="_blank">xVal</a> e un po’ di <a title="Spark View Engine" href="http://sparkviewengine.com/" rel="nofollow" target="_blank">Spark</a>. La parte su Spark credo sia stata la più “apprezzata”, e spero di aver lasciato la voglia a qualcuno di provare questo prodotto che promette (ma di fatto le fa già) cose molto interessanti.</p>  <p>Devo dire che l’esperienza è stata interessantissima e i complimenti a <a href="http://codeclimber.net.nz/" rel="nofollow friend met colleague" target="_new">Simone</a> e a tutto lo <a title="Ugi Alt" href="http://ugialt.net/" rel="nofollow" target="_blank">staff</a> sono d’obbligo, sia per l’organizzazione sia per l’<a title="Agenda V° Ugi Alt Conference" href="http://www.ugialt.net/V%20UgiALT.net%20Conference.ashx" rel="nofollow" target="_blank">agenda</a> veramente molto interessante.</p>  <p>Purtroppo un impegno mi ha impedito di seguire le sessioni del pomeriggio, ma a detta dei ragazzi (<a href="http://www.codewrecks.com/blog/index.php" rel="nofollow friend met co-worker colleague" target="_new">Gian Maria</a>, <a href="http://twitter.com/andreabalducci" rel="nofollow friend met co-worker colleague">Andrea</a>, etc) sono state tutte ottime. Quindi i complimenti vanno anche a tutti gli altri speakers, a partire da loro due.</p>  <p>Well done!</p>    <p>&#160;</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/01/19/life-cycle-di-unapplicazione-out-of-browser-in-silverlight-4-intro/" itemprop="url">Life cycle di un’applicazione Out Of Browser in Silverlight 4 - Intro</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-01-19T08:09:00Z"  itemprop="datePublished">January 19, 2010</time></span>
+	<span class="categories">silverlight</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/01/19/life-cycle-di-unapplicazione-out-of-browser-in-silverlight-4-intro/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-01-19-life-cycle-di-unapplicazione-out-of-browser-in-silverlight-4-intro.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Nell’ottica di capire come gestire certi scenari in applicazioni OOB (Out Of Browser) in <a title="More Content about Silverlight" href="http://imperugo.tostring.it/categories/archive/Silverlight" target="_blank">Silverlight</a> 4, ho deciso di approfondire un po’ la cosa e di rispondere ad alcune domande che mi sono posto e che riporto di seguito:</p>  <ul>   <li><a href="http://www.tostring.it/blog/post/verificare-se-lapplicazione-e-in-out-of-browser" target="_blank"><strong>Come faccio a verificare se l’applicazione Silverlight in esecuzione è in modalità OOB?</strong></a>; </li>    <li><a href="http://tostring.it/blog/post/verificare-se-unapplicazione-silverlight-e-installata-sul-client" target="_blank"><strong>Come faccio a verificare se l'applicazione Silverlight è installata sul client?</strong></a>; </li>    <li><a title="Installare un’applicazione Silverlight sul client via C#" href="http://tostring.it/blog/post/installare-un-applicazione-silverlight-sul-client-via-csharp" target="_blank"><strong>Come faccio ad installare un’applicazione sul client (via c#) in modo da poterla utilizzare in OOB?</strong></a>; </li>    <li><a title="Verificare se l’applicazione Silverlight in esecuzione è in FullTrust" href="http://tostring.it/blog/post/verificare-se-l-applicazione-silverlight-in-esecuzione-%C3%A8-in-fulltrust-mode" target="_blank"><strong>Come faccio a verificare se l’applicazione è in esecuzione in Full Trust mode?</strong></a>; </li>    <li><strong>Come faccio ad aggiornare l’applicazione OOB?</strong>; </li> </ul>  <p>Proprio da questi requirements ho deciso di scrivere alcuni mini posts che affrontano le tematiche sopra esposte, e propongono una soluzione.</p>  <p>quindi <strong>Stay tuned</strong>!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/01/11/asp-net-webforms-o-mvc/" itemprop="url">ASP.NET WebForms o MVC?</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-01-11T23:58:54Z"  itemprop="datePublished">January 11, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/01/11/asp-net-webforms-o-mvc/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-01-11-asp-net-webforms-o-mvc.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    &Egrave; da molto tempo che rifletto su questo post, ed ho deciso di parlarne solo ora in quanto la seconda release di ASPNET MVC &egrave; prossima al rilascio (al momento in Release Candidate, vedi <a href="http://imperugo.tostring.it/blog/post/aspnet-mvc-2-release-candidate-is-out" target="_blank" title="ASP.NET MVC 2 Release Candidate is out">qui</a>): di riflesso, se ne comincia a parlare molto di pi&ugrave; e, ancor pi&ugrave; interessante, si comincia ad utilizzarla molto di pi&ugrave;.</p>
+
+<p>
+    Sinceramente sono rimasto scioccato da quanto interesse e &ldquo;strada facile&rdquo; abbia riscontrato ASP.NET MVC rispetto al pap&agrave; ASP.NET Web Forms. Di fatto noto come alcuni providers italiani, a non molto tempo dal rilascio della prima release di MVC, offrano gi&agrave; disponibile il nuovo Framework, mentre in passato per avere una versione aggiornata del Framework .NET si doveva aspettare parecchio dopo il suo rilascio. Segno che qualcosa stia veramente cambiando?</p>
+
+<p>
+    Parlando con pi&ugrave; persone durante speech, conf, chat, etc ho avuto l&rsquo;impressione che molti reputino ASP.NET MVC la manna dal cielo e le webforms il MALE.</p>
+
+<p>
+    Sinceramente sono rimasto basito dalla cosa, in quanto reputo MVC un&rsquo;alternativa alle Web Forms e non un concorrente.</p>
+
+<p>
+    Durante la sessione di Bologna ho cercato di esprimere questo concetto e di portare come esempio gli scenari in cui un Framework pu&ograve; avere vantaggi rispetto all&rsquo;altro, proprio a dimostrazione che non sono concorrenti.</p>
+
+<p>
+    <strong>IMHO la riuscita di un buon prodotto non dipende soltanto dalla qualit&agrave; tecnica del prodotto, ma anche da come si &egrave; riusciti a sfruttare le risorse a propria disposizione (e per risorse intendo tutto,team, budget, tempistiche, etc).</strong></p>
+
+<p>
+    Sicuramente tra le cose da non sottovalutare quando si debba effettuare una scelta importante, come lo &egrave; l&rsquo;utilizzo delle Webforms a discapito di MVC, sono i numerosi vantaggi che le prime possono offrire ripetto al secondo in determinati scenari e/o requirements.</p>
+
+<p>
+    In primis la pluritestata e diffusissima tecnologia che, nonostante ci&ograve; che si dica, riesce ad essere altamente scalabile ed estendibile e, da non trascurare, l&rsquo;approccio Windows form style.</p>
+
+<p>
+    Proprio su questo approccio volevo portare un esempio nato durante lo speech di Bologna, in cui in un team misto (Applicazioni Windows e Applicazioni Web) si aveva la necessit&agrave; di ricollocare alcune risorse sullo sviluppo web. Per chi viene dal mondo delle Windows Forms ASP.NET MVC risulta sicuramente scomodo e/o complesso; al contrario con le webforms il passaggio &egrave; quasi indolore e, in questi scenari, le WebForms possono essere la scelta che decide la riuscita di un progetto.</p>
+
+<p>
+    Personalmente (salvo imposizioni particolari), non realizzerei mai un BackOffice (tipicamente contraddistinto da una buona percentuale di dataentry) in ASP.NET MVC, salvo che uno dei requirements sia la testabilit&agrave;.</p>
+
+<p>
+    Ovviamente MVC non offre soltanto il vantaggio della testabilit&agrave;, ma anche la possibilit&agrave; di avere il controllo totale del markup (ASP.NET 4.0 si avvicina molto a questo) ed una forte espandibilit&agrave; maturata dall&rsquo;esperienza fatta precedentemente con ASP.NET WebForms.</p>
+
+<p>
+    Per concludere, le webforms non sono morte, anzi vivono ed in molti scenari vivono alla grande ;)</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/22" class="prev">Prev</a>
+    
+    
+        <a href="/page/24" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

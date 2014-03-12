@@ -1,0 +1,837 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/17/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/05/26/validazione-client-side-su-asp-net-mvc-2-con-jquery/" itemprop="url">Validazione Client-Side su ASP.NET MVC 2 con jQuery</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-05-26T15:45:00Z"  itemprop="datePublished">May 26, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/05/26/validazione-client-side-su-asp-net-mvc-2-con-jquery/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-05-26-validazione-client-side-su-asp-net-mvc-2-con-jquery.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ormai ne hanno parlato tutti (me incluso, vedi <a title="ASP.NET MVC 2: Powerful data form" href="http://www.microsoft.com/italy/beit/Msdn.aspx?video=330bfe9b-6e28-479d-9ed3-1cbeeade5915#1" rel="nofollow" target="_blank">qui</a>) di come sfruttare le DataAnnotations per effettuare una validazione client side su <a title="ASP.NET MVC Archive" href="http://www.imperugo.tostring.it/tags/archive/mvc" target="_blank">ASP.NET MVC</a>, ma in tutti gli esempi si fa uso dei files javascript realizzati da Microsoft e presenti nel template di default di ASP.NET MVC.</p>  <p>Purtroppo, o per fortuna, io sono un grandissimo estimatore di jQuery e mi sono subito posto la domanda: “Come faccio a sfruttare le Data Annotations e jQuery per effettuare una validazione ClientSide?”. L’implementazione non dovrebbe essere molto difficile dato che il metodo “Html.EnableClientValidation()” non fa altro che iniettare in pagina il JSon contenente le regole di validazione specificate con le Data Annotations; l’unica cosa che bisogna fare è leggere il Json e, interpretarlo ed infine collegarlo alla form con jQuery.</p>  <p>Per nostra fortuna Microsoft ha già pensato a questa necessità e, se scarichiamo da <a href="http://aspnet.codeplex.com/releases/view/41742">qui</a> MVC Futures, troviamo al suo interno un file javascript che ci permette di utilizzare jQuery Validation con MVC2 a costo zero.</p>  <p>Il file javascript in questione si chiama “<em><strong>MicrosoftMvcJQueryValidation.js</strong></em>” e per utilizzarlo è sufficiente sostituire quello che avremmo fatto normalmente per utilizzare la validazione client side, ossia questo:</p>  
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;/Scripts/MicrosoftAjax.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span> 
+<span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;/Scripts/MicrosoftMvcAjax.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span> 
+<span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;/Scripts/MicrosoftMvcValidation.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div>
+
+<p>con questo</p>
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;/Scripts/jquery-1.4.2.min.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;/Scripts/jquery.validate.min.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;/Scripts/MicrosoftMvcJQueryValidation.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div>
+
+<p>oppure ancora meglio con questa versione che sfrutta il CDN di Microsoft, con un ovvio vantaggio di performance e risparmio banda:</p>
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;http://ajax.microsoft.com/ajax/jQuery/jquery-1.4.2.min.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;/Scripts/MicrosoftMvcJQueryValidation.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div>
+
+<p>enjoy jQuery.</p>
+
+<p>.u</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/05/25/errore-di-viewstate-su-asp-net-mvc/" itemprop="url">Errore di ViewState su ASP.NET MVC</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-05-25T16:11:47Z"  itemprop="datePublished">May 25, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/05/25/errore-di-viewstate-su-asp-net-mvc/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-05-25-errore-di-viewstate-su-asp-net-mvc.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Anche se il titolo &egrave; un po&rsquo; fuorviante, devo dire che il messaggio &ldquo;Invalid viewstate&rdquo; &egrave; apparso realmente; ma procediamo con ordine. <br />
+    Molti di voi si saranno accorti che ultimamente, quando si accedeva al dettaglio di un post sul mio blog, si verificava in maniera del tutto casuale un errore e la navigazione dell&rsquo;utente veniva deviata verso una pagina di cortesia. <br />
+    Purtroppo l&rsquo;errore non &egrave; dovuto a <a href="http://www.imperugo.tostring.it/categories/archive/Dexter" target="_blank" title="Dexter">Dexter</a> - dico purtroppo perch&egrave; altrimenti l&rsquo;avrei corretto da tempo - ma ad una serie di fattori che non sono neanche riuscito a riprodurre sistematicamente; sta di fatto che l&rsquo;applicazione andava in crash quando invocava l&rsquo;helper AntiForgeryToken, restituendo il seguente stack tracce:</p>
+
+<blockquote>
+    <p>
+        System.Web.HttpException: Error executing child request for handler &#39;System.Web.Mvc.HttpHandlerUtil+ServerExecuteHttpHandlerWrapper&#39;.</p>
+    <p>
+        ---&gt; System.Web.Mvc.HttpAntiForgeryException: A required anti-forgery token was not supplied or was invalid. ---&gt;</p>
+    <p>
+        System.Web.HttpException: Validation of viewstate MAC failed. If this application is hosted by a Web Farm or cluster, ensure that</p>
+    <p>
+        <machinekey> configuration specifies the same validationKey and validation algorithm. AutoGenerate cannot be used in a cluster. ---&gt; </machinekey></p>
+    <p>
+        System.Web.UI.ViewStateException: Invalid viewstate. <br />
+        &nbsp;&nbsp;&nbsp; Client IP: 94.86.54.138 <br />
+        &nbsp;&nbsp;&nbsp; Port: 44787 <br />
+        &nbsp;&nbsp;&nbsp; User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; it; rv:1.9.1.9) Gecko/20100315 Firefox/3.5.9 <br />
+        &nbsp;&nbsp;&nbsp; ViewState: eMzLc7Gx/IAC2ALGLNZWrgie4SgDWbcFeooL0JSADQan8USvQo7F0Fgx3u0m4aB4 <br />
+        &nbsp;&nbsp;&nbsp; Referer: <br />
+        &nbsp;&nbsp;&nbsp; Path: /blog/post/welcome-parallel-linq ---&gt; System.Security.Cryptography.CryptographicException: Padding is invalid and cannot</p>
+    <p>
+        be removed. <br />
+        &nbsp;&nbsp; at System.Security.Cryptography.RijndaelManagedTransform.DecryptData(Byte[] inputBuffer, Int32 inputOffset, Int32 inputCount, Byte</p>
+    <p>
+        []&amp; outputBuffer, Int32 outputOffset, PaddingMode paddingMode, Boolean fLast) <br />
+        &nbsp;&nbsp; at System.Security.Cryptography.RijndaelManagedTransform.TransformFinalBlock(Byte[] inputBuffer, Int32 inputOffset, Int32</p>
+    <p>
+        inputCount) <br />
+        &nbsp;&nbsp; at System.Security.Cryptography.CryptoStream.FlushFinalBlock() <br />
+        &nbsp;&nbsp; at System.Web.Configuration.MachineKeySection.EncryptOrDecryptData(Boolean fEncrypt, Byte[] buf, Byte[] modifier, Int32 start,</p>
+    <p>
+        Int32 length, IVType ivType, Boolean useValidationSymAlgo) <br />
+        &nbsp;&nbsp; at System.Web.UI.ObjectStateFormatter.Deserialize(String inputString) <br />
+        &nbsp;&nbsp; --- End of inner exception stack trace --- <br />
+        &nbsp;&nbsp; --- End of inner exception stack trace --- <br />
+        &nbsp;&nbsp; at System.Web.UI.ViewStateException.ThrowError(Exception inner, String persistedState, String errorPageMessage, Boolean</p>
+    <p>
+        macValidationError) <br />
+        &nbsp;&nbsp; at System.Web.UI.ObjectStateFormatter.Deserialize(String inputString) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.AntiForgeryDataSerializer.Deserialize(String serializedToken) <br />
+        &nbsp;&nbsp; --- End of inner exception stack trace --- <br />
+        &nbsp;&nbsp; at System.Web.Mvc.AntiForgeryDataSerializer.Deserialize(String serializedToken) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.HtmlHelper.GetAntiForgeryTokenAndSetCookie(String salt, String domain, String path) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.HtmlHelper.AntiForgeryToken(String salt, String domain, String path) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.HtmlHelper.AntiForgeryToken() <br />
+        &nbsp;&nbsp; at ASP.themes_default_views_blog_post_aspx.__RenderContent1(HtmlTextWriter __w, Control parameterContainer) in c:\domains</p>
+    <p>
+        \tostring.it\wwwroot\Themes\Default\Views\Blog\Post.aspx:line 113 <br />
+        &nbsp;&nbsp; at System.Web.UI.Control.RenderChildrenInternal(HtmlTextWriter writer, ICollection children) <br />
+        &nbsp;&nbsp; at ASP.themes_default_views_shared_site_master.__Render__control1(HtmlTextWriter __w, Control parameterContainer) in c:\domains</p>
+    <p>
+        \tostring.it\wwwroot\Themes\Default\Views\Shared\Site.Master:line 113 <br />
+        &nbsp;&nbsp; at System.Web.UI.Control.RenderChildrenInternal(HtmlTextWriter writer, ICollection children) <br />
+        &nbsp;&nbsp; at System.Web.UI.Control.RenderChildrenInternal(HtmlTextWriter writer, ICollection children) <br />
+        &nbsp;&nbsp; at System.Web.UI.Page.Render(HtmlTextWriter writer) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.ViewPage.Render(HtmlTextWriter writer) <br />
+        &nbsp;&nbsp; at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint) <br />
+        &nbsp;&nbsp; at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint) <br />
+        &nbsp;&nbsp; at System.Web.UI.Page.ProcessRequest() <br />
+        &nbsp;&nbsp; at System.Web.UI.Page.ProcessRequest(HttpContext context) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.ViewPage.ProcessRequest(HttpContext context) <br />
+        &nbsp;&nbsp; at ASP.themes_default_views_blog_post_aspx.ProcessRequest(HttpContext context) in c:\windows\Microsoft.NET</p>
+    <p>
+        \Framework64\v2.0.50727\Temporary ASP.NET Files\root\878362b4\44ad105e\App_Web_qkslf0lt.1.cs:line 0 <br />
+        &nbsp;&nbsp; at System.Web.Mvc.HttpHandlerUtil.ServerExecuteHttpHandlerWrapper.&lt;&gt;c__DisplayClass1.<processrequest>b__0() <br />
+        &nbsp;&nbsp; at System.Web.Mvc.HttpHandlerUtil.ServerExecuteHttpHandlerWrapper.&lt;&gt;c__DisplayClass4.<wrap>b__3() <br />
+        &nbsp;&nbsp; at System.Web.Mvc.HttpHandlerUtil.ServerExecuteHttpHandlerWrapper.Wrap[TResult](Func`1 func) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.HttpHandlerUtil.ServerExecuteHttpHandlerWrapper.Wrap(Action action) <br />
+        &nbsp;&nbsp; at System.Web.HttpServerUtility.ExecuteInternal(IHttpHandler handler, TextWriter writer, Boolean preserveForm, Boolean </wrap></processrequest></p>
+    <p>
+        setPreviousPage, VirtualPath path, VirtualPath filePath, String physPath, Exception error, String queryStringOverride) <br />
+        &nbsp;&nbsp; --- End of inner exception stack trace --- <br />
+        &nbsp;&nbsp; at System.Web.HttpServerUtility.ExecuteInternal(IHttpHandler handler, TextWriter writer, Boolean preserveForm, Boolean</p>
+    <p>
+        setPreviousPage, VirtualPath path, VirtualPath filePath, String physPath, Exception error, String queryStringOverride) <br />
+        &nbsp;&nbsp; at System.Web.HttpServerUtility.Execute(IHttpHandler handler, TextWriter writer, Boolean preserveForm, Boolean setPreviousPage) <br />
+        &nbsp;&nbsp; at System.Web.HttpServerUtility.Execute(IHttpHandler handler, TextWriter writer, Boolean preserveForm) <br />
+        &nbsp;&nbsp; at System.Web.HttpServerUtilityWrapper.Execute(IHttpHandler handler, TextWriter writer, Boolean preserveForm) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.ViewPage.RenderView(ViewContext viewContext) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.ControllerActionInvoker.&lt;&gt;c__DisplayClass14.<invokeactionresultwithfilters>b__11() <br />
+        &nbsp;&nbsp; at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilter(IResultFilter filter, ResultExecutingContext preContext, Func`1 </invokeactionresultwithfilters></p>
+    <p>
+        continuation) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilter(IResultFilter filter, ResultExecutingContext preContext, Func`1</p>
+    <p>
+        continuation) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters,</p>
+    <p>
+        ActionResult actionResult) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName) <br />
+        &nbsp;&nbsp; at Dexter.Web.Mvc.Controllers.DexterActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.Controller.ExecuteCore() <br />
+        &nbsp;&nbsp; at System.Web.Mvc.MvcHandler.&lt;&gt;c__DisplayClass8.<beginprocessrequest>b__4() <br />
+        &nbsp;&nbsp; at System.Web.Mvc.Async.AsyncResultWrapper.&lt;&gt;c__DisplayClass1.<makevoiddelegate>b__0() <br />
+        &nbsp;&nbsp; at System.Web.Mvc.Async.AsyncResultWrapper.&lt;&gt;c__DisplayClass8`1.<beginsynchronous>b__7(IAsyncResult _) <br />
+        &nbsp;&nbsp; at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`1.End() <br />
+        &nbsp;&nbsp; at System.Web.Mvc.MvcHandler.EndProcessRequest(IAsyncResult asyncResult) <br />
+        &nbsp;&nbsp; at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute() <br />
+        &nbsp;&nbsp; at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously) <br />
+        ASPIMPERSONATING: </beginsynchronous></makevoiddelegate></beginprocessrequest></p>
+</blockquote>
+
+<p>
+    Sinceramente non so se sono riuscito a risolvere il problema: di fatto questo post &egrave; anche un appello a chi ha avuto questa problematica e l&rsquo;ha risolta.</p>
+
+<p>
+    In tutte le righe del log veniva riportato come user agent quello di Internet Explorer 8 e, inizialmente, mi sono concentrato su di lui per capire la problematica; poi, guardando un po&rsquo; i logs e grazie all&rsquo;aiuto del buon <a href="http://blogs.msdn.com/b/giorgio/" rel="nofollow" target="_blank" title="Giorgio Sardo's Blog">Giorgio</a> ed <a href="http://www.ienumerable.it/" rel="nofollow" target="_blank" title="Andrea Balducci's Blog">Andrea</a>, ci siamo accorti che il problema era su ASP.NET MVC e non su IE8 (il log mostrava sempre IE8 per il semplice motivo che il browser di casa Microsoft &egrave; molto pi&ugrave; diffuso rispetto alla concorrenza).</p>
+
+<p>
+    Cercando in rete ho provato <a href="http://adam.kahtava.com/journal/2009/11/23/how-to-fix-the-validation-of-viewstate-mac-failed-error-aspnet-mvc/" rel="nofollow" target="_blank" title="How To Fix the: “Validation of viewstate MAC failed” Error (ASP.NET MVC)">questa</a> soluzione, sperando che dia i suoi frutti. <br />
+    Nello specifico consiste nel registrare a mano i valori del MachineKey all&rsquo;interno del nostro web.config. Ovviamente i valori da registrare sono diversi, ma fortunatamente esiste questo <a href="http://aspnetresources.com/tools/keycreator.aspx" rel="nofollow" target="_blank" title="&lt;machineKey&gt; Generator"> Generator&quot; href=&quot;http://aspnetresources.com/tools/keycreator.aspx&quot; rel=nofollow target=_blank&gt;sito</a> che ci autogenera l&rsquo;apposita sezione del file di configurazione da insaaerire.</p>
+
+<p>
+    Il risultato finale del web.config dovrebbe essere una cosa del genere:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="p">&lt;</span><span class="n">machinekey</span> <span class="n">decryption</span><span class="p">=</span><span class="s">&quot;AES&quot;</span> <span class="n">decryptionkey</span><span class="p">=</span><span class="s">&quot;CB5A09CB8CAF8CD33A97F1099A451D7C80C9CC175F34DDAFA925BA55043570CB&quot;</span> <span class="n">validation</span><span class="p">=</span><span class="s">&quot;SHA1&quot;</span> <span class="n">validationkey</span><span class="p">=</span><span class="s">&quot;E7E40ADAC94F3D467AAB86AEA2561E246A6323C69A0B32BF808587694E1CB387265CC6F2C46420F315831B54F683FA82F08A8E95E00B93BFEC3CD91DF65FEE8C&quot;</span><span class="p">&gt;&lt;/</span><span class="n">machinekey</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>
+    stay tuned! <br />
+    .u</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/05/24/invocare-una-action-utilizzando-il-jsonresult-in-post-con-jquery-ed-asp-net-mvc-2/" itemprop="url">Invocare una action utilizzando il JSonResult in post con JQuery ed ASP.NET MVC 2</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-05-24T15:40:00Z"  itemprop="datePublished">May 24, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/05/24/invocare-una-action-utilizzando-il-jsonresult-in-post-con-jquery-ed-asp-net-mvc-2/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-05-24-invocare-una-action-utilizzando-il-jsonresult-in-post-con-jquery-ed-asp-net-mvc-2.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Con la release di <a href="http://www.imperugo.tostring.it/tags/archive/mvc">ASP.NET MVC</a> 2 è stata introdotta una “breaking change”, direi corretta e necessaria, che va ad influenzare il comportamente di un JsonResult; nello specifico, la nuova release non permette di interrogare una action che restituisce le informazioni in formato JSon tramite il JSonResult se l’invocazione è stata fatta in GET anziché POST.</p>  <p>Prima di allarmarci è necessario dire che è possibile ancora invocare la Action in GET; di fatto la scritta breaking change era tra virgolette, e possiamo in qualsiasi momento ripristinare il comportamento della release precedente in questo modo:</p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">JsonAction</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nf">Json</span> <span class="p">(</span> <span class="n">myObject</span><span class="p">,</span> <span class="n">JsonRequestBehavior</span><span class="p">.</span><span class="n">AllowGet</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Ovviamente in caso di upgrade alla nuova versione di MVC questo può causare un malfunzionamento della nostra applicazione, specie se questa fa forte uso di javascript per interrogare actions e popolare dinamicamente parti di HTML. 
+  <br />Nonostante l’enorme supporto offerto da <a href="http://tostring.it/tags/archive/visual+studio">Visual Studio</a> 2010, spesso può risultare scomodo, o ancora peggio costoso, modificare il codice javascript per adattare la nostra applicazione al nuovo comportamento richiesto, e siamo portati a lavorare sul codice lato server anziché client. 
+
+  <br />Prima però di effettuare queste modifiche è necessario domandarsi il perchè di questa “breaking change” e come la motivazione si rispecchia nel nostro scenario. 
+
+  <br />Provo a spiegarmi un po’ meglio portando come esempio quanto accaduto tempo fa a Google, nello specifico Gmail, che è stato vittima di un <a href="http://jeremiahgrossman.blogspot.com/2006/01/advanced-web-attack-techniques-using.html">attacco</a> proprio in uno scenario che includeva il formato JSon e l’interrogazione dello stesso tramite javascript.</p>
+
+<p>Non voglio star qui a spiegare nel dettaglio il tipo di attacco, ma è sufficiente sapere che è stato possibile recuperare tutto l’addressbook di un utente gmail con un semplice link mandato al suo stesso indirizzo email :). 
+  <br />Direi che questo attacco, e di conseguenza la vulnerabilità riscontrata, ha fatto pendere l’ago della bilancia verso la disabilitazione della possibilità di interrogare in Get il JSonResult da parte del team di ASP.NET e lasciare così allo sviluppatore la responsabilità di esporre i propri dati verso l’esterno.</p>
+
+<p>Ora, la prima domanda che un dev deve porsi nel momento in cui si trova a decidere se modificare tutto il javascript della sua applicazione - che abbiamo già detto richiede un maggior effort - oppure ripristinare il comportamento antecedente all’upgrade (rischiando un' eventuale “grab” delle informazioni), è una domanda di questo tipo:</p>
+
+<p><strong><em>Sto esponendo tramite JSon informazioni sensibili?</em></strong> </p>
+
+<p>Dovrebbe bastare a farci prendere una decisione: se la risposta è si, siamo “costretti” a dover mettere mano a tutto il nostro javascript e ad invocare le nostre Actions in POST; in caso contrario l’overload con AllowGet mostrato precedentemente può ridurre di parecchio il nostro sforzo. 
+  <br />Fortunatamente, per chi usa jQuery per popolare queste informazioni all’interno delle pagine, può facilmente sostituire il codice potenzialmente vulnerabile con un qualcosa di più “robusto” che invochi le nostre Actions in POST.</p>
+
+<p>Guardando il lato pragmatico della cosa, lo snippet seguente mostra come precedentemente recuperavamo le informazioni da una fonte dati Json:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="err">$</span><span class="p">.</span><span class="n">getJSON</span><span class="p">(</span><span class="err">&#39;</span><span class="p">/</span><span class="n">Home</span><span class="p">/</span><span class="n">JsonAction</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">function</span> <span class="p">(</span><span class="n">dr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="err">$</span><span class="p">.</span><span class="n">each</span><span class="p">(</span><span class="n">dr</span><span class="p">,</span> <span class="n">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="c1">//DO SOMETHING</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>Questo sistema non è sbagliato, ma non ci permette di cambiare il “method” della richiesta. Fortunatamente il metodo getJson presente nello snippet è soltanto un overload del metodo ajax(), che ci offre un maggior numero di opzioni, alcune delle quali utili al raggiungimento del nostro scopo. </p>
+
+<p>Di seguito si può vedere come è possibile invocare la action anche in POST:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="err">$</span><span class="p">.</span><span class="n">ajax</span><span class="p">({</span>
+    <span class="n">type</span><span class="p">:</span> <span class="s">&quot;POST&quot;</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">:</span> <span class="s">&quot;/Home/JsonAction,</span>
+    <span class="n">dataType</span><span class="p">:</span> <span class="err">&#39;</span><span class="n">json</span><span class="err">&#39;</span><span class="p">,</span>
+    <span class="n">success</span><span class="p">:</span> <span class="n">function</span> <span class="p">(</span><span class="n">dr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="err">$</span><span class="p">.</span><span class="n">each</span><span class="p">(</span><span class="n">dr</span><span class="p">,</span> <span class="n">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="c1">//DO SOMETHING</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>A questo punto ci siamo tutelati da un eventuale attacco come quello di cui è stata vittima Google, ed abbiamo modificato a costo “piuttosto basso” il nostro codice javascript.</p>
+
+<p>jQuery Rulez! 
+  <br />.u</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/05/19/unit-test-su-httpmodule-ed-un-httphandler/" itemprop="url">Unit test su HttpModule ed un HttpHandler</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-05-19T15:30:00Z"  itemprop="datePublished">May 19, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/05/19/unit-test-su-httpmodule-ed-un-httphandler/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-05-19-unit-test-su-httpmodule-ed-un-httphandler.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><a title="ASP.NET MVC Search" href="http://www.imperugo.tostring.it/tags/archive/mvc" target="_blank">ASP.NET MVC</a> ha aperto un mondo nuovo allo sviluppo di applicazioni web, ossia quello del testing. Di fatto, grazie ad MVC sono stati astratti alcuni concetti che precedentemente impedivano la testabilità delle webforms.</p>  <p>Purtroppo anche con MVC alcune cose rimangono scomode da testare, come gli HttpModule e HttpHandler; anzi, nella normale implementazione non sono proprio testabili. Cercando un po’ in rete ho scovato questo <a title="Unit Testable HttpModule and HttpHandlers" href="http://weblogs.asp.net/rashid/archive/2009/03/12/unit-testable-httpmodule-and-httphandler.aspx" rel="nofollow" target="_blank">post</a>, che mostra un approccio molto elegante su come effettuare Unit Test anche sui moduli e sugli handler, ma procediamo per gradi.</p>  <p>Con l’uscita del&#160; ServicePack 1 del <a title=".NET Framework Search" href="http://www.imperugo.tostring.it/tags/archive/.net" target="_blank">.NET Framework</a> è stata introdotta una nuova libreria, la “<strong><em>System.Web.Abstraction</em></strong>”, contenente una serie di wrapper che hanno lo scopo di impedire l’utilizzo diretto di alcune classi (come l’HttpContext) e, di conseguenza, permettono di testare del codice precedentemente non testabile (HttpModule e HttpHandler).     <br />Per far ciò è necessario creare delle classi base da cui tutti i Module/Handler andranno ad ereditare e gestire gli eventi a livello di baseclass, permettendo così un’eventuale override della classe concreta nel caso del Module, o un’implementazione nel caso dell’Httphandler. Nell’esempio seguente viene mostrata la base classe per un HttpModule:</p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="c1">/// &lt;summary&gt;</span>
+<span class="c1">///        The base class for the HttpModules</span>
+<span class="c1">/// &lt;/summary&gt;</span>
+<span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">BaseHttpModule</span> <span class="p">:</span> <span class="n">IHttpModule</span>
+<span class="p">{</span>
+    <span class="cp">#region IHttpModule Members</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Initializes a module and prepares it to handle requests.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;An &lt;see cref=&quot;T:System.Web.HttpApplication&quot;/&gt; that provides access to the methods, properties, and events common to all application objects within an ASP.NET application&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">Init</span><span class="p">(</span><span class="n">HttpApplication</span> <span class="n">context</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">BeginRequest</span> <span class="p">+=</span> <span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">OnBeginRequest</span><span class="p">(</span><span class="k">new</span> <span class="n">HttpContextWrapper</span><span class="p">(((</span><span class="n">HttpApplication</span><span class="p">)</span><span class="n">sender</span><span class="p">).</span><span class="n">Context</span><span class="p">));</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">Error</span> <span class="p">+=</span> <span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">OnError</span><span class="p">(</span><span class="k">new</span> <span class="n">HttpContextWrapper</span><span class="p">(((</span><span class="n">HttpApplication</span><span class="p">)</span><span class="n">sender</span><span class="p">).</span><span class="n">Context</span><span class="p">));</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">EndRequest</span> <span class="p">+=</span> <span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">OnEndRequest</span><span class="p">(</span><span class="k">new</span> <span class="n">HttpContextWrapper</span><span class="p">(((</span><span class="n">HttpApplication</span><span class="p">)</span><span class="n">sender</span><span class="p">).</span><span class="n">Context</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Disposes of the resources (other than memory) used by the module that implements &lt;see cref=&quot;T:System.Web.IHttpModule&quot;/&gt;.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="k">public</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">Dispose</span><span class="p">()</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="cp">#endregion</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Method called when a server receive a webrequest before other requests</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">OnBeginRequest</span><span class="p">(</span><span class="n">HttpContextBase</span> <span class="n">context</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Method called when an error occurred.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">OnError</span><span class="p">(</span><span class="n">HttpContextBase</span> <span class="n">context</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Method called when a server receive a webrequest and all methods in the request life cycle are completed.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">OnEndRequest</span><span class="p">(</span><span class="n">HttpContextBase</span> <span class="n">context</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Da qui l’implementazione di un Module (nell’esempio il ReferrerModule di <a title="Dexter Blog Engine Category" href="http://www.imperugo.tostring.it/categories/archive/Dexter" target="_blank">dexter</a> semplificato) è piuttosto banale, l’unica differenza è che invece di agganciare un evento va effettuato l’override del metodo virtual presente sulla classe base, come mostrato di seguito:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">ReferrerModule</span> <span class="p">:</span> <span class="n">BaseHttpModule</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="n">ILogger</span> <span class="n">logger</span><span class="p">;</span>
+    <span class="k">private</span> <span class="n">ITraceService</span> <span class="n">traceService</span><span class="p">;</span>
+    <span class="k">private</span> <span class="n">IUrlBuilderService</span> <span class="n">urlbuilder</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="n">ILogger</span> <span class="n">Logger</span>
+    <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">logger</span> <span class="p">??</span> <span class="p">(</span><span class="n">logger</span> <span class="p">=</span> <span class="n">IoC</span><span class="p">.</span><span class="n">Resolve</span><span class="p">&lt;</span><span class="n">ILogger</span><span class="p">&gt;());</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="n">ITraceService</span> <span class="n">TraceService</span>
+    <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">traceService</span> <span class="p">??</span> <span class="p">(</span><span class="n">traceService</span> <span class="p">=</span> <span class="n">IoC</span><span class="p">.</span><span class="n">Resolve</span><span class="p">&lt;</span><span class="n">ITraceService</span><span class="p">&gt;());</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="n">IUrlBuilderService</span> <span class="n">Urlbuilder</span>
+    <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">urlbuilder</span> <span class="p">??</span> <span class="p">(</span><span class="n">urlbuilder</span> <span class="p">=</span> <span class="n">IoC</span><span class="p">.</span><span class="n">Resolve</span><span class="p">&lt;</span><span class="n">IUrlBuilderService</span><span class="p">&gt;());</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="nf">ReferrerModule</span> <span class="p">()</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="nf">ReferrerModule</span> <span class="p">(</span> <span class="n">ILogger</span> <span class="n">logger</span> <span class="p">,</span> <span class="n">ITraceService</span> <span class="n">traceService</span> <span class="p">,</span> <span class="n">IUrlBuilderService</span> <span class="n">urlbuilder</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">logger</span> <span class="p">=</span> <span class="n">logger</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">traceService</span> <span class="p">=</span> <span class="n">traceService</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">urlbuilder</span> <span class="p">=</span> <span class="n">urlbuilder</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">OnEndRequest</span> <span class="p">(</span> <span class="n">HttpContextBase</span> <span class="n">context</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">base</span><span class="p">.</span><span class="n">OnEndRequest</span> <span class="p">(</span> <span class="n">context</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">UrlReferrer</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="n">TraceService</span><span class="p">.</span><span class="n">AddReferrer</span><span class="p">(</span><span class="n">url</span><span class="p">.</span><span class="n">ToString</span><span class="p">(),</span> <span class="n">referrer</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>A questo punto il test è facilmente scrivibile, come mostrato sotto:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="na">[TestMethod]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">OnEndRequest_WithValidRequestUrl_ShouldInvokeTheServiceMethod</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">//Arrage</span>
+    <span class="kt">var</span> <span class="n">httpContext</span> <span class="p">=</span> <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateStub</span><span class="p">&lt;</span><span class="n">HttpContextBase</span><span class="p">&gt;</span> <span class="p">();</span>
+    <span class="kt">var</span> <span class="n">httpRequest</span> <span class="p">=</span> <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateStub</span><span class="p">&lt;</span><span class="n">HttpRequestBase</span><span class="p">&gt;();</span>
+    <span class="kt">var</span> <span class="n">httpResponse</span> <span class="p">=</span> <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateStub</span><span class="p">&lt;</span><span class="n">HttpResponseBase</span><span class="p">&gt;();</span>
+
+    <span class="n">httpContext</span><span class="p">.</span><span class="n">Expect</span> <span class="p">(</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Request</span> <span class="p">).</span><span class="n">Return</span> <span class="p">(</span> <span class="n">httpRequest</span> <span class="p">);</span>
+    <span class="n">httpContext</span><span class="p">.</span><span class="n">Expect</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Response</span><span class="p">).</span><span class="n">Return</span><span class="p">(</span><span class="n">httpResponse</span><span class="p">);</span>
+        
+    <span class="n">Uri</span> <span class="n">currentUrl</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Uri</span> <span class="p">(</span> <span class="s">&quot;http://www.tostring.it&quot;</span><span class="p">);</span>
+    <span class="n">Uri</span> <span class="n">urlReferrer</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Uri</span> <span class="p">(</span> <span class="s">&quot;http://www.bing.com/search?q=imperugo&quot;</span><span class="p">);</span>
+    
+    <span class="n">httpRequest</span><span class="p">.</span><span class="n">Expect</span> <span class="p">(</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Url</span> <span class="p">).</span><span class="n">Return</span> <span class="p">(</span> <span class="n">currentUrl</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">httpRequest</span><span class="p">.</span><span class="n">Expect</span> <span class="p">(</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">UrlReferrer</span> <span class="p">).</span><span class="n">Return</span> <span class="p">(</span> <span class="n">urlReferrer</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="n">ITraceService</span> <span class="n">traceService</span> <span class="p">=</span> <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateMock</span><span class="p">&lt;</span><span class="n">ITraceService</span><span class="p">&gt;</span> <span class="p">();</span>
+
+    <span class="kt">var</span> <span class="n">module</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ReferrerModule</span> <span class="p">(</span>
+        <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateStub</span><span class="p">&lt;</span><span class="n">ILogger</span><span class="p">&gt;</span> <span class="p">()</span> <span class="p">,</span>
+        <span class="n">traceService</span> <span class="p">,</span>
+        <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateStub</span><span class="p">&lt;</span><span class="n">IUrlBuilderService</span><span class="p">&gt;</span> <span class="p">()</span>
+        <span class="p">);</span>
+
+    <span class="c1">//Act</span>
+    <span class="n">module</span><span class="p">.</span><span class="n">OnBeginRequest</span><span class="p">(</span><span class="n">httpContext</span><span class="p">);</span>
+
+    <span class="c1">//TODO:Assert</span>
+    <span class="n">traceService</span><span class="p">.</span><span class="n">AssertWasNotCalled</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">AddReferrer</span><span class="p">(</span><span class="n">Arg</span><span class="p">&lt;</span><span class="n">Uri</span><span class="p">&gt;.</span><span class="n">Is</span><span class="p">.</span><span class="n">Equal</span><span class="p">(</span><span class="n">currentUrl</span><span class="p">),</span> <span class="n">Arg</span><span class="p">&lt;</span><span class="n">Uri</span><span class="p">&gt;.</span><span class="n">Is</span><span class="p">.</span><span class="n">Equal</span><span class="p">(</span><span class="n">urlReferrer</span><span class="p">)));</span>
+    
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Come potete vedere, se si ha la necessità di iniettare delle dipendenze potete creare un secondo costruttore che accetti l’instanza della dipendenza e gestire l’eventuale null nella property di get o nel costruttore parameterless (nel mio caso ero obbligato a gestire la dipendenza dalle properties perchè non avevo ancora inizializzato l’IoC Container al momento in cui l’HttpModule viene registrato nell’applicazione, problema che in Dexter si andrà a risolvere nelle prossime release).</p>
+
+<p>Per quanto riguarda un HttpHandler l’approccio è esattamente lo stesso, classe base, metodi virtual ed override.</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="c1">/// &lt;summary&gt;</span>
+<span class="c1">///        The base class for the HttpHandlers</span>
+<span class="c1">/// &lt;/summary&gt;</span>
+<span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">HttpHandlerBase</span> <span class="p">:</span> <span class="n">IHttpHandler</span>
+<span class="p">{</span>
+    <span class="cp">#region IHttpHandler Members</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Gets a value indicating whether another request can use the &lt;see cref=&quot;T:System.Web.IHttpHandler&quot;/&gt; instance.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;value&gt;&lt;/value&gt;</span>
+    <span class="c1">/// &lt;returns&gt;true if the &lt;see cref=&quot;T:System.Web.IHttpHandler&quot;/&gt; instance is reusable; otherwise, false.</span>
+    <span class="c1">/// &lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="k">virtual</span> <span class="kt">bool</span> <span class="n">IsReusable</span>
+    <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="k">false</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Enables processing of HTTP Web requests by a custom HttpHandler that implements the &lt;see cref=&quot;T:System.Web.IHttpHandler&quot;/&gt; interface.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;An &lt;see cref=&quot;T:System.Web.HttpContext&quot;/&gt; object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">ProcessRequest</span><span class="p">(</span><span class="n">HttpContext</span> <span class="n">context</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ProcessRequest</span><span class="p">(</span><span class="k">new</span> <span class="n">HttpContextWrapper</span><span class="p">(</span><span class="n">context</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="cp">#endregion</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Enables processing of HTTP Web requests by a custom HttpHandler that implements the &lt;see cref=&quot;T:System.Web.IHttpHandler&quot;/&gt; interface.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;An &lt;see cref=&quot;T:System.Web.HttpContext&quot;/&gt; object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">abstract</span> <span class="k">void</span> <span class="nf">ProcessRequest</span><span class="p">(</span><span class="n">HttpContextBase</span> <span class="n">context</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Buopn Testing
+  <br />Ciauz</p>
+
+<p>.u</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/05/18/testmex-tab-snippet/" itemprop="url">Testmex =&gt; tab (snippet)</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-05-18T15:30:00Z"  itemprop="datePublished">May 18, 2010</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/05/18/testmex-tab-snippet/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-05-18-testmex-tab-snippet.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>In questo periodo sto scrivendo test in continuazione, un po’ perchè sto leggendo il libro di <a href="http://weblogs.asp.net/rosherove/">Roy Osherove</a> “<a href="http://www.amazon.com/Art-Unit-Testing-Examples-Net/dp/1933988274/ref=sr_1_1?ie=UTF8&amp;s=books&amp;qid=1274130780&amp;sr=8-1">The Art of Unit Test</a>”, ed un po’ perchè sto cercando di colmare un gap su dexter. Chi mi frequenta pensa che ormai sono vittima del testing in quanto non faccio altro che parlare di unit test, di come scrivere test, etc., e devo ammettere che un po’ è anche vero :). </p>  <p>Il tutto è partito da una certa <a href="http://blogs.ugidotnet.org/pape/Default.aspx">persona</a> (un po’ contabile ed un po’ commercialista :D) che mi ha spronato più e più volte a guardare lo sviluppo anche da una prospettiva differente, ossia da quella del testing...per questo&#160; non posso che ringraziarlo, anche se per assimilare bene i concetti e metterli in pratica ho impiegato un po’ di tempo, ma credo che sia del tutto normale. </p>  <p>Parlando dell’aspetto pragmatico dei test scritti in questi giorni, posso dire che hanno una cosa che li contraddistingue, ossia la presenza di <a href="http://sharptestex.codeplex.com/">SharpTestEx</a> e <a href="http://www.ayende.com/projects/rhino-mocks.aspx">RhinoMock</a>; di fatto mi sono creato uno snippet che mi creasse a sua volta un metodo con la struttura secondo la mia nomenclatura preferita e, nel caso mi aspettassi un’eccezione dal test, mi implementasse anche il controllo della stessa.    <br />Per farla breve tutti i miei test devono avere un nome leggibilissimo, che rispecchi il più possibile i tre aspetti base, quindi far capire cosa si sta testando, con quali valori e cosa ci si aspetta: </p>  <p><em><b>“MethodUnderTest_Scenario_ExpectedBehavior”</b></em></p>  <p>In un esempio pratico in cui si voglia testare un metodo “GetList”, passando un valore negativo al parametro “pageSize” e aspettandosi dal metodo da testare un’eccezione, il nome del test dovrebbe essere una cosa tipo: “<em><b>GetList_WithNegativePageSize_ShouldThrowArgumentOutOfRangeException</b></em>” che, tradotto in soldoni, dovrebbe essere implementato più o meno così:</p>  <p></p>  <p></p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="na">[TestMethod]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">GetList_WithNegativePageIndex_ShouldThrowNewArgumentOutOfRangeException</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">//TODO:Arrage</span>
+
+    <span class="c1">//TODO:Act</span>
+
+    <span class="c1">//TODO:Assert</span>
+    <span class="n">ActionAssert</span><span class="p">.</span><span class="n">Throws</span><span class="p">&lt;</span><span class="n">ArgumentOutOfRangeException</span><span class="p">&gt;(()</span> <span class="p">=&gt;</span> <span class="n">something</span><span class="p">).</span><span class="n">ParamName</span><span class="p">.</span><span class="n">Should</span><span class="p">().</span><span class="n">Be</span><span class="p">.</span><span class="n">EqualTo</span><span class="p">(</span><span class="s">&quot;pageSize&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Purtroppo anche con il copia/incolla può essere scomodo ripetere ogni volta questo codice, così mi sono deciso a scrivere uno snippet che, digitando !testmex + tab!, mi crea automaticamente lo scheletro. </p>
+
+<p>Di seguito lo snippet che possiamo copiare ed incollare direttamente nell’apposita folder</p>
+
+<p></p>
+
+<div class="highlight"><pre><code class="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="nt">&lt;CodeSnippets</span> <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;CodeSnippet</span> <span class="na">Format=</span><span class="s">&quot;1.0.0&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;Header&gt;</span>
+            <span class="nt">&lt;SnippetTypes&gt;</span>
+                <span class="nt">&lt;SnippetType&gt;</span>Expansion<span class="nt">&lt;/SnippetType&gt;</span>
+            <span class="nt">&lt;/SnippetTypes&gt;</span>
+            <span class="nt">&lt;Title&gt;</span>Test Method With Exception Management<span class="nt">&lt;/Title&gt;</span>
+            <span class="nt">&lt;Shortcut&gt;</span>testmex<span class="nt">&lt;/Shortcut&gt;</span>
+            <span class="nt">&lt;Description&gt;</span>Code snippet for a test method with Exception <span class="nt">&lt;/Description&gt;</span>
+            <span class="nt">&lt;Author&gt;</span>Ugo Lattanzi<span class="nt">&lt;/Author&gt;</span>
+        <span class="nt">&lt;/Header&gt;</span>
+        <span class="nt">&lt;Snippet&gt;</span>
+            <span class="nt">&lt;Imports&gt;</span>
+                <span class="nt">&lt;Import&gt;</span>
+                    <span class="nt">&lt;Namespace&gt;</span>SharpTestsEx<span class="nt">&lt;/Namespace&gt;</span>
+                <span class="nt">&lt;/Import&gt;</span>
+                <span class="nt">&lt;Import&gt;</span>
+                    <span class="nt">&lt;Namespace&gt;</span>Rhino.Mocks<span class="nt">&lt;/Namespace&gt;</span>
+                <span class="nt">&lt;/Import&gt;</span>
+            <span class="nt">&lt;/Imports&gt;</span>
+            <span class="nt">&lt;References&gt;</span>
+                <span class="nt">&lt;Reference&gt;</span>
+                    <span class="nt">&lt;Assembly&gt;</span>SharpTestsEx.MSTest.dll<span class="nt">&lt;/Assembly&gt;</span>
+                    <span class="nt">&lt;Assembly&gt;</span>Rhino.Mocks.dll<span class="nt">&lt;/Assembly&gt;</span>
+                <span class="nt">&lt;/Reference&gt;</span>
+            <span class="nt">&lt;/References&gt;</span>
+            <span class="nt">&lt;Declarations&gt;</span>
+                <span class="nt">&lt;Literal&gt;</span>
+                    <span class="nt">&lt;ID&gt;</span>MethodName<span class="nt">&lt;/ID&gt;</span>
+                    <span class="nt">&lt;ToolTip&gt;</span>Replace with the name of the test method<span class="nt">&lt;/ToolTip&gt;</span>
+                    <span class="nt">&lt;Default&gt;</span>MethodName<span class="nt">&lt;/Default&gt;</span>
+                <span class="nt">&lt;/Literal&gt;</span>
+                <span class="nt">&lt;Literal&gt;</span>
+                    <span class="nt">&lt;ID&gt;</span>StateUnderTest<span class="nt">&lt;/ID&gt;</span>
+                    <span class="nt">&lt;ToolTip&gt;</span>Replace with the state under test name<span class="nt">&lt;/ToolTip&gt;</span>
+                    <span class="nt">&lt;Default&gt;</span>StateUnderTest<span class="nt">&lt;/Default&gt;</span>
+                <span class="nt">&lt;/Literal&gt;</span>
+                <span class="nt">&lt;Literal&gt;</span>
+                    <span class="nt">&lt;ID&gt;</span>ExpectedParameterName<span class="nt">&lt;/ID&gt;</span>
+                    <span class="nt">&lt;ToolTip&gt;</span>Replace with the expected exception parameter name<span class="nt">&lt;/ToolTip&gt;</span>
+                    <span class="nt">&lt;Default&gt;</span>ExpectedParameterName<span class="nt">&lt;/Default&gt;</span>
+                <span class="nt">&lt;/Literal&gt;</span>
+                <span class="nt">&lt;Literal&gt;</span>
+                    <span class="nt">&lt;ID&gt;</span>ExceptionType<span class="nt">&lt;/ID&gt;</span>
+                    <span class="nt">&lt;ToolTip&gt;</span>Exception type<span class="nt">&lt;/ToolTip&gt;</span>
+                    <span class="nt">&lt;Function&gt;</span>SimpleTypeName(global::System.Exception)<span class="nt">&lt;/Function&gt;</span>
+                <span class="nt">&lt;/Literal&gt;</span>
+            <span class="nt">&lt;/Declarations&gt;</span>
+            <span class="nt">&lt;Code</span> <span class="na">Language=</span><span class="s">&quot;csharp&quot;</span><span class="nt">&gt;</span>
+                <span class="cp">&lt;![CDATA[[TestMethod]</span>
+<span class="cp">          public void $MethodName$_$StateUnderTest$_ShouldThrowNew$ExceptionType$()</span>
+<span class="cp">        {</span>
+<span class="cp">            //TODO:Arrage</span>
+<span class="cp">            </span>
+<span class="cp">            //TODO:Act</span>
+<span class="cp">            </span>
+<span class="cp">            //TODO:Assert</span>
+<span class="cp">            ActionAssert.Throws&lt;$ExceptionType$&gt; ( () =&gt; something ).ParamName.Should().Be.EqualTo ( &quot;$ExpectedParameterName$&quot; );</span>
+<span class="cp">          }]]&gt;</span>
+            <span class="nt">&lt;/Code&gt;</span>
+        <span class="nt">&lt;/Snippet&gt;</span>
+    <span class="nt">&lt;/CodeSnippet&gt;</span>
+<span class="nt">&lt;/CodeSnippets&gt;</span>
+</code></pre></div>
+
+<p>enjoy the snippet!</p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/16" class="prev">Prev</a>
+    
+    
+        <a href="/page/18" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

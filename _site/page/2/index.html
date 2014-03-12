@@ -1,0 +1,504 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/2/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2012/04/17/i-bundle-di-asp-net-mvc-4/" itemprop="url">I Bundle di ASP.NET MVC 4</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2012-04-17T16:00:00Z"  itemprop="datePublished">April 17, 2012</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2012/04/17/i-bundle-di-asp-net-mvc-4/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2012-04-17-i-bundle-di-asp-net-mvc-4.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>L’ultima release (attualmente in beta) di <a title="ASP.NET MVC" href="http://tostring.it/tags/archive/mvc">ASP.NET MVC</a>, di cui abbiamo visto alcune novità <a title="What's new in Razor" href="http://tostring.it/blog/post/whats-new-in-razor-v2/" target="_blank">qui</a> e <a title="Il tilde in Razor" href="http://tostring.it/blog/post/whats-new-in-razor-v2/" target="_blank">qui</a>, introduce veramente molte feature interessanti, una delle quali è rappresentata dai Bundle.
+Ormai noi tutti conosciamo l’importanza di ridurre al minimo il numero di richieste dal client verso il server. Quando parliamo di riduzione delle richieste, includiamo un po’ tutto: dai fogli di stile, ai javascript, e magari anche i dati tramite l’utilizzo di AJAX.</p>
+
+<p>Per i primi due viene utilizzata la tecnica del “combine” e “minify” di più file in un’unica richiesta. Questo approccio consiste nel raggruppare tutti i files dello stesso tipo in un unico file, e nel rimuovere tutti gli spazi e commenti non necessari.</p>
+
+<p>Tradotto in soldoni, tutte queste richieste che abbiamo nella pagina :</p>
+
+<p>[xml]
+&lt;script src=&quot;/Scripts/jquery-1.6.2.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;/Scripts/jquery-ui-1.8.11.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;/Scripts/jquery.validate.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;/Scripts/jquery.validate.unobtrusive.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;/Scripts/knockout-2.0.0.js&quot;&gt;&lt;/script&gt;
+[/xml]</p>
+
+<p>Diventano una sola</p>
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;/Scripts/combined.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div>
+
+<p>Ovviamente lavorare con un file unico, che sia questo un file javascript o css, risulta un po’ scomodo e, proprio per questo motivo, esistono diversi tool/framework che agevolano la creazione di un unico file a runtime o compile time.</p>
+
+<p>Con ASP.NET MVC 4 effettuare il “combine” e “minify” è veramente semplice: basta utilizzare un apposito metodo ed il gioco è fatto.</p>
+
+<p>Guardiamo il seguente codice:</p>
+
+<p>[xml]
+&lt;link href=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Content/css&quot;)&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
+&lt;script src=&quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&quot;~/Scripts/js&quot;)&quot;&gt;&lt;/script&gt;[/xml]</p>
+
+<p>È importante sapere che non tutti i files presenti nella folder specificata saranno inclusi nell’output del file, ma bensì solo quelli registrati nel bundle. In un prossimo post vedremo come creare bundle custom in modo da includere differenti file in differenti folder.</p>
+
+<p>Stay tuned!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2012/04/06/il-3d-sbarca-anche-sul-web/" itemprop="url">Il 3D sbarca anche sul web</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2012-04-06T16:00:00Z"  itemprop="datePublished">April  6, 2012</time></span>
+	<span class="categories">web dev</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2012/04/06/il-3d-sbarca-anche-sul-web/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2012-04-06-il-3d-sbarca-anche-sul-web.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Questa volta non stiamo parlando di animazioni 3D per il web, bens&igrave; per lo sviluppatore e non servono gli occhialini J.</p>
+
+<p>
+    Per molti anni <strong>Firebug</strong> &egrave; stato sicuramente lo strumento pi&ugrave; apprezzato dagli sviluppatori front end. Ad oggi tutti i browser integrano un qualcosa di simile e, nell&rsquo;ultima versione, Firefox ha aggiunto un&rsquo;interessantissima novit&agrave;, la visualizzazione 3D della struttura del sito.</p>
+
+<p>
+    Per capire a cosa mi sto riferendo, guardate questo screenshot :</p>
+
+<p>
+    <a href="http://tostring.it/UserFiles/imperugo/001.png"><img alt="001" border="0" height="385" src="http://tostring.it/UserFiles/imperugo/001_thumb_1.png" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; border-left: 0px; display: inline; padding-right: 0px" title="001" width="644" /></a></p>
+
+<p>
+    Per attivarla basta fare tasto destro sulla pagina, &ldquo;Inspect Element&rdquo; e premere il pulsante 3D come da screenshot:</p>
+
+<p>
+    <a href="http://tostring.it/UserFiles/imperugo/002.png"><img alt="002" border="0" height="392" src="http://tostring.it/UserFiles/imperugo/002_thumb_1.png" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; border-left: 0px; display: inline; padding-right: 0px" title="002" width="644" /></a></p>
+
+<p>
+    Una volta entrati nella modalit&agrave; 3D &egrave; possibile &ldquo;zoomare&rdquo;, ruotare e selezionare elementi con il semplice utilizzo del mouse.</p>
+
+<p>
+    Ciauz</p>
+
+<p>
+    .u</p>
+
+<p style="height: 20px">
+    <iframe allowtransparency="" frameborder="0" scrolling="no" src="http://www.facebook.com/plugins/like.php?href=http://tostring.it/blog/post/il-3d-sbarca-anche-sul-web/&amp;layout=standard&amp;show_faces=false&amp;width=450&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=10" style="border-top: medium none; height: 80px; border-right: medium none; width: 450px; border-bottom: medium none; overflow: hidden; border-left: medium none"></iframe></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2012/04/04/il-tilde-slash-di-razor-v2/" itemprop="url">Il Tilde Slash di Razor V2</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2012-04-04T16:00:00Z"  itemprop="datePublished">April  4, 2012</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2012/04/04/il-tilde-slash-di-razor-v2/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2012-04-04-il-tilde-slash-di-razor-v2.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Su segnalazione del buon <a title="Andrea Balducci" href="https://twitter.com/#!/andreabalducci" rel="nofollow" target="_blank">Andrea</a>, ho scoperto che, oltre ai “<a title="What’s new in Razor v2" href="http://tostring.it/blog/post/whats-new-in-razor-v2/" target="_blank">conditional attributes</a>”, <a title="Razor&#39;s post" href="http://tostring.it/tags/archive/razor" rel="tag" target="_blank">Razor</a> introduce un’altra novità chiamata “<strong>Tilde Slash</strong>” ossia “~/”.</p>
+
+<p>Il concetto è simile a quello espresso in un mio vecchio post su Spark (vedi <a title="Spark View Engine" href="http://tostring.it/blog/post/gestire-le-risorse-con-sparkviewengine/">qui</a>), con la differenza che in <a title="Spark View Engine" href="http://tostring.it/tags/archive/sparkviewengine" target="_blank">Spark</a> si può specificare un dominio differente (molto comodo se si usa CDN).</p>
+
+<p>In ogni caso l’utilizzo del Razor, con il Tilde Slash, aiuta lo sviluppatore nella scrittura del codice prendendosi in carico l’onere di risolvere automaticamente la url, eliminando così le noiose ripetizioni del ResolveUrl.</p>
+
+<p>Dando un occhio al codice, questo markup </p>
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;@Url.Content(&quot;</span><span class="err">~/Content/mylogo.png&quot;)&quot;</span> <span class="nt">/&gt;</span>
+</code></pre></div>
+
+<p>con Razor v2 diventa semplicemente questo</p>
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;~/Content/mylogo.png&quot;</span> <span class="nt">/&gt;</span>
+</code></pre></div>
+
+<p>Beh comodo no?</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2012/04/03/whats-new-in-razor-v2/" itemprop="url">What’s new in Razor v2</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2012-04-03T16:00:00Z"  itemprop="datePublished">April  3, 2012</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2012/04/03/whats-new-in-razor-v2/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2012-04-03-whats-new-in-razor-v2.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Nel rilascio di <a title="ASP.NET MVC" href="http://tostring.it/tags/archive/mvc">ASP.NET MVC</a> 4 è inclusa anche la nuova release dell’ormai diffusissimo Razor View Engine. Per chi non lo sapesse <a title="Razor&#39;s post" href="http://tostring.it/tags/archive/razor" rel="tag" target="_blank">Razor</a> è un “framework” che offre la possibilità di scrivere il codice presente nelle view con una sintassi differente da quella delle classiche pagine ASP.NET. </p>
+
+<p>Prima di Razor, nel mondo Microsoft, l’utente era abituato ad utilizzare il WebFormViewEngine anche sotto ASP.NET MVC ma, essendo MVC molto orientato al testing, la scelta di creare un’alternativa è quasi d’obbligo.</p>
+
+<p>Di fatto Razor non ha più una dipendenza verso System.Web.UI.Page, e di conseguenza dall’ HttpContext, Web Server (IIS), etc. </p>
+
+<p>Questo permette allo sviluppatore di poter scrivere unit test anche per le View (quanti di voi lo hanno mai fatto?).</p>
+
+<p>Dopo questa premessa sulla storia di Razor, andiamo a vedere cosa offre la nuova release J.</p>
+
+<p>Al momento l’unica novità di rilievo che ho riscontrato è quella che dal team viene chiamata con il nome “Conditional Attribute”, ossia la possibilità di renderizzare o no un determinato attributo, il cui valore è dinamico, e quindi legato ad una variabile.</p>
+
+<p>Per renderla più semplice, diamo un’occhiata al seguente codice:</p>
+
+<div class="highlight"><pre><code class="xml"><span class="c">&lt;!-- Nome della classe css presa da una variabile --&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;@myCssClass&quot;</span><span class="nt">&gt;</span>.....<span class="nt">&lt;/p&gt;</span>
+
+
+<span class="c">&lt;!-- markup necessario in caso la variabile sia nulla --&gt;</span>
+<span class="nt">&lt;p&gt;</span>.....<span class="nt">&lt;/p&gt;</span>
+</code></pre></div>
+
+<p>Come potete vedere, la variabile myCssClass viene utilizzata per impostare la classe css appunto, in base ad un qualcosa (un evento, un settaggio, etc) gestito server side.</p>
+
+<p>Ma cosa succede se dovete gestire anche la possibilità di non impostare la classe? 
+  <br />Precedentemente a Razor V2 l’approccio sarebbe stato più o meno questo:</p>
+
+<div class="highlight"><pre><code class="xml">@{
+    var myCssClass = (bool)ViewBag.IsBol ? &quot;boldClass&quot; : null;
+}
+
+@if(myCssClass != null){
+    <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;@myCssClass&quot;</span><span class="nt">&gt;</span>@ViewBag.Text<span class="nt">&lt;/p&gt;</span>
+}
+else{
+    <span class="nt">&lt;p&gt;</span>@ViewBag.Text<span class="nt">&lt;/p&gt;</span>
+}
+</code></pre></div>
+
+<p>Al contrario, con la nuova release di Razor, diventa tutto più semplice. Se impostate il valore della variabile myCssClass a null l’attributo non viene renderizzato, in caso contrario si.</p>
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;@myCssClass&quot;</span><span class="nt">&gt;</span>@ViewBag.Text<span class="nt">&lt;/p&gt;</span>
+</code></pre></div>
+
+<p>Bisogna prestare attenzione al fatto che il contenuto string.empty (nel caso di una stringa) renderizza ugualmente l’attributo, quindi solo null impedisce il rendering.</p>
+
+<p>Nel caso di value type tipo il booleano, la situazione non cambia molto. In questo caso il true renderizza l’attributo checked, mentre il false no.</p>
+
+<div class="highlight"><pre><code class="xml"><span class="c">&lt;!-- codice con --&gt;</span>
+
+@{
+    ViewBag.IsBol = true;
+}
+
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span> <span class="na">checked=</span><span class="s">&quot;@ViewBag.IsBol&quot;</span> <span class="nt">/&gt;</span>
+</code></pre></div>
+
+<p>Razor Rulez!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2012/03/15/review-architecting-mobile-solutions-for-the-enterprise/" itemprop="url">Review: Architecting Mobile Solutions for the Enterprise</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2012-03-15T16:46:00Z"  itemprop="datePublished">March 15, 2012</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2012/03/15/review-architecting-mobile-solutions-for-the-enterprise/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2012-03-15-review-architecting-mobile-solutions-for-the-enterprise.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><a href="http://tostring.it/UserFiles/imperugo/lrg_2.jpg"><img title="lrg" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; float: left; padding-top: 0px; padding-left: 0px; margin: 0px 8px 5px 0px; border-left: 0px; display: inline; padding-right: 0px" border="0" alt="lrg" align="left" src="http://tostring.it/UserFiles/imperugo/lrg_thumb.jpg" width="201" height="244" /></a></p>  <p>È la prima volta che mi capita di fare la review di un libro e, per essere alla prima esperienza, devo dire che ho l’opportunità di farlo per uno dei migliori autori internazionali che il mondo tecnico possa avere, il <strong>Super Dino Nazionale</strong> aka <a title="Dino Esposito" href="http://twitter.com/#!/despos" target="_blank"><strong>Dino Esposito</strong></a>.</p>  <p>Il libro in questione è “<strong><a title="Architecting Mobile Solutions for the Enterprise" href="http://shop.oreilly.com/product/0790145336224.do" rel="nofollow" target="_blank">Architecting Mobile Solutions for the Enterprise</a></strong>” e, come potete intuire dal nome, parla di mobile application.     <br />Nonostante io abbia una predilezione verso le applicazioni web, questo libro mi ha subito affascinato perché affronta tematiche molto web oriented come <strong><a title="Posts about HTML5" href="http://tostring.it/tags/archive/html5" target="_blank">HTML5</a></strong>, <strong><a title="Posts about jquery" href="http://tostring.it/tags/archive/jquery" target="_blank">jQuery</a></strong>, etc per sviluppare applicazioni mobile.</p>  <p>Nell’ultimo periodo in azienda sono stato coinvolto nello sviluppo di applicazioni con queste caratteristiche (nel mio caso <a title="Sencha Touch" href="http://www.sencha.com/products/touch" rel="nofollow" target="_blank">Sencha Touch</a> al posto di <a title="JQuery Mobile" href="http://jquerymobile.com/" rel="nofollow" target="_blank">JQuery Mobile</a>, ma poco cambia) ed ho avuto modo di toccare con mano quanto Dino spiega.</p>  <p>Tornando al libro ho letto il capitolo sul responsive design, sia client-side tramite le media queries che server side con l’utilizzo di <a title="Wurfl" href="http://wurfl.sourceforge.net/" rel="nofollow" target="_blank">Wurfl</a>, e devo dire che mi è piaciuto parecchio. </p>  <p>Dino è riuscito come sempre ad arrivare in profondità di concetti complessi, spiegandoli tuttavia in maniera del tutto semplice, il che rende ancor più appetibile il libro.</p>  <p>Purtroppo non posso entrare molto nei dettagli in quanto il libro non è ancora disponibile, ma potete effettuare il pre-ordine da <a href="http://shop.oreilly.com/product/0790145336224.do" rel="nofollow" target="_blank">qui</a>.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/" class="prev">Prev</a>
+    
+    
+        <a href="/page/3" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

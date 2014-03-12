@@ -1,0 +1,599 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2014/02/18/utilizzare-cors-con-web-api-20/" itemprop="url">Utilizzare CORS con Web API 2.0</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2014-02-18T00:00:00+01:00"  itemprop="datePublished">February 18, 2014</time></span>
+	<span class="categories">web api</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2014/02/18/utilizzare-cors-con-web-api-20/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2014-02-18-utilizzare-cors-con-web-api-20.md">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Con la versione 2.0 delle Web API è stato introdotto il supporto alle richieste cross domain, più comunemente chiamate CORS (Cross-Origin Resource Sharing).</p>
+
+<p>Normalmente non è possibile effettuare richieste HTTP via Javascript da un source il cui dominio è differente da quello dell’endpoint chiamato. Tradotto in soldoni, se il nostro Javascript si trova su <strong>http://www.miosito.it/Index.html</strong> non è possibile chiedere informazioni al sito <strong>http://www.tuosito.it/</strong>.</p>
+
+<p>I motivi sono semplicemente di sicurezza, e servono ad impedire che qualcuno possa attingere a informazioni personali tramite un JS “<em>maligno</em>”.</p>
+
+<p>Chiarito il perché di questo blocco, a volte può risultare necessario effettuare questo tipo di chiamate, e le strade possono essere diverse a seconda dei browser che si vogliono supportare. La prima ed universale soluzione è comunicare via <a href="http://en.wikipedia.org/wiki/JSONP">JSONP</a>. Questo approccio è molto facile da utilizzare e tutti i browser lo supportano; l’unico incoveniente è il VERB della chiamata http che può essere solo in GET, con il conseguente limite dei caratteri utilizzabili.</p>
+
+<p>Se, al contrario, vogliamo inviare parecchie informazioni non possiamo utilizzare questo approccio (una soluzione in questo caso è “proxare” lato server le chiamate JS e ribaltarle all’endpoint).</p>
+
+<p>Un&#39;altra soluzione è l’utilizzo del CORS, che da il titolo a questo articolo.
+In pratica la comunicazione CORS stabilisce, tramite delle recole che vedremo più avanti in questo articolo, che un client può accedere a delle informazioni da un dominio differente a condizione che il server lo consenta.
+ Ovviamente per far ciò è necessario che il browser permetta questo tipo di chiamata, cosa che purtroppo non è del tutto scontata. Internet Explorer in questo è stato fermo per molto tempo e, solo a partire dalla versione 10, ha introdotto il supporto completo a questo meccanismo di comunicazione.</p>
+
+<p>La tabella seguente (<a href="fonte">http://caniuse.com/cors</a>) mostra il supporto al CORS dai vari browsers</p>
+
+<p><img src="/assets/2014-02-16-utilizzare-cors-con-web-api-20/cors.jpg" alt="CORS SUPPORT TABLE"></p>
+
+<blockquote>
+<p>ci sono dei workaround che permettono di sfruttare CORS anche con IE 8/9 ma con alcuni limiti sui VERB della chiamata (maggiori info <a href="http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx">qui</a> )</p>
+</blockquote>
+
+<p>Ora che abbiamo chiarito cos’è il CORS, è arrivato il momento di configurarlo utilizzando uno tra questi browsers: IE10/11, Chrome (tutte le versioni), Firefox dalla 3.5+ e Safari 4+.</p>
+
+<p>A questo punto abbiamo bisogno di due progetti, uno per il client ed uno per il server, entrambi “hostati” su domini differenti (nel mio esempio ho sfruttato i websites di azure, quindi ho <a href="http://imperdemo.azurewebsite.net">http://imperdemo.azurewebsite.net</a> per la parte server e <a href="http://imperclient.azurewebsite.net">http://imperclient.azurewebsite.net</a> per la parte client).</p>
+
+<h2>Applicazione Server</h2>
+
+<p>Una volta creato il nostro progetto, come prima cosa è necessario abilitare il CORS per i domini che riteniamo &quot;<strong>trusted</strong>&quot;, quindi nel mio esempio <em>imperclient.azurewebsite.net</em>, nel Global.asax.cs</p>
+
+<p>Se avete utilizzato il template di default di Visual Studio, il vostro golbal.asax.cs dovrebbe essere più o meno come questo.</p>
+
+<div class="highlight"><pre><code class="c#"><span class="k">public</span> <span class="k">class</span> <span class="nc">WebApiApplication</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">HttpApplication</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="k">void</span> <span class="nf">Application_Start</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">AreaRegistration</span><span class="p">.</span><span class="n">RegisterAllAreas</span><span class="p">();</span>
+        <span class="n">GlobalConfiguration</span><span class="p">.</span><span class="n">Configure</span><span class="p">(</span><span class="n">WebApiConfig</span><span class="p">.</span><span class="n">Register</span><span class="p">);</span>
+        <span class="n">FilterConfig</span><span class="p">.</span><span class="n">RegisterGlobalFilters</span><span class="p">(</span><span class="n">GlobalFilters</span><span class="p">.</span><span class="n">Filters</span><span class="p">);</span>
+        <span class="n">RouteConfig</span><span class="p">.</span><span class="n">RegisterRoutes</span><span class="p">(</span><span class="n">RouteTable</span><span class="p">.</span><span class="n">Routes</span><span class="p">);</span>
+        <span class="n">BundleConfig</span><span class="p">.</span><span class="n">RegisterBundles</span><span class="p">(</span><span class="n">BundleTable</span><span class="p">.</span><span class="n">Bundles</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+Da qui il file da modificare è quello contenente la configurazione delle Web API, quindi "WebApiConfig.cs" contenuto nella folder "App_Start".
+
+
+> N.B.: Prima di moficare il codice è necessario installare il corretto NuGet Packages; di fatto il template di Visual Studio delle Web API "as is" non contiene il package per il CORS, che va quindi installato manualmente.
+
+
+
+<div class="nuget-badge">
+    <code>PM&gt; Install-Package Microsoft.AspNet.WebApi.Cors</code>
+</div>
+
+<p>Una volta che tutti gli &quot;ingredienti&quot; sono pronti, non ci resta che abilitare il CORS a livello applicativo e specificare per ogni singolo controller i &quot;trusted&quot; domain così:</p>
+<div class="highlight"><pre><code class="c# language-c#" data-lang="c#"><span class="k">using</span> <span class="nn">System.Web.Http</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">imperugo.webapi.cors.server</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">WebApiConfig</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Register</span><span class="p">(</span><span class="n">HttpConfiguration</span> <span class="n">config</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Web API configuration and services</span>
+            <span class="n">config</span><span class="p">.</span><span class="n">EnableCors</span><span class="p">();</span>
+
+            <span class="c1">// Web API routes</span>
+            <span class="n">config</span><span class="p">.</span><span class="n">MapHttpAttributeRoutes</span><span class="p">();</span>
+
+            <span class="n">config</span><span class="p">.</span><span class="n">Routes</span><span class="p">.</span><span class="n">MapHttpRoute</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">:</span> <span class="s">&quot;DefaultApi&quot;</span><span class="p">,</span>
+                <span class="n">routeTemplate</span><span class="p">:</span> <span class="s">&quot;api/{controller}/{id}&quot;</span><span class="p">,</span>
+                <span class="n">defaults</span><span class="p">:</span> <span class="k">new</span> <span class="p">{</span> <span class="n">id</span> <span class="p">=</span> <span class="n">RouteParameter</span><span class="p">.</span><span class="n">Optional</span> <span class="p">}</span>
+            <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Mentre il nostro ValueController risulta così:</p>
+<div class="highlight"><pre><code class="c# language-c#" data-lang="c#"><span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Web.Http</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Web.Http.Cors</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">imperugo.webapi.cors.server.Controllers</span>
+<span class="p">{</span>
+<span class="na">    [EnableCors(origins: &quot;http://imperclient.azurewebsites.net&quot;, headers: &quot;*&quot;, methods: &quot;*&quot;)]</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">ValuesController</span> <span class="p">:</span> <span class="n">ApiController</span>
+    <span class="p">{</span>
+        <span class="c1">// GET api/values/5</span>
+        <span class="k">public</span> <span class="kt">string</span> <span class="nf">Get</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="s">&quot;This is my controller response&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>La parte importante di quest&#39;ultimo blocco di codice è l&#39;attributo <strong>EnableCors</strong> dove viene specificato l&#39;url accettato per la richeista, gli headers ed i vari metodi.</p>
+
+<blockquote>
+<p>Se non si vuole &quot;aprire&quot; un intero controller a delle chiamate Cross Domain, è possibile utilizzare l&#39;attributo anche solo sulla singola Action oppure lasciare l&#39;attributo sul controller e disabilitare una singola Action tramite l&#39;attributo DisableCors</p>
+</blockquote>
+
+<h2>Applicazione Client</h2>
+
+<p>A questo punto, dato che la parte server è stata completata, non ci resta che creare un&#39;altra applicazione con il compito di chiamare le nostre API appena create e deployate sul nostro server.</p>
+
+<p>Il codice sottostante è un semplicissimo codice javascript, quindi può risiedere anche su una semplice pagina .html, senza la necessità di creare un&#39;applicazione server side.</p>
+
+<p>La pagina HTML sarà così composta:</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;jumbotron&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>Test CORS (Cross-origin resource sharing)<span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;lead&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;btn btn-primary btn-large&quot;</span> <span class="na">id=</span><span class="s">&quot;testButton&quot;</span><span class="nt">&gt;</span>Test it now<span class="ni">&amp;raquo;</span><span class="nt">&lt;/a&gt;&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">&quot;response&quot;</span><span class="nt">&gt;</span>
+        NoResponse
+    <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+<p>con il seguente codice javascript:</p>
+<div class="highlight"><pre><code class="js language-js" data-lang="js"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">language</span><span class="o">=</span><span class="s2">&quot;javascript&quot;</span><span class="o">&gt;</span>
+    <span class="kd">var</span> <span class="nx">feedbackArea</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#response&#39;</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#testButton&#39;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+                <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+                <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://imperdemo.azurewebsites.net/api/values&#39;</span>
+            <span class="p">}).</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">feedbackArea</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+            <span class="p">}).</span><span class="nx">error</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">jqXHR</span><span class="p">,</span> <span class="nx">textStatus</span><span class="p">,</span> <span class="nx">errorThrown</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">feedbackArea</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">jqXHR</span><span class="p">.</span><span class="nx">responseText</span> <span class="o">||</span> <span class="nx">textStatus</span><span class="p">);</span>
+            <span class="p">});</span>
+    <span class="p">});</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
+<p>Se abbiamo fatto tutto correttamente, non ci resta che deployare l&#39;applicazione server e quella client.  Se utilizzate il template di Visual Studio, quest&#39;ultima dovrebbe apparire così:</p>
+
+<p><img src="/assets/2014-02-16-utilizzare-cors-con-web-api-20/cors-client.jpg" alt="image"></p>
+
+<p>Il tutto dovrebbe dare un risultato tipo il seguente:</p>
+
+<p><img src="/assets/2014-02-16-utilizzare-cors-con-web-api-20/cors-client-show-response.jpg" alt="image"></p>
+
+<p>Al contrario se qualcosa non va, è necessario ricontrollare i punti sopra.</p>
+
+<h2>Come funziona</h2>
+
+<p>Il funzionamento del CORS è un semplice gioco di HEADERS tra il chiamante ed il server che riceve la risposta.
+Il browser (il client) aggiunge nell&#39;header della chimata un&#39;informazione riguardo al dominio corrente (imperclient.azurewebsites.net nel mio caso) con la chiave <em>Origin</em>.
+Il server a sua volta verifica che tale valore sia tra quelli trusted e risponde con un&#39;altra informazione (sempre nell&#39;header) con la chiave <em>Access-Control-Allow-Origin</em>
+Se i due valori &quot;matchano&quot; allora il browser utilizza la risposta, altrimenti si avrà un errore.
+In questo screenshot potete vedere l&#39;header della richiesta e della risposta http, con evidenziati i valori utilizzati per il confronto</p>
+
+<p><img src="/assets/2014-02-16-utilizzare-cors-con-web-api-20/cors-client-show-response-headers.jpg" alt="image"></p>
+
+<p>Di seguito invece il classico errore che restituisce Chrome nel momento in cui il CORS non funziona correttamente
+<img src="/assets/2014-02-16-utilizzare-cors-con-web-api-20/cors-client-show-response-error.jpg" alt="image"></p>
+
+<h2>Conclusioni</h2>
+
+<p>Per me che amo &quot;spezzare&quot; le mie applicazioni con un layer di API tra il front-end ed il backend, il CORS è una gran comodità, peccato purtroppo la non completa compatiblità con tutti i browser.
+La demo di questo sito è disponibile <a href="/assets/2014-02-16-utilizzare-cors-con-web-api-20/sample.zip">qui</a></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2014/01/27/im-back/" itemprop="url">I'm back!</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2014-01-27T10:08:10Z"  itemprop="datePublished">January 27, 2014</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2014/01/27/im-back/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2014-01-27-im-back.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ultimamente ho ritrovato un po’ la passione ed il tempo per lavorare sul blog, specie quello italiano.  Devo ammettere che è passato davvero molto dall’ultima volta che ho scritto, e di cose ne sono successe: un ruolo nuovo a lavoro e un bambino fantastico.</p>
+
+<p>Quindi si riparte, ho aggiornato il blog (nell’aggiornarlo ho cancellato i commenti per sbaglio, sorry) e gli ho dato una  nuova veste grafica.
+Nelle prossime settimane pubblicherò diversi post sullo sviluppo web, la mia passione da sempre, ma non volevo riaprire il blog italiano subito con qualcosa di tech senza prima “chiacchierare” e, se volete, ripresentarmi.</p>
+
+<p>Quindi, dato che ho già detto cosa mi è successo in questo anno fantastico, ho deciso di cominciare facendo un po’ di “pubblicità” al mio amico <a title="Il blog di Matteo Pagani" href="http://www.qmatteoq.com" target="_blank">Matteo</a>, che ha scritto un libro <b>spaziale</b> sullo sviluppo Windows Phone.
+Sottolineo la parola spaziale perché è riuscito a far capire ad uno come me, che di sviluppo mobile sa praticamente nulla, come fare un’app su Windows Phone (sinceramente mi ha anche aiutato a capire alcuni aspetti dello sviluppo su Windows 8).</p>
+
+<p>Normalmente non amo i libri di molte pagine, perché a volte una tecnologia diventa obsoleta prima che finisco di leggerlo (ammetto che è un mio limite). Sono pochi i libri di un certo peso (inteso come numero di pagine) che sono riuscito a leggere con costanza e voglia.</p>
+
+<p>Questo sicuramente è uno di quelli (insieme ai libri del mitico Dino Esposito).</p>
+
+<p>Se siete anche solo minimamente interessati al mondo mobile, specie su tecnologia Microsoft, non potete non leggerlo.
+<p style="text-align: center;"><img class="aligncenter" style="margin-top: 10px; margin-bottom: 10px;" alt="" src="http://qmatteoq.tostring.it/UserFiles/uploaded/qmatteoq/libro_2.png" width="70" height="100" /></p>
+Ovviamente lo trovate su Amazon <a href="http://www.amazon.it/Sviluppare-applicazioni-Windows-Digital-LifeStyle-ebook/dp/B00CS5OZNS/ref=sr_1_1?ie=UTF8&amp;qid=1390813499&amp;sr=8-1&amp;keywords=sviluppare+applicazioni+per+windows+phone+8" target="_blank">qui</a>.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2012/06/19/override-tostring-it/" itemprop="url">override.tostring.it</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2012-06-19T16:15:00Z"  itemprop="datePublished">June 19, 2012</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2012/06/19/override-tostring-it/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2012-06-19-override-tostring-it.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Anche se non come speravo, ce l’ho fatta. Il mio blog in inglese è ufficialmente online.    <br />Il dominio è alquanto particolare per noi tecnici: <a title="English Blog" href="http://override.tostring.it/" target="_blank"><strong>override.tostring.it</strong></a> . Lo stile del blog è lo stesso, quindi principalmente web, ma con la speranza di tornare a bloggare con la stessa frequenza di un anno e mezzo fa.</p>  <p>Per chi mi segue, <strong>il blog in inglese non sarà una replica di quello italiano</strong>, quindi potrete trovare contenuti esclusivi della versione inglese e viceversa.    <br />Purtroppo il tempo non mi permette di scrivere un post in entrambe le lingue, ma di sicuro alcuni post saranno presenti in forme differenti su entrambi i blog.</p>  <p>Purtroppo il blog gira su Wordpress. Dico purtroppo non per parlare male di Wordpress ma perché non sono riuscito a trovare il tempo di creare una build stabile di Dexter.   <br />Spero di trovare il tempo (o i collaboratori) per arrivare ad una buona build e migrare il tutto.</p>  <p>Tornando al blog, le idee sono tante e le scoprirete nei mesi a seguire, quindi…. Stay tuned!</p>  <p>Website: <a title="English Blog" href="http://override.tostring.it/" target="_blank"><strong>override.tostring.it</strong></a>    <br />Rss: <a href="http://feeds.feedburner.com/override/tostring/it"><strong>http://feeds.feedburner.com/override/tostring/it</strong></a></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2012/04/23/here-we-go-web-net-conference-europe/" itemprop="url">Here we go….Web.NET Conference Europe</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2012-04-23T15:55:53Z"  itemprop="datePublished">April 23, 2012</time></span>
+	<span class="categories">eventi</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2012/04/23/here-we-go-web-net-conference-europe/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2012-04-23-here-we-go-web-net-conference-europe.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Dopo l&rsquo;annuncio, prima via Twitter e poi tramite il blog di <a href="http://codeclimber.net.nz/" rel="nofollow" target="_blank" title="Simone Chiaretta's blog">Simone</a>, eccomi qui a &ldquo;sponsorizzare&rdquo; la mia prima conferenza da organizzatore e non da speaker.</p>
+
+<p>
+    <strong>Se siete appassionati di web e volete vedere/conoscere come il mondo dello sviluppo web si sta evolvendo, non potete mancare.</strong></p>
+
+<p>
+    <a href="http://tostring.it/UserFiles/imperugo/webnetconftitle_3_2.jpg"><img alt="webnetconftitle_3" border="0" height="146" src="http://tostring.it/UserFiles/imperugo/webnetconftitle_3_thumb.jpg" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px 0px 8px; border-left: 0px; display: inline; padding-right: 0px" title="webnetconftitle_3" width="640" /></a> <br />
+    Salvo cambiamenti nei prossimi giorni la conferenza <strong>si terr&agrave; ad ottobre</strong> - non abbiamo ancora le date ufficiali per via della location - e <strong>al 95% siamo su Milano</strong>. <br />
+    <strong>La conferenza &egrave; Europea</strong>, quindi <strong>le sessioni saranno in Inglese</strong>, e dovrebbero esserci diversi <strong>speaker internazionali</strong>.</p>
+
+<p>
+    Giusto per darvi un assaggio di cosa si parler&agrave;, eccovi un estratto:</p>
+
+<p>
+    &ldquo;<strong>Advanced JavaScript frameworks, HTML5, REST frameworks, cloud, lightweight http servers, real-time web, low-cerimony web frameworks, and much more... <br />
+    both on .NET and other technologies</strong>&rdquo;</p>
+
+<p>
+    Abbiamo creato una <a href="http://webnetconf.eu" target="_blank">pagina di lancio</a> dove &egrave; possibile registrarsi (grazie alle quasi 120 persone che lo hanno gi&agrave; fatto), un account Twitter <a href="https://twitter.com/#!/webnetconf">@webnetconf</a> (l&rsquo;hashtag &egrave; <a href="https://twitter.com/#!/search/%23webnet12">#webnet12</a>) ed una pagina <a href="https://www.facebook.com/WebnetConf" rel="nofollow" target="_blank" title="Web.NET Conference Europe">Facebook</a>. <br />
+    <strong>Nei prossimi giorni comunicheremo location e date ufficiali</strong>.</p>
+
+<p>
+    Se vi sentite parte del futuro del web, preparate le vostre proposte perch&eacute; la Call For Paper sta arrivando.</p>
+
+<p>
+    Stay tuned!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2012/04/19/theres-an-app-for-that/" itemprop="url">There's an app for that</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2012-04-19T16:00:00Z"  itemprop="datePublished">April 19, 2012</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2012/04/19/theres-an-app-for-that/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2012-04-19-theres-an-app-for-that.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Negli ultimi tempi, non essendo riuscito a bloggare con constanza a causa dei molti impegni, non ho avuto modo di comunicare l&rsquo;esistenza di un&rsquo;applicazione di tostring.it per Windows Phone.</p>
+
+<p>
+    L&rsquo;applicazione &egrave; nello store da diversi mesi, &egrave; ovviamente gratuita e la potete scaricare <a href="http://www.windowsphone.com/it-IT/apps/47c404b1-021c-4d1e-a7fc-6ed5d8de2fa8" rel="nofollow" target="_blank" title="tostring sul windows phone">qui</a>. Quello che offre &egrave; piuttosto prevedibile: gli ultimi post e le stupidaggini che scrivo su Twitter J.</p>
+
+<p>
+    L&rsquo;app &egrave; &ldquo;Mango enabled&rdquo; ed offre la possibilit&agrave; di avere le notifiche &ldquo;tile&rdquo; e &ldquo;toast&rdquo; con un check periodico del feed del blog (ovviamente potete disabilitare il tutto).</p>
+
+<p>
+    Questa applicazione non esisterebbe se non fosse per il buon <a href="http://qmatteoq.tostring.it" rel="nofollow" target="_blank" title="Matteo Pagani's blog">Matteo</a>, quindi un grazie &egrave; d&rsquo;obbligo. <br />
+    Cosa curiosa, che ovviamente mi ha fatto molto piacere, &egrave; stato scoprire che oggi (quindi ieri per chi legge il post) l&rsquo;applicazione &egrave; tra le feature app del marketplace, come potete vedere dallo screenshot seguente:</p>
+
+<p>
+    <a href="http://tostring.it/UserFiles/imperugo/photo.jpg"><img alt="photo" border="0" height="244" src="http://tostring.it/UserFiles/imperugo/photo_thumb.jpg" style="border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px" title="photo" width="148" /></a></p>
+
+<p>
+    Qui alcuni screenshot dell&rsquo;app:</p>
+
+<p>
+    <a href="http://tostring.it/UserFiles/imperugo/3f2b9f36-b054-4e4e-974a-f49b3a955858_2.png"><img alt="3f2b9f36-b054-4e4e-974a-f49b3a955858" border="0" height="244" src="http://tostring.it/UserFiles/imperugo/3f2b9f36-b054-4e4e-974a-f49b3a955858_thumb.png" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px 3px; border-left: 0px; display: inline; padding-right: 0px" title="3f2b9f36-b054-4e4e-974a-f49b3a955858" width="148" /></a><a href="http://tostring.it/UserFiles/imperugo/9d943c08-b2dc-4092-96c1-5d86ef04c74c_2.png"><img alt="9d943c08-b2dc-4092-96c1-5d86ef04c74c" border="0" height="244" src="http://tostring.it/UserFiles/imperugo/9d943c08-b2dc-4092-96c1-5d86ef04c74c_thumb.png" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px 3px; border-left: 0px; display: inline; padding-right: 0px" title="9d943c08-b2dc-4092-96c1-5d86ef04c74c" width="148" /></a><a href="http://tostring.it/UserFiles/imperugo/ed1bba52-e387-4de2-8f3e-dc6735a783ef_2.png"><img alt="ed1bba52-e387-4de2-8f3e-dc6735a783ef" border="0" height="244" src="http://tostring.it/UserFiles/imperugo/ed1bba52-e387-4de2-8f3e-dc6735a783ef_thumb.png" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px 3px; border-left: 0px; display: inline; padding-right: 0px" title="ed1bba52-e387-4de2-8f3e-dc6735a783ef" width="148" /></a><a href="http://tostring.it/UserFiles/imperugo/82f7ccd0-53d5-4bde-b1a5-fa15f2fb6274_2.png"><img alt="82f7ccd0-53d5-4bde-b1a5-fa15f2fb6274" border="0" height="244" src="http://tostring.it/UserFiles/imperugo/82f7ccd0-53d5-4bde-b1a5-fa15f2fb6274_thumb.png" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px 3px; border-left: 0px; display: inline; padding-right: 0px" title="82f7ccd0-53d5-4bde-b1a5-fa15f2fb6274" width="148" /></a></p>
+
+<p>
+    Buon download!</p>
+
+<p style="height: 20px">
+    <iframe allowtransparency="" frameborder="0" scrolling="no" src="http://www.facebook.com/plugins/like.php?href=http://tostring.it/blog/post/there-is-an-app-for-that/&amp;layout=standard&amp;show_faces=false&amp;width=450&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=10" style="border-top: medium none; height: 80px; border-right: medium none; width: 450px; border-bottom: medium none; overflow: hidden; border-left: medium none"></iframe></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+    
+        <a href="/page/2" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

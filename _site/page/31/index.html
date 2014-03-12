@@ -1,0 +1,577 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/31/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/09/11/uno-usertype-generico-per-gli-enums/" itemprop="url">Uno UserType generico per gli Enums</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-09-11T21:30:32Z"  itemprop="datePublished">September 11, 2009</time></span>
+	<span class="categories">orm</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/09/11/uno-usertype-generico-per-gli-enums/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-09-11-uno-usertype-generico-per-gli-enums.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>NHibernate tende a mappare gli <em>Enums</em> come stringhe nel database; questo a volte pu&ograve; non essere un problema, ma personalmente preferisco memorizzarli in un intero, o ancora meglio un <em>tynint</em>, infatti con questo tipo di formato si ha un netto risparmio di spazio, ma anche un vantaggio per eventuali query.</p>
+
+<p>NHibernate permette di cambiare il modo di persistere un tipo di oggetto del nostro domain model sul database tramite delle apposite classi; tradotto pi&ugrave; semplicemente permette di avere una classe sulla propria entity e un semplice campo nel database (ad esempio un intero o un varchar), come potrebbe essere il <em>CultureInfo</em> che, in una classe come quella mostrata di seguito, &egrave; un oggetto, mentre sul database una semplice string tipo &ldquo;en-US&rdquo;.</p>
+
+<pre class="brush: csharp; ruler: true;">
+public class Comment : EntityBase
+{
+    public virtual Item Item { get; set; }
+    public virtual DateTime CommentDate { get; set; }
+    public virtual string Message { get; set; }
+    public virtual string Name { get; set; }
+    public virtual string Email { get; set; }
+    public virtual bool Notify { get; set; }
+    public virtual string WebSite { get; set; }
+    public virtual bool Approved { get; set; }
+    public virtual bool IsSpam { get; set; }
+    public virtual System.Globalization.CultureInfo Culture { get; set; }
+}</pre>
+
+<p>Lo stesso approccio pu&ograve; essere utilizzato per gli <em>Enums</em>, quindi un <em>enum</em> come il seguente:</p>
+
+<pre class="brush: csharp; ruler: true;">
+public enum BlogRollFriendType : short 
+{
+    Nothing = 0,
+    Contact = 1,
+    Friend = 2,
+    Acquaintance = 3
+}</pre>
+
+<p>pu&ograve; essere persistito come un tinyint sul database grazie ad uno UserType come quello mostrato di seguito:</p>
+
+<pre class="brush: csharp; ruler: true;">
+public class GenericEnumMapper&lt;T&gt; : IUserType
+{
+    #region IUserType Members
+
+    public new bool Equals(object x, object y)
+    {
+        if (ReferenceEquals(x, y)) return true;
+        if (x == null || y == null) return false;
+        return x.Equals(y);
+    }
+
+    public int GetHashCode(object x)
+    {
+        return x.GetHashCode();
+    }
+
+    public object NullSafeGet(IDataReader rs, string[] names, object owner)
+    {
+        object obj = NHibernateUtil.Int16.NullSafeGet(rs, names[0]);
+
+        if (obj == null)
+            return null;
+
+        return (T) obj;
+    }
+
+    public void NullSafeSet(IDbCommand cmd, object value, int index)
+    {
+        if (value == null)
+            ((IDataParameter) cmd.Parameters[index]).Value = DBNull.Value;
+        else
+            ((IDataParameter) cmd.Parameters[index]).Value = (short) value;
+    }
+
+    public object DeepCopy(object value)
+    {
+        return value;
+    }
+
+    public object Replace(object original, object target, object owner)
+    {
+        return original;
+    }
+
+    public object Assemble(object cached, object owner)
+    {
+        return cached;
+    }
+
+    public object Disassemble(object value)
+    {
+        return value;
+    }
+
+    public SqlType[] SqlTypes
+    {
+        get { return new[] {new SqlType(DbType.Int16)}; }
+    }
+
+    public Type ReturnedType
+    {
+        get { return typeof (T); }
+    }
+
+    public bool IsMutable
+    {
+        get { return false; }
+    }
+
+    #endregion
+}</pre>
+
+<p>L&rsquo;implementazione &egrave; piuttosto semplice, l&rsquo;unica accortezza che bisogna avere per poter persistere l&rsquo;enum come tinyint &egrave; specificare lo usertype nel mapping, come mostrato di seguito:</p>
+
+<pre class="brush: csharp; ruler: true;">
+public BlogRoll()
+{
+    Table(&quot;BlogsRoll&quot;);
+    DynamicUpdate();
+    LazyLoad();
+    Cache.NonStrictReadWrite();
+
+    Id(x =&gt; x.ID)
+        .GeneratedBy.Identity();
+
+    Map(x =&gt; x.Name)
+        .Not.Nullable()
+        .Length(100);
+
+    Map(x =&gt; x.Link)
+        .Not.Nullable()
+        .Length(100);
+
+    Map(x =&gt; x.IsMyBlog);
+    Map(x =&gt; x.FriendType)
+        .CustomType(typeof(Dexter.NHibernate.Helpers.UserTypes.GenericEnumMapper&lt;BlogRollFriendType&gt;));
+
+    Map(x =&gt; x.GeographicalType)
+        .CustomType(typeof (Dexter.NHibernate.Helpers.UserTypes.GenericEnumMapper&lt;BlogRollGeographicalType&gt;));
+}</pre>
+
+<p>Lo screenshot seguente mostra la struttura della tabella:   <br />
+<a href="http://imperugo.tostring.it/Content/Uploaded/image/table._2.gif" rel="shadowbox[Uno-UserType-generico-per-gli-Enums];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase singlelineignorecase="" style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="table." border="0" alt="table." width="294" height="339" src="http://imperugo.tostring.it/Content/Uploaded/image/table._thumb.gif" /></a></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/09/11/io-cero/" itemprop="url">Io c'ero!</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-09-11T10:35:21Z"  itemprop="datePublished">September 11, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/09/11/io-cero/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-09-11-io-cero.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ne parlavo oggi con <a title="Raffaele Rialdi" rel="nofollow" target="_blank" href="http://blogs.ugidotnet.org/raffaele/Default.aspx">Raf</a> al telefono e ho avuto troppa voglia di fare questo post :-).</p>
+
+<p>Approfitto del post per comunicare che <a href="http://www.weloveraf.com/">http://www.weloveraf.com/</a> &egrave; tornato online ed i fact vecchi sono stati ripristinati ;).</p>
+
+<p>W il SurfRaf</p>
+
+<p><a class="more" href="http://imperugo.tostring.it/blog/post/io-c-ero/">continue...</a></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/09/09/testare-il-mapping-di-nhibernate/" itemprop="url">Testare il mapping di NHibernate</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-09-09T08:49:05Z"  itemprop="datePublished">September  9, 2009</time></span>
+	<span class="categories">orm</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/09/09/testare-il-mapping-di-nhibernate/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-09-09-testare-il-mapping-di-nhibernate.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Un buon mapping &egrave; la base di un buon risultato ottenibile tramite l&rsquo;uso di un O/RM.    <br />
+Anche se in molti esempi pu&ograve; sembrare semplice effettuare il mapping, in applicazioni reali (o con particolari richieste) questo pu&ograve; essere tutt&rsquo;altro che semplice.     <br />
+In <a title="Dexter Blog Engine" target="_blank" href="http://imperugo.tostring.it/About/Dexter">Dexter</a> ho avuto la necessit&agrave; di realizzare diversi UserType per gestire enumerati, timezone, conversioni, ecc, ed ovviamente, essendoci una logica di calcolo dietro, questi andrebbero testati per evitare di avere un&rsquo;incongruenza di dati o, nel peggiore dei casi, degli errori.     <br />
+<a title="FluentNHibernate" rel="nofollow" target="_blank" href="http://fluentnhibernate.org/">FluentNHibernate</a> mette a disposizione delle classi che permettono di effettuare lo UnitTest del mapping verificando cos&igrave; che la CRUD della entity funzioni a dovere; quindi, nello specifico, si ha a disposizione un mini Framework per testare le seguenti operazioni:</p>
+
+<ul>
+    <li>Inserimento della entity;</li>
+    <li>Modifica della entity;</li>
+    <li>Recupero della entity;</li>
+    <li>Cancellazione della entity;</li>
+</ul>
+
+<p>Lo snippet seguente mostra come effettuare questo tipo di test con poche righe di codice, avendo la certezza che il mapping sia corretto:</p>
+
+<pre class="brush: csharp; ruler: true;">
+[TestMethod]
+public void BlogRollMap()
+{
+    new PersistenceSpecification&lt;BlogRoll&gt;(session)
+        .CheckProperty(c =&gt; c.ID, 1)
+        .CheckProperty(c =&gt; c.Co_worker, true)
+        .CheckProperty(c =&gt; c.Colleague, true)
+        .CheckProperty(c =&gt; c.Crush, true)
+        .CheckProperty(c =&gt; c.Date, true)
+        .CheckProperty(c =&gt; c.FamilyType, BlogRollFamilyType.Sibling)
+        .CheckProperty(c =&gt; c.FriendType, BlogRollFriendType.Contact)
+        .CheckProperty(c =&gt; c.GeographicalType, BlogRollGeographicalType.Neighbor)
+        .CheckProperty(c =&gt; c.IsMyBlog, true)
+        .CheckProperty(c =&gt; c.Link, &quot;http://www.microsoft.com&quot;)
+        .CheckProperty(c =&gt; c.Met, true)
+        .CheckProperty(c =&gt; c.Muse, true)
+        .CheckProperty(c =&gt; c.Name, &quot;Microsoft&quot;)
+        .CheckProperty(c =&gt; c.Position, 1)
+        .CheckProperty(c =&gt; c.Sweetheart, true)
+        .CheckProperty(c =&gt; c.Username, &quot;imperugo&quot;)
+        .VerifyTheMappings();
+}</pre>
+
+<p>Inoltre per condizioni particolari &egrave; possibile specificare, tramite l&rsquo;apposito overload del costruttore, una classe IEqualityComparer per effettuare una comparazione custom dei dati, come mostrato di seguito:</p>
+
+<pre class="brush: csharp; ruler: true;">
+public class SiteConfigurationEqualityComparer : IEqualityComparer
+{
+    public new bool Equals(object x, object y)
+    {
+        if (x == null || y == null)
+            return false;
+
+        if (x is TimeZoneInfo &amp;&amp; y is TimeZoneInfo)
+            return ((TimeZoneInfo)x).Id == ((TimeZoneInfo)y).Id;
+
+        if (x is ReCaptcha &amp;&amp; y is ReCaptcha)
+        {
+            var r1 = (ReCaptcha)x;
+            var r2 = (ReCaptcha)y;
+
+            return (r1.Enable == r2.Enable &amp;&amp;
+                    r1.PrivateKey == r2.PrivateKey &amp;&amp;
+                    r1.PublicKey == r2.PublicKey &amp;&amp;
+                    r1.Theme == r2.Theme);
+        }
+}</pre>
+
+<p>Maggiori info sono disponibili <a title="FluentMapping Persistance Service" rel="nofollow" target="_blank" href="http://wiki.fluentnhibernate.org/Persistence_specification_testing">qui</a>.</p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/09/08/la-sedia-del-vero-geek/" itemprop="url">La sedia del vero Geek</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-09-08T20:58:19Z"  itemprop="datePublished">September  8, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/09/08/la-sedia-del-vero-geek/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-09-08-la-sedia-del-vero-geek.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/photo_2.jpg" rel="shadowbox[La-sedia-del-vero-Geek];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="photo" border="0" alt="photo" src="http://imperugo.tostring.it/Content/Uploaded/image/photo_thumb.jpg" width="328" height="436" /></a>     <p>In realtà ci vorrebbe il Canc, ma non c’era :(</p></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/09/08/visual-studio-team-system-2008-gdr-r2/" itemprop="url">Visual Studio Team System 2008 GDR R2</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-09-08T08:34:43Z"  itemprop="datePublished">September  8, 2009</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/09/08/visual-studio-team-system-2008-gdr-r2/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-09-08-visual-studio-team-system-2008-gdr-r2.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Lo scrivo qui con la speranza di non dimenticarlo, comunque dopo il setup del <strong>Service Pack 1</strong> per <strong>Visual Studio 2008 (sia Database Edition che Team Suite)</strong> va installata la <strong>GDR 2</strong> che potete trovare <a title="Visual Studio Team System 2008 Database Edition GDR R2" href="http://www.microsoft.com/downloads/details.aspx?FamilyID=bb3ad767-5f69-4db9-b1c9-8f55759846ed&amp;displaylang=en" rel="nofollow" target="_blank">qui</a>. Così facendo evitate di perdere tre ore di tempo per capire il motivo percui, il Wizard di Visual Studio non si connette al Database.     <br />    <br />Un super grazie a <a title="Lorenzo Barbieri" href="http://www.geniodelmale.info/" rel="nofollow" target="_blank">Lorenzo</a> per la info.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/30" class="prev">Prev</a>
+    
+    
+        <a href="/page/32" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Riflessioni su NHibernate - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2006/07/18/riflessioni-su-nhibernate/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Riflessioni su NHibernate</h1>
+	<div class="entry-content" itemprop="articleBody"><p><span>Oggi, dopo un lungo periodo in cui mi sono sempre rifiutato di studiare <a href="http://www.hibernate.org/343.html">Nhibernate</a>, il <a href="http://blogs.ugidotnet.net/crad">crad</a> &egrave; riuscito a convicermi. Personalmente non mi &egrave; mai piaciuta l'idea di far fare tutto ad un framework senza avere il controllo su molte cose, ma davanti a fatto compiuto devo alzare le mani. :D (qui il <a href="http://blogs.ugidotnet.net/crad">crad</a> se la ride). </span></p>
+
+<p>Piccola premessa per chi non sa cos'&egrave; <a href="http://www.hibernate.org/343.html">Nhibernate</a>:</p>
+
+<p><a href="http://www.hibernate.org/343.html">Nhibernate</a> &egrave; un porting di una libreria Java <a href="http://www.hibernate.org/">Hibernate</a> in ambiente .net. Questa libreria ha il compito di agevolare l'utente nella memorizzazione di informazioni in un Database, evitandoci il &quot;problema&quot; di dover scrivere query e &quot;limitando&quot; il nostro compito nello gestire le sole entity. Da queste parole sembra che faccia tutto lui , beh quasi :P.</p>
+
+<p>Detto questo passiamo alla mia esperienza:</p>
+
+<p>Il primo impatto &egrave; stato molto brutto, il passaggio da un sistema &quot;classico&quot; &egrave; parecchio brusco ma una volta capito come lavora non &egrave; difficile da usare (da quel poco che ho potuto vedere).<br />
+<br />
+Se andiamo a pensare quanto possa essere difficile creare un buon DAL (Data Access Layer), quindi &quot;Lazy Load&quot;, &quot;Unit of Work&quot;, ecc, pu&ograve; venir utile tenere in considerazione <a href="http://www.hibernate.org/343.html">Nhibernate</a>.</p>
+
+<p>Premetto che praticamente lo uso solo da un giorno, per&ograve; ad un primo impatto lo potrei descrivere come <b>molto</b> <b>produttivo.</b></p>
+
+<p>Gestisce lui lo &quot;Unit of Work&quot;, &quot;Lazy Load&quot;, e inserimenti o modifiche di entity a cascata; basti pensare ad una entity Fattura che ha al suo interno una Entity cliente, passando a <a href="http://www.hibernate.org/343.html">Nhibernate</a> l'entity fattura, lui provedder&agrave; automaticamente a inserire la fattura e il cliente nel caso non sia presente nel Database mentre in una situazione normale avremmo dovuto creare 2 query, n parametri, interrogare il nostro DataHelper, ecc, ora tutto questo ci viene fatto con un risparmi di risorse incredibile.</p>
+
+<p>Altra bella caratteristica &egrave; quella di poter cambiare tipo di database a runtime modificando una righa nel web.config oppure di dire a Nhibernate, &quot;...guarda sono in un'applicazione asp.net usa la cache&quot; e lui lo fa per noi :P</p>
+
+<p>In termini prestazionali non so ancora quanto possa incidere, ma da quanto mi dicono se usato bene &egrave; molto performate.</p>
+
+<p>Con questo post non voglio dire che dobbiamo sempre usare <a href="http://www.hibernate.org/343.html">Nhibernate</a> o che sia il metodo migliore, ci sono persone pi&ugrave; adatte a rispondere a questo tipo di interrogativo (<a href="http://blogs.aspitalia.com/rickyvr/">Ricky</a> o <a href="http://blogs.ugidotnet.org/pape">Andrea</a> per citarne due :P ) , ma vale la pena di perderci un attimo tempo perch&egrave; pu&ograve; venir utile.</p>
+
+<p>Per chi vuole iniziare consiglio il libro in pdf stampabile e scaricabile <a href="http://www.hibernate.org/5.html">qui</a> e un tutorial che mostra come iniziare <a href="http://www.hibernate.org/362.html">qui</a>.</p>
+
+<p>Successivamente (appena capisco un po' meglio cosa accade in &quot;background&quot;) posto un codice che mostra come iniziare ad utilizzarlo.</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Nhibernate" title="">Nhibernate</a>
+	
+	  <a href="/tag#ORM" title="">ORM</a>
+	
+	  <a href="/tag#ASP.NET" title="">ASP.NET</a>
+	
+	  <a href="/tag#Architettura" title="">Architettura</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2006/06/10/io-il-gdi-e-il-pocket-pc/" title="Previous Post: 
+Io, il GDI+ e il pocket pc">&laquo; Io, il GDI+ e il pocket pc</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2006/09/07/il-domain-model/" title="next Post: 
+Il Domain Model">Il Domain Model &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2006/07/18/riflessioni-su-nhibernate/';
+        var disqus_url = 'http://gioffy.github.io/2006/07/18/riflessioni-su-nhibernate/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

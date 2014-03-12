@@ -1,0 +1,455 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/41/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/24/abilitare-la-history-nel-browser-per-le-chiamate-ajax/" itemprop="url">Abilitare la History nel browser per le chiamate AJAX</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-24T01:27:03Z"  itemprop="datePublished">June 24, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/24/abilitare-la-history-nel-browser-per-le-chiamate-ajax/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-24-abilitare-la-history-nel-browser-per-le-chiamate-ajax.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ormai sempre pi&ugrave; applicazioni web fanno uso della tecnologia <a rel="nofollow" target="_blank" href="http://en.wikipedia.org/wiki/Ajax_(programming)">AJAX</a>, in quanto essa offre numerosi vantaggi: dall&rsquo;ottimizzazione del traffico di rete ad una maggior velocit&agrave; di navigazione. L&rsquo;uso di questa tecnologia permette s&igrave; la navigazione tra contenuti differenti senza effettuare il reload della pagina, ma purtroppo toglie usabilit&agrave; al sito, in quanto l&rsquo;utente &egrave; portato ad utilizzare il bottone <strong>Back</strong> del browser per tornare al contenuto precedente, cosa che non avviene se si sta utilizzando <strong>AJAX</strong>.</p>
+
+<p><br />
+Per risolvere questo incoveniente Microsoft ha introdotto, tramite il <strong>Service Pack 1</strong> del <strong>.NET Framework 3.5</strong>, la possibilit&agrave; di utilizzare i bottoni per la navigazione integrati con il browser per muoversi attraverso l&rsquo;hystory delle chiamate <strong>AJAX</strong>.</p>
+
+<p>Come per ogni <a rel="nofollow" target="_blank" href="http://www.asp.net">ASP.NET</a> WebForm che utilizza AJAX, &egrave; necessario che nella pagina sia presente lo <a rel="nofollow" target="_blank" href="http://msdn.microsoft.com/it-it/library/system.web.ui.scriptmanager.aspx">ScriptManager</a>, dove si andr&agrave; ad abilitare l&rsquo;utilizzo dell&rsquo;Hystory e ad associare l&rsquo;evento che dovr&agrave; essere scatenato durante la navigazione, come mostrato di seguito:</p>
+
+<pre class="brush: xml; ruler: true;">
+&lt;asp:ScriptManager ID=&quot;ScriptManager1&quot; runat=&quot;server&quot; EnableHistory=&quot;True&quot; 
+    onnavigate=&quot;ScriptManager1_Navigate&quot;&gt;
+&lt;/asp:ScriptManager&gt;</pre>
+
+<p>Nello snippet seguente viene mostrato come aggiungere un <strong>HystoryPoint</strong>, e l&rsquo;evento che viene invocato alla pressione dei tasti <strong>Back</strong> e <strong>Forward</strong> del browser.</p>
+
+<pre class="brush: csharp; ruler: true;">
+protected void GridView1_PageIndexChanged(object sender, EventArgs e)
+{
+    if(ScriptManager1.IsInAsyncPostBack &amp;&amp; !ScriptManager1.IsNavigating)
+    {
+        ScriptManager1.AddHistoryPoint(&quot;Gridview1&quot;,GridView1.PageIndex.ToString());
+    }
+}
+
+protected void ScriptManager1_Navigate(object sender, HistoryEventArgs e)
+{
+    int pageIndex = 0;
+
+    if(string.IsNullOrEmpty(e.State[&quot;Gridview1&quot;]))
+    {
+        GridView1.PageIndex = pageIndex;
+    }
+    else
+    {
+        pageIndex = int.Parse(e.State[&quot;Gridview1&quot;]);
+        GridView1.PageIndex = pageIndex;
+
+        Title = &quot;Paginda del gridview numero:&quot; + (pageIndex + 1);
+
+    }
+}</pre>
+
+<p>In questo esempio si &egrave; optato per l&rsquo;associazione degli HystoryPoint alla paginazione di un GridView, ma la stessa cosa &egrave; applicabile a qualsiasi tipo di chiamata AJAX.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/23/alcuni-link-utili-su-asp-net-mvc/" itemprop="url">Alcuni Link utili su ASP.NET MVC</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-23T02:48:21Z"  itemprop="datePublished">June 23, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/23/alcuni-link-utili-su-asp-net-mvc/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-23-alcuni-link-utili-su-asp-net-mvc.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Dati i miei ultimi post, si &egrave; sicuramente capito che sono un &ldquo;Fan&rdquo;, se cos&igrave; si pu&ograve; dire, del Framework <a rel="nofollow" target="_blank" href="http://www.asp.net/mvc">ASP.NET MVC</a> .</p>
+
+<p>Proprio su questo Framework posto alcuni link, a mio avviso molto utili, che possono aiutare a colmare alcune &ldquo;lacune&rdquo; di questo giovanissimo Framework, come la validazione client-side.</p>
+
+<p>Proprio sulla validazione con <a rel="nofollow" target="_blank" href="http://www.asp.net/mvc">ASP.NET MVC</a> riporto una serie di link ad articoli su questo argomento:</p>
+
+<p>&nbsp;</p>
+
+<ul>
+    <li>Utilizzare MVC Validator ToolKit <a rel="nofollow" target="_blank" href="http://www.codeproject.com/KB/aspnet/MvcValidatorToolkit.aspx">qui</a>.</li>
+    <li>Utilizzare xVal per la validazione client-side <a rel="nofollow" target="_blank" href="http://blog.codeville.net/2009/01/10/xval-a-validation-framework-for-aspnet-mvc/">qui</a>.</li>
+    <li>Ottimo articolo sulla validazione con xVal e Castle <a rel="nofollow" target="_blank" href="http://blog.stormid.com/archive/2009/04/07/automatic-model-validation-with-asp.net-mvc-xval-castle-and-a.aspx">qui</a>.</li>
+    <li>Utilizzare il Validation Application Block dell&rsquo;Enterprise Library con MVC <a rel="nofollow" target="_blank" href="http://geekswithblogs.net/michelotti/archive/2008/10/04/enterprise-library-validation-application-block-with-asp.net-mvc.aspx">qui</a>.</li>
+    <li>Utilizzare il Validation Application Block dell&rsquo;Enterprise Library con MVC Binde <a rel="nofollow" target="_blank" href="http://geekswithblogs.net/michelotti/archive/2009/03/16/enterprise-library-validation-application-block-with-mvc-binders.aspx">qui</a>.</li>
+</ul>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/23/aggiornamento-blueme/" itemprop="url">Aggiornamento Blue&amp;Me</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-23T00:29:12Z"  itemprop="datePublished">June 23, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/23/aggiornamento-blueme/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-23-aggiornamento-blueme.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ho trovato cosa fare questa sera :)</p>
+
+<p><a target="_blank" rel="nofollow" href="http://www.fiat.it/cgi-bin/pbrand.dll/FIAT_ITALIA/blueme/blueme.jsp?BV_SessionID=@@@@1793043326.1245741785@@@@&amp;BV_EngineID=cccfadehijgfmljcefecejgdfkhdfjk.0&amp;categoryOID=-1073821252&amp;contentOID=1074586451">Link</a>.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/22/asp-net-mvc-in-visual-studio-2010/" itemprop="url">ASP.NET MVC in Visual Studio 2010</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-22T07:03:44Z"  itemprop="datePublished">June 22, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/22/asp-net-mvc-in-visual-studio-2010/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-22-asp-net-mvc-in-visual-studio-2010.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Cercando di effettuare il porting di <a target="_blank" href="http://imperugo.tostring.it/About/Dexter">Dexter</a> al .NET <strong>Framework 4.0</strong> con <strong>Visual Studio 2010</strong>, mi sono accorto che non &egrave; possibile aprire l&rsquo;applicazione web basata su <a rel="nofollow" target="_blank" href="http://www.asp.net/mvc">ASP.NET MVC</a>, in quanto questo Framework non &egrave; incluso nell&rsquo;installer del nuovo <strong>Visual Studio</strong>.</p>
+
+<p>La motivazione la apprendo <a rel="nofollow" target="_blank" href="http://www.haacked.com/archive/2009/06/09/aspnetmvc-vs10beta1-roadmap.aspx">qui</a>,&nbsp;dal blog del PM di MVC <a rel="nofollow" target="_blank" href="http://haacked.com/">Phil Haack</a> , di cui riporto&nbsp;lo spezzone di seguito:</p>
+
+<blockquote>
+<p>One thing you&rsquo;ll notice is that ASP.NET MVC is not included in Beta 1. The reason for this is that Beta 1 started locking down before MVC 1.0 shipped. ASP.NET MVC will be included as part of the package in VS10 Beta 2.</p>
+<p>&hellip;</p>
+<p>We&rsquo;re working hard to have an out-of-band installer which will install the project templates and tooling for ASP.NET MVC which works with VS2010 Beta 1 sometime in June on CodePlex. Sorry for the inconvenience. I&rsquo;ll blog about it once it is ready.</p>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p>Il problema &egrave; facilmente risolvibile scaricando l&rsquo;installer per Visual Studio 2010 direttamente da <a rel="nofollow" target="_blank" href="http://aspnet.codeplex.com/Release/ProjectReleases.aspx?ReleaseId=28527">qui</a>, mentre a questo&nbsp;<a rel="nofollow" target="_blank" href="http://aspnet.codeplex.com/Wiki/View.aspx?title=Road%20Map&amp;referringTitle=Home">link</a> &egrave; possibile trovare la RoadMap della versione 2.0 del Framework.</p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/22/aop-per-il-bug-fixing/" itemprop="url">AOP per il Bug Fixing</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-22T03:26:23Z"  itemprop="datePublished">June 22, 2009</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/22/aop-per-il-bug-fixing/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-22-aop-per-il-bug-fixing.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Spesso l&rsquo;utilizzo dell&rsquo;<a href="http://en.wikipedia.org/wiki/Aspect-oriented_programming" target="_blank" rel="nofollow">Aspect Oriented Programming</a> (<strong>AOP</strong>) viene associato alla parte di <strong>Logging</strong>, e rarissimamente alla parte di <strong>Business</strong> di un&rsquo;applicazione; ovviamente il suo campo d'azione &egrave; ben pi&ugrave; grande e, giusto la scorsa settimana, mi &egrave; capitato di utilizzare l&rsquo;<strong>AOP</strong> per effettuare del <strong>Bug Fixing</strong> su un servizio <strong>WCF</strong> fornitomi da un&rsquo;azienda esterna.</p>
+
+<p>In una sessione insieme a <a href="http://blogs.aspitalia.com/sm15455/" target="_blank" rel="nofollow">Stefano</a> mostrai l&rsquo;approccio utilizzato in <a href="http://www.mtv.it" target="_blank" rel="nofollow">MTV.it</a> per la parte di <strong>Logging</strong> e di <strong>Rewarding</strong> nei servizi <strong>WCF</strong>; affrontammo cos&igrave; come utilizzare <strong>AOP</strong> anche per la parte di business dell&rsquo;applicazione e, sempre nella stessa sessione, mostrammo come realizzare un Custom Behaviour per WCF che permettesse di utilizzare l&rsquo;AOP senza la necessit&agrave; di ricompilare il servizio.</p>
+
+<p>Come accennato sopra, proprio la scorsa settimana ho avuto dei problemi con un servizio WCF realizzato da una ditta fornitrice esterna che, nell&rsquo;invocazione di un determinato metodo, non invalidava la cache, causando cos&igrave; un&rsquo;incongruenza di dati tra tutte quelle applicazioni che accedevano allo stesso repository di Cache.</p>
+
+<p>Purtroppo, non avendo il codice sorgente n&eacute; la possibilit&agrave; di effettuare un deploy in tutti i server, l&rsquo;unica soluzione indolore che mi &egrave; venuta in mente &egrave; stata quella di realizzare un&rsquo;interceptor per <a href="http://www.springframework.net/" target="_blank" rel="nofollow">SpringFramework</a> ed invalidare la cache tramite AOP.</p>
+
+<p>Con 10 righe di codice per l&rsquo;interceptor e altre 10 nel file di configurazione del servizio, il bug &egrave; stato risolto. <br />
+Tutto questo a dimostrazione del fatto che l&rsquo;utilizzo dell&rsquo;AOP pu&ograve; andare ben oltre il semplice Logging applicativo, e che spesso pu&ograve; far risparmiare parecchio tempo in fase di sviluppo e bug fixing.</p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/40" class="prev">Prev</a>
+    
+    
+        <a href="/page/42" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

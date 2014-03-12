@@ -1,0 +1,688 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/27/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/10/27/utilizzare-il-parallel-for-ed-il-parallel-foreach-in-net-4-0/" itemprop="url">Utilizzare il Parallel For ed il Parallel ForEach in .NET 4.0</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-10-27T17:30:00Z"  itemprop="datePublished">October 27, 2009</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/10/27/utilizzare-il-parallel-for-ed-il-parallel-foreach-in-net-4-0/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-10-27-utilizzare-il-parallel-for-ed-il-parallel-foreach-in-net-4-0.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>L’utilizzo del <a title="Parallel Programming" href="http://en.wikipedia.org/wiki/Parallel_computing" rel="nofollow" target="_blank">Parallel Programming</a> in <a title=".NET Framework" href="http://imperugo.tostring.it/categories/archive/.NET" target="_blank">.NET</a> 4.0 va oltre a quanto già detto <a title="Welcome Parallel Linq" href="http://imperugo.tostring.it/blog/post/welcome-parallel-linq" target="_blank">qui</a>: di fatto all’interno del namespace System.Threading.Tasks esiste una classe Parallel che permette di effettuare cicli sfruttando più Threads, in modo da abbassare il tempo necessario all’iterazione.</p>  <p>Lo snippet seguente mostra un semplicissimo ciclo di 50 elementi con e senza il Parallel For, con risultati nettamente a vantaggio dell’istruzione Parallel.For.</p>  <pre class="brush: csharp; ruler: true;">static void Main(string[] args)
+{
+    Console.WriteLine(&quot;MTID={0}&quot;, Thread.CurrentThread.ManagedThreadId);
+
+    ParallelMethod();
+    NonParallelMethod();
+    
+    Console.WriteLine(&quot;\nFinished...&quot;);
+    Console.ReadKey(true);
+}
+
+static void NonParallelMethod()
+{
+    Stopwatch sw = Stopwatch.StartNew();
+
+    for (int i = 0; i &lt; 50; i++)
+    {
+        Console.WriteLine(&quot;ThreadID={0}, i={1}&quot;, Thread.CurrentThread.ManagedThreadId, i);
+        SimulateProcessing();
+    }
+
+    sw.Stop();
+
+    Console.WriteLine(&quot;It Took {0} ms with simple for&quot;, sw.ElapsedMilliseconds);
+}
+
+static void ParallelMethod()
+{
+    Stopwatch sw = Stopwatch.StartNew();
+
+    Parallel.For(0, 50, i =&gt;
+    {
+        Console.WriteLine(&quot;ThreadID={0}, i={1}&quot;, Thread.CurrentThread.ManagedThreadId, i);
+
+        SimulateProcessing();
+    });
+
+    sw.Stop();
+
+    Console.WriteLine(&quot;It Took {0} ms with Parallel For&quot;, sw.ElapsedMilliseconds);
+}
+
+static void SimulateProcessing()
+{
+    Thread.SpinWait(80000000);
+}</pre>
+
+<p>Dallo screenshot seguente è possibile capire come l’utilizzo del Parallel ci permette di sfruttare a meglio l’hardware a disposizione in quanto utilizza entrambi i processori, a differenza del classico ciclo for che ne sfrutta uno solo.</p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/001r_2.jpg" rel="shadowbox"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="001r" border="0" alt="001r" src="http://imperugo.tostring.it/Content/Uploaded/image/001r_thumb.jpg" width="283" height="267" /></a> </p>
+
+<p>Ovviamente la classe Parallel non offre soltanto metodi per il ciclo for ma anche per il ForEach che funziona allo stesso modo, come mostrato di seguito:</p>
+
+<pre class="brush: csharp; ruler: true;">static void ParallelForEach()
+{
+    int[] values = Enumerable.Range(1,50).ToArray();
+
+    Parallel.ForEach&lt;int&gt;(values, i =&gt;
+    {
+        Console.WriteLine(&quot;ThreadID={0}, i={1}&quot;, Thread.CurrentThread.ManagedThreadId, i);
+
+        SimulateProcessing();
+    });
+}</pre>
+
+<p>Anche questo, come il <a title="Welcome Parallel Linq" href="http://imperugo.tostring.it/blog/post/welcome-parallel-linq" target="_blank">precedente</a>, resta un test dimostrativo della semplicità con cui si può sfruttare il <a title="Parallel Programming" href="http://en.wikipedia.org/wiki/Parallel_computing" rel="nofollow" target="_blank">Parallel Programming</a> con il <a title=".NET Framework 4.0" href="http://imperugo.tostring.it/tags/archive/.net+framework+4.0" target="_blank">.NET Framework 4.0</a> e del fatto che i risultati ottenibili sono influenzabili dall’hardware che si ha a disposizione, numero di processori in primis.</p>
+
+<p>Parallel.Ciauz()</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/10/26/welcome-parallel-linq/" itemprop="url">Welcome Parallel Linq</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-10-26T19:30:00Z"  itemprop="datePublished">October 26, 2009</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/10/26/welcome-parallel-linq/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-10-26-welcome-parallel-linq.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Il mio primo test della Beta 2 di <a href="http://imperugo.tostring.it/blog/search?q=Visual+Studio&amp;searchButton=Go" target="_blank" title="Search Visual Studio">Visual Studio</a> 2010 non riguarda <a href="http://imperugo.tostring.it/categories/archive/ASP.NET" target="_blank" title="ASP.NET">ASP.NET</a> ma il mondo del <a href="http://en.wikipedia.org/wiki/Parallel_computing" rel="nofollow" target="_blank" title="Parallel Programming">Parallel Programming</a>, e, nello specifico, del <a href="http://msdn.microsoft.com/en-us/magazine/cc163329.aspx" rel="nofollow" target="_blank" title="Parallel Linq">Parallel Linq</a>, ossia la possibilit&agrave; di utilizzare il Parallel Framework tramite la sintassi <a href="http://imperugo.tostring.it/tags/archive/linq" target="_blank" title="Linq">Linq</a>.</p>
+
+<p>
+    L&rsquo;utilizzo &egrave; semplicissimo e le prestazioni sono da paura se viene fatto un confronto con la stessa operazione ma senza l&rsquo;utilizzo del Parallel. Ovviamente il test che riporto &egrave; banalissimo, ma serve a rendere l&rsquo;idea di quanto semplice sia l&rsquo;implementazione di Parallel Linq con il <a href="http://imperugo.tostring.it/categories/archive/.NET" target="_blank" title=".NET Framework">.NET</a> Framework 4.0 e di che tipo di vantaggio si pu&ograve; trarre da un approccio di questo genere.</p>
+
+<p>
+    Come potete vedere dal codice seguente, l&rsquo;unica differenza nella sintassi Linq &egrave; l&rsquo;utilizzo dell&rsquo;apposito Extension Method AsParallel() sull&rsquo;oggetto da ciclare (Items in questo caso).</p>
+
+<pre class="brush: csharp; ruler: true;">using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Parallel;
+using System.Diagnostics;
+using System.Threading;
+using System.Collections;
+
+namespace Imperugo.Test.ParallelLINQ
+{
+    class Program
+    {
+        private static IList<demoentity> items = new List<demoentity>();
+
+        static void Main(string[] args)
+        {
+            PrepareData();
+
+            ParalelTest();
+            ClassicTest();
+
+            Console.WriteLine(&quot;\nFinished...&quot;);
+            Console.ReadKey(true);
+        }
+
+        private static void ParalelTest()
+        {
+            var results = from i in items.AsParallel() where i.SubValues.Contains(new Random(1000).Next()) select i;
+
+            Stopwatch sw = Stopwatch.StartNew();
+            IList<demoentity> resultsList = results.ToList();
+            Console.WriteLine(&quot;{0} items&quot;, resultsList.Count());
+            sw.Stop();
+
+            Console.WriteLine(&quot;It Took {0} ms with parallel Linq&quot;, sw.ElapsedMilliseconds);
+        }
+
+        private static void ClassicTest()
+        {
+            var results = from i in items where i.SubValues.Contains(new Random(1000).Next()) select i;
+
+            Stopwatch sw = Stopwatch.StartNew();
+            IList<demoentity> resultsList = results.ToList();
+            Console.WriteLine(&quot;{0} items with Linq&quot;, resultsList.Count());
+            sw.Stop();
+
+            Console.WriteLine(&quot;It Took {0} ms&quot;, sw.ElapsedMilliseconds);
+        }
+
+        static bool IsDivisibleByFive(int i)
+        {
+            return i % 5 == 0;
+        }
+
+        private static void PrepareData()
+        {
+            for (int i = 0; i &lt; 1000000; i++)
+            {
+                var item = new DemoEntity
+                                                {
+                                                    Title = &quot;New Title &quot; + i,
+                                                    SubValues = Enumerable.Range(1, 1000)
+                                                };
+
+                items.Add(item);
+            }
+        }
+    }
+}</demoentity></demoentity></demoentity></demoentity></pre>
+
+<p>
+    Nel test &egrave; stata eseguita la stessa operazione due volte, una utilizzando il Parallel Linq (quadrato blu), ed una utilizzando Linq normalmente (quadrato rosso) su di una collection con 1.000.000 di elementi. I tempi richiesti per completare l&rsquo;operazione sono ovviamente a vantaggio di Parallel Linq che conclude il ciclo con 9276 millisecondi, a differenza dei 16440 richiesti da Linq.</p>
+
+<p>
+    <a href="http://imperugo.tostring.it/Content/Uploaded/image/0023_2.jpg" rel="shadowbox"><img alt="0023" border="0" height="289" src="http://imperugo.tostring.it/Content/Uploaded/image/0023_thumb.jpg" style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="0023" width="307" /></a></p>
+
+<p>
+    Un aspetto molto interessante pu&ograve; essere lo scenario di utilizzo. Di fatto, per poter trarre vantaggio dall&rsquo;utilizzo di Parallel Linq lo si deve sfruttare in elementi corposi (nel test ho utilizzato una collection con 1.000.000 di elementi, ma i vantaggi si cominciano a percepire dai 50.000 elementi in poi), altrimenti si rischia di ottenere l&rsquo;effetto opposto. Ovviamente incide molto anche il numero di processori che si hanno a disposizione. <br />
+    I dati riportati sono relativi ad un portatile dual core in modalit&agrave; balanced, ma la differenza si nota.</p>
+
+<p>
+    Ciauz.AsParallel()</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/10/23/asp-net-healthmonitoring-e-le-informazioni-aggiuntive-delle-eccezioni/" itemprop="url">ASP.NET HealthMonitoring e le informazioni aggiuntive delle eccezioni</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-10-23T18:46:09Z"  itemprop="datePublished">October 23, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/10/23/asp-net-healthmonitoring-e-le-informazioni-aggiuntive-delle-eccezioni/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-10-23-asp-net-healthmonitoring-e-le-informazioni-aggiuntive-delle-eccezioni.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    L&rsquo;HealthMonitoring di <a href="http://www.asp.net" rel="nofollow" target="_blank">ASP.NET</a> &egrave; sicuramente uno strumento potentissimo per tenere traccia dello stato di salute della nostra applicazione web. Uno dei suoi principali vantaggi &egrave; che dalla versione 2.0 di ASP.NET &egrave; gi&agrave; presente con un nutrito insieme di provider che permettono di loggare informazioni in svariati repository. <br />
+    Entranto pi&ugrave; nello specifico si hanno a disposizione i seguenti provider:</p>
+
+<ul>
+    <li>
+        <strong>EventLogWebEventProvider</strong> (memorizza nell&rsquo;Event Log di Windows);</li>
+    <li>
+        <strong>SqlWebEventProvider</strong> (Database Sql Server 2000/05/08);</li>
+    <li>
+        <strong>WmiWebEventProvider</strong> (sfrutta il <a href="http://en.wikipedia.org/wiki/Windows_Management_Instrumentation" rel="nofollow" target="_blank" title="Windows Management Instrumentation">Windows Management Instrumentation</a> per gestire le notifiche);</li>
+    <li>
+        <strong>SimpleMailWebEventProvider</strong> (Invia una Email);</li>
+    <li>
+        <strong>TemplatedMailWebEventProvider </strong>(Invia una Email in base ad un template);</li>
+    <li>
+        <strong>TraceWebEventProvider</strong> (sfrutta il <a href="http://msdn.microsoft.com/en-us/library/y13fw6we(VS.71).aspx" rel="nofollow" target="_blank" title="ASP.NET Trace">trace</a> di <a href="http://imperugo.tostring.it/categories/archive/ASP.NET" target="_blank" title="ASP.NET">ASP.NET</a>);</li>
+</ul>
+
+<p>
+    Ovviamente, essendo basato a provider, l&rsquo;healthmonitorig offre la possibilit&agrave; di realizzare ed utilizzare delle implementazioni custom, nel caso quelli precedentemente elencati non soddisfini le esigenze dello sviluppatore. Per far ci&ograve; &egrave; necessario realizzare una classe che implementi una delle apposite classi astratte messe a disposizione dal <a href="http://imperugo.tostring.it/categories/archive/.NET" target="_blank" title=".NET Framework">.NET</a> Framework -<a href="http://msdn.microsoft.com/en-us/library/system.web.management.webeventprovider.aspx" rel="nofollow" target="_blank" title="WebEventProvider">WebEventProvider</a> o <a href="http://msdn.microsoft.com/en-us/library/system.web.management.bufferedwebeventprovider.aspx" rel="nofollow" target="_blank" title="BufferedWebEventProvider">BufferedWebEventProvider</a> - ed aggiungere al loro interno propria logica.</p>
+
+<p>
+    Personalmente ritengo pi&ugrave; che sufficienti i provider messi a disposizione e non sentirei la necessit&agrave; di realizzarne uno custom se quelli messi a disposizione memorizzarsero anche le informazioni presente nella collection Data della classe Exception. <br />
+    In attensa del <a href="http://imperugo.tostring.it/Tags/Archive/Historical+Debugger" target="_blank" title="Tags: Historical Debugger">Historical Debugger</a>, per poter capire cosa non va nella nostra applicazione e riprodurlo, &egrave; necessario riempire il codice di logging per poter catturare e riprodurre una specifica situazione che scatena un&rsquo;errore. <br />
+    Purtroppo alcune volte un Logger che memorizza soltanto l&rsquo;eccezione pu&ograve; non bastare in quanto il problema pu&ograve; riscontrarsi solo con alcuni paramentri e, in questi casi, &egrave; necessario memorizzare anche loro insieme all&rsquo;eccezzione.</p>
+
+<p>
+    Per far ci&ograve; una buona pratica &egrave; quella di <strong>inserire questi valori nell&rsquo;apposito Dictionary Data</strong> presente nell&rsquo;oggetto Exception in modo da avere in un&rsquo;unico oggetto sia lo stack che le informazioni legate all&rsquo;eccezione. <br />
+    Lo snippet seguente mostra come sfruttarlo:</p>
+
+<pre class="brush: csharp; ruler: true;">public static void Send(Uri sourceUrl, Uri targetUrl)
+{
+    try
+    {
+        //do something
+    }
+    catch (Exception ex)
+    {
+        ex.Data.Add(&quot;Source Url: &quot;, sourceUrl);
+        ex.Data.Add(&quot;Target Url: &quot;, targetUrl);
+
+        Log.Log.General.Error(&quot;Send PingBack Error&quot;, ex);
+    }
+}</pre>
+
+<p>
+    Purtroppo i provider dell&rsquo;HealthMonitoring messi a disposizione dal .NET Framework non memorizzano questo tipo di informazioni, il che ci obbliga (se siamo interessati a tener traccia di queste informazioni) a scriverci un provider custom che dovrebbe essere pi&ugrave; o meno cos&igrave;:</p>
+
+<pre class="brush: csharp; ruler: true;">public class HealthMonitorDataBaseProvider : BufferedWebEventProvider
+{
+    public override void ProcessEvent(WebBaseEvent eventRaised)
+    {
+        if (UseBuffering)
+            base.ProcessEvent(eventRaised);
+        else
+            Save(new[] { eventRaised });
+    }
+
+    public override void ProcessEventFlush(WebEventBufferFlushInfo flushInfo)
+    {
+        Save(flushInfo.Events);
+    }
+
+    private static void Save(ICollection eventCollection)
+    {
+        WebRequestInformation requestInformation = null;
+        Exception errorException = null;
+        MyLog item = new MyLog();
+
+        foreach (WebBaseEvent eventRaised in eventCollection)
+        {
+            //popolo myLog 
+            
+            if (eventRaised is WebBaseErrorEvent)
+                errorException = ((WebBaseErrorEvent)eventRaised).ErrorException;
+
+            if (errorException != null)
+            {
+                StringBuilder sb = new StringBuilder(errorException.ToString());
+
+                if (errorException.Data != null &amp;&amp; errorException.Data.Count &gt; 0)
+                {
+                    sb.Append(Environment.NewLine);
+
+                    foreach (DictionaryEntry de in errorException.Data)
+                    {
+                        sb.Append(de.Key.ToString());
+                        sb.Append(&quot;: &quot;);
+                        sb.Append(de.Value.ToString());
+                        sb.Append(Environment.NewLine);
+                    }
+                }
+
+                logInstance.Details = sb.ToString();
+            }
+
+            new LogService().Save(item);
+        }
+    }
+}</pre>
+
+<p>
+    stay connected!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/10/23/un-po-di-materiale-su-visual-studio-2010-e-net-framework-4/" itemprop="url">Un po’ di materiale su Visual Studio 2010 e .NET Framework 4</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-10-23T16:30:00Z"  itemprop="datePublished">October 23, 2009</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/10/23/un-po-di-materiale-su-visual-studio-2010-e-net-framework-4/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-10-23-un-po-di-materiale-su-visual-studio-2010-e-net-framework-4.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Non &egrave; passata neanche una settimana dall&rsquo;uscita della Beta 2 di <a href="http://imperugo.tostring.it/blog/search?q=Visual+Studio&amp;searchButton=Go" target="_blank" title="Search Visual Studio">Visual Studio</a> 2010 e sul sito <a href="http://www.microsoft.com" rel="nofollow" target="_blank" title="Microsoft Corporation">Microsoft</a> &egrave; gi&agrave; disponibile il Training Kit che include parecchio materiale, <strong>presentazioni</strong>, <strong>hands-in labs</strong> e <strong>demo</strong>.</p>
+
+<p>
+    Il materiale &egrave; bello corposo, sono 95 Mb che includono i seguenti argomenti:</p>
+
+<ul>
+    <li>
+        <strong>C# 4.0</strong></li>
+    <li>
+        <strong>Visual Basic 10</strong></li>
+    <li>
+        <strong>F#</strong></li>
+    <li>
+        <strong>Parallel Extensions</strong></li>
+    <li>
+        <strong>Windows Communication Foundation</strong></li>
+    <li>
+        <strong>Windows Workflow</strong></li>
+    <li>
+        <strong>Windows Presentation Foundation</strong></li>
+    <li>
+        <strong>ASP.NET 4</strong></li>
+    <li>
+        <strong>Windows 7</strong></li>
+    <li>
+        <strong>Entity Framework</strong></li>
+    <li>
+        <strong>ADO.NET Data Services</strong></li>
+    <li>
+        <strong>Managed Extensibility Framework</strong></li>
+    <li>
+        <strong>Visual Studio Team System</strong></li>
+</ul>
+
+<p>
+    Il download &egrave; disponibile&nbsp;<a href="http://www.microsoft.com/downloads/details.aspx?familyid=752CB725-969B-4732-A383-ED5740F02E93&amp;displaylang=en" rel="nofollow" target="_blank" title="Microsoft Visual Studio 2010 Training Kit">qui</a>&nbsp;ed&nbsp;&egrave; basato sulla Beta 2 e, come potete vedere dall&rsquo;elenco, non &egrave; presente del materiale su <a href="http://imperugo.tostring.it/Categories/Archive/MVC" target="_blank" title="ASP.NET MVC">ASP.NET MVC</a> 2, motivo per cui non potete mancare <a href="http://imperugo.tostring.it/blog/post/esce-la-beta2-di-visual-studio-2010-ed-and-egrave-tempo-di-studiare" target="_blank">qui</a>.</p>
+
+<p>
+    <span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: 'Lucida Grande', 'Lucida Sans Unicode', Arial, Helvetica, Sans, FreeSans, Jamrul, Garuda, Kalimati; font-size: 13px; line-height: 18px; ">more to come...stay connected!</span></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/10/22/convertire-unapplicazione-da-mvc-1-a-mvc-2/" itemprop="url">Convertire un’applicazione da MVC 1 a MVC 2</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-10-22T06:00:00Z"  itemprop="datePublished">October 22, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/10/22/convertire-unapplicazione-da-mvc-1-a-mvc-2/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-10-22-convertire-unapplicazione-da-mvc-1-a-mvc-2.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Ieri sera stavo valutando l&rsquo;idea di convertire <a href="http://imperugo.tostring.it/Categories/Archive/Dexter" target="_blank" title="Dexter Blog Engine">Dexter</a> dalla versione 1.0 di <a href="http://imperugo.tostring.it/Categories/Archive/MVC" target="_blank" title="ASP.NET MVC">ASP.NET MVC</a> alla versione 2.0, per poter sfruttare tutte le nuove catatteristiche offerte da <a href="http://imperugo.tostring.it/tags/archive/visual+studio+2010" target="_blank" title="Visual Studio 2010">Visual Studio 2010</a> Beta 2 che, come comunicato dal PM <a href="http://haacked.com/" rel="nofollow" target="_blank">Phil Haack</a>&nbsp;<a href="http://haacked.com/archive/2009/10/20/vs10beta2-and-aspnetmvc.aspx" rel="nofollow" target="_blank" title="VS10 Beta 2 From an ASP.NET MVC Perspective">qui</a>, non supporter&agrave; la versione 1 di <a href="http://imperugo.tostring.it/Categories/Archive/MVC" target="_blank" title="ASP.NET MVC">ASP.NET MVC</a>.</p>
+
+<p>
+    Il passaggio non &egrave; particolarmente complesso, basta cambiare i riferimenti nei vari <strong>web.config</strong> (web application, test, ecc.) delle librerie <strong>routing</strong> e di <strong>mvc, </strong>i puntamenti nei vari progetti e l&rsquo;applicazione &egrave; pronta per girare con la 2.0.&nbsp; <br />
+    Gi&agrave; dalla Beta 1 <a href="http://www.hanselman.com/blog/" rel="nofollow" target="_blank" title="Scott Hanselman">Scott Hanselman</a> aveva mostrato, tramite il suo blog (<a href="http://www.hanselman.com/blog/CheesyASPNETMVCProjectUpgraderForVisualStudio2010Beta1.aspx" rel="nofollow" target="_blank" title="Cheesy ASP.NET MVC Project Upgrader for Visual Studio 2010 Beta 1">qui</a>), come realizzare una console application che convertisse il progetto in automatico; proprio da questo post <a href="http://weblogs.asp.net/leftslipper/default.aspx" rel="nofollow" target="_blank" title="Eilon Lipton'Blog">Eilon Lipton</a> ha realizzato una piccola windows form che, data una solution, converte in automatico tutti i progetti presenti al suo interno ed i vari files di configurazione.</p>
+
+<p>
+    L&rsquo;applicazione sembra girare bene, senza particolari controindicazioni, ma, nel caso in cui abbiate effettuato dei forti cambiamenti alla struttura delle folders, potreste intercorrere in qualche errore :) : proprio per questo motivo non mi &egrave; stato possibile convertire dexter con questo tool. <br />
+    Purtroppo, non avendo pi&ugrave; la cartella Scripts, il tool &egrave; andato in errore cercando di caricare le librerie aggiornate di jQuery ed <a href="http://en.wikipedia.org/wiki/Ajax_(programming)" rel="nofollow" target="_blank">Ajax</a>. Ovviamente ho inviato una segnalazione all&rsquo;autore spiegando la situazione e non ci resta che sperare in un aggiornamento.</p>
+
+<p>
+    Sotto uno screenshot dell&rsquo;applicazione:</p>
+
+<p>
+    <a href="http://imperugo.tostring.it/Content/Uploaded/image/mvc1.jpg" rel="shadowbox"><img alt="mvc1" border="0" height="193" src="http://imperugo.tostring.it/Content/Uploaded/image/mvc1_thumb.jpg" style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="mvc1" width="244" /></a></p>
+
+<p>
+    Maggiori informazioni ed il download sono disponibili al blog dell&rsquo;autore (<a href="http://weblogs.asp.net/leftslipper/archive/2009/10/19/migrating-asp-net-mvc-1-0-applications-to-asp-net-mvc-2.aspx" rel="nofollow" target="_blank" title="Migrating ASP.NET MVC 1.0 applications to ASP.NET MVC 2">qui</a>).</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/26" class="prev">Prev</a>
+    
+    
+        <a href="/page/28" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

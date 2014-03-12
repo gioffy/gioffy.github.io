@@ -1,0 +1,439 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/9/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/04/04/registrare-un-mime-type-dal-web-config/" itemprop="url">Registrare un mime type dal web.config</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-04-04T15:45:00Z"  itemprop="datePublished">April  4, 2011</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/04/04/registrare-un-mime-type-dal-web-config/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-04-04-registrare-un-mime-type-dal-web-config.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    <a href="http://tostring.it/tags/archive/iis" target="_blank" title="Internet Information Service posts">Internet Information Service</a> (IIS) versione 7.x offre la possibilit&agrave; di configurare il proprio sito un po&rsquo; pi&ugrave; in autonomia rispetto alle versioni precedenti.</p>
+
+<p>
+    Quando parlo di autonomia mi riferisco alla possibilit&agrave; di cambiare tutti quei parametri che normalmente richiedono l&rsquo;accesso alla console di IIS sul server, come compressione dei files, static content, mime types, etc. ; e proprio dell&rsquo;abilitazione dei mime-type volevo parlare quest&rsquo;oggi.</p>
+
+<p>
+    Prima di vedere come aggiungere nuovi <em>mime-type</em> alla configurazione di IIS, &egrave; giusto capire il perch&eacute; un webserver non consenta l&rsquo;accesso ad alcune estensioni di default, bloccando di conseguenza alcuni file a noi utili. <br />
+    La risposta si racchiude in una sola parola: <strong>Sicurezza</strong>.</p>
+
+<p>
+    Di fatto, se non ci fosse questo tipo di blocco, un utente potrebbe scaricare anche files con dati sensibili, tipo .mdb, .inc, etc., ossia tutti quei files che il client non dovrebbe mai vedere J.</p>
+
+<p>
+    Capito il perch&eacute; esistono questi blocchi, &egrave; necessario capire come abilitarne alcuni non accessibili normalmente. <br />
+    A partire dalla versione 7.x di IIS siamo abituati a vedere una nuova sezione nel file di configurazione: &ldquo;system.webServer&rdquo;, sezione questa che viene ignorata nel caso l&rsquo;applicazione stia girando in una versione antecedente alla 7.x (quindi non spaventiamoci se ci troviamo su Windows 2003 ed abbiamo questa strana sezione J).</p>
+
+<p>
+    Al suo interno possiamo impostare parecchi parametri, tra i quali ci sono i mime-type. Questa procedura &egrave; veramente molto semplice, ci basta infatti aggiungere poche righe di XML per avere ci&ograve; che ci serve, come mostrato dal codice seguente:</p>
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;system.webserver&gt;</span>
+    <span class="nt">&lt;staticcontent&gt;</span>
+        <span class="nt">&lt;mimemap</span> <span class="na">fileextension=</span><span class="s">&quot;.mp4&quot;</span> <span class="na">mimetype=</span><span class="s">&quot;video/mp4&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;mimemap</span> <span class="na">fileextension=</span><span class="s">&quot;.m4v&quot;</span> <span class="na">mimetype=</span><span class="s">&quot;video/m4v&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/mimemap&gt;&lt;/mimemap&gt;&lt;/staticcontent&gt;</span>
+<span class="nt">&lt;/system.webserver&gt;</span>
+</code></pre></div>
+
+<p>
+    &Egrave; molto importante fare attenzione a cosa ci &egrave; consentito fare e cosa no da IIS. Infatti non &egrave; detto che l&rsquo;amministratore di sistema voglia offrire la possibilit&agrave; allo sviluppatore di cambiare alcuni settaggi. Infatti &egrave; necessario che le &ldquo;Delegation&rdquo; di IIS siano impostate in &ldquo;Allow&rdquo; per le sezioni che ci interessano.</p>
+
+<p>
+    Chi fosse interessato all&#39;argomento pu&ograve; buttare un occhio qui <a href="http://learn.iis.net/page.aspx/94/delegating-administration/">http://learn.iis.net/page.aspx/94/delegating-administration/</a></p>
+
+<p>
+    IIS Rulez!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/03/30/migrare-un-progetto-esistente-ad-azure/" itemprop="url">Migrare un progetto esistente ad Azure</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-03-30T15:50:00Z"  itemprop="datePublished">March 30, 2011</time></span>
+	<span class="categories">web dev</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/03/30/migrare-un-progetto-esistente-ad-azure/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-03-30-migrare-un-progetto-esistente-ad-azure.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Dopo il deploy di <a title="Dexter Blog Engine Official Site" href="http://dexterblogengine.com/" target="_blank">Dexter</a>, finalmente torno a fare un po’ di post tecnici (speriamo che duri <img style="border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none" class="wlEmoticon wlEmoticon-smile" alt="Smile" src="http://www.tostring.it/UserFiles/imperugo/wlEmoticon-smile_2_4.png" />) e spero di raccontare un po’ delle tante “<em>figosità</em>”- passatemi il termine - che ho inserito nell’ultima versione, prima fra tutte il supporto a Windows <a title="Azure" href="http://tostring.it/tags/archive/azure" target="_blank">Azure</a>.     <br />Non che ci siano cose difficili da fare lato tecnologico per migrare una piattaforma ad Azure, ma alcune cose, se pur semplici, non è detto che siano scontante. Quando mi è stato chiesto il supporto al cloud di casa Microsoft, la prima domanda che mi sono posto è stata: come modifico la soluzione e come aggiungo un qualcosa di preesistente?</p>  <p><strong>I passaggi sono veramente pochi e semplici</strong>; per prima cosa ci basta aggiungere alla Solution un nuovo progetto di tipo “<strong>Windows Azure Cloud Service</strong>” e non associare nessun web/worker role al nuovo progetto. Da questo momento la nostra solution dovrebbe contenere il nuovo progetto e, una volta cliccato con il tasto destro, si ha la possibilità di associare un progetto esistente presente nella solution come webrole del nostro Cloud Service.     <br />Gli screenshot seguenti mostrano la proceura passo passo.</p>  <p><a href="http://www.tostring.it/UserFiles/imperugo/29-03-2011%2023-29-42_2.gif"><img style="background-image: none; border-right-width: 0px; margin: 0px 5px 0px 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="29-03-2011 23-29-42" border="0" alt="29-03-2011 23-29-42" src="http://www.tostring.it/UserFiles/imperugo/29-03-2011%2023-29-42_thumb.gif" width="136" height="150" /></a>&#160;<a href="http://www.tostring.it/UserFiles/imperugo/29-03-2011%2023-30-23_2.gif"><img style="background-image: none; border-right-width: 0px; margin: 0px 5px 0px 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="29-03-2011 23-30-23" border="0" alt="29-03-2011 23-30-23" src="http://www.tostring.it/UserFiles/imperugo/29-03-2011%2023-30-23_thumb.gif" width="217" height="150" /></a><a href="http://www.tostring.it/UserFiles/imperugo/29-03-2011%2023-30-36_2.gif"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="29-03-2011 23-30-36" border="0" alt="29-03-2011 23-30-36" src="http://www.tostring.it/UserFiles/imperugo/29-03-2011%2023-30-36_thumb.gif" width="240" height="150" /></a></p>  <p><a href="http://www.tostring.it/UserFiles/imperugo/29-03-2011%2023-33-39_2.gif"><img style="background-image: none; border-right-width: 0px; margin: 0px 5px 0px 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="29-03-2011 23-33-39" border="0" alt="29-03-2011 23-33-39" src="http://www.tostring.it/UserFiles/imperugo/29-03-2011%2023-33-39_thumb.gif" width="240" height="150" /></a><a href="http://www.tostring.it/UserFiles/imperugo/29-03-2011%2023-33-58_2.gif"><img style="background-image: none; border-right-width: 0px; margin: 0px 5px 0px 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="29-03-2011 23-33-58" border="0" alt="29-03-2011 23-33-58" src="http://www.tostring.it/UserFiles/imperugo/29-03-2011%2023-33-58_thumb.gif" width="240" height="150" /></a></p>  <p>Una volta completati questi passaggi è necessario che la nostra applicazione referenzi le tre assembly indispensabili al funzionamento sul cloud:</p>  <ul>   <li><strong>Microsoft.WindowsAzure.Diagnostics</strong>; </li>    <li><strong>Microsoft.WindowsAzure.ServiceRuntime</strong>; </li>    <li><strong>Microsoft.WindowsAzure.StorageClient;</strong> </li> </ul>  <p>Come ultimo passaggio è necessario inserire una classe, “WebRole.cs” nel nostro caso, nel progetto web per far sì che l’environment di sviluppo di Azure possa verificare il corretto funzionamento dell’istanza.</p>  <p>La classe dovrà contenere il seguente codice:</p>  <p>&#160;</p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.WindowsAzure</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.WindowsAzure.ServiceRuntime</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">Dexter.Web.UI.Azure</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">WebRole</span> <span class="p">:</span> <span class="n">RoleEntryPoint</span> <span class="p">{</span>
+        <span class="k">public</span> <span class="k">override</span> <span class="kt">bool</span> <span class="nf">OnStart</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// For information on handling configuration changes</span>
+            <span class="c1">// see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.</span>
+            <span class="n">RoleEnvironment</span><span class="p">.</span><span class="n">Changing</span> <span class="p">+=</span> <span class="n">RoleEnvironmentChanging</span><span class="p">;</span>
+
+            <span class="n">CloudStorageAccount</span><span class="p">.</span><span class="n">SetConfigurationSettingPublisher</span> <span class="p">(</span> <span class="p">(</span> <span class="n">configName</span> <span class="p">,</span> <span class="n">configSetter</span> <span class="p">)</span> <span class="p">=&gt;</span> <span class="n">configSetter</span> <span class="p">(</span> <span class="n">RoleEnvironment</span><span class="p">.</span><span class="n">GetConfigurationSettingValue</span> <span class="p">(</span> <span class="n">configName</span> <span class="p">)</span> <span class="p">)</span> <span class="p">);</span>
+
+            <span class="k">return</span> <span class="k">base</span><span class="p">.</span><span class="n">OnStart</span> <span class="p">(</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">static</span> <span class="k">void</span> <span class="nf">RoleEnvironmentChanging</span> <span class="p">(</span> <span class="kt">object</span> <span class="n">sender</span> <span class="p">,</span> <span class="n">RoleEnvironmentChangingEventArgs</span> <span class="n">e</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// If a configuration setting is changing</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">e</span><span class="p">.</span><span class="n">Changes</span><span class="p">.</span><span class="n">Any</span> <span class="p">(</span> <span class="n">change</span> <span class="p">=&gt;</span> <span class="n">change</span> <span class="k">is</span> <span class="n">RoleEnvironmentConfigurationSettingChange</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// Set e.Cancel to true to restart this role instance</span>
+                <span class="n">e</span><span class="p">.</span><span class="n">Cancel</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><br /></p>
+
+<p>Da questo momento in poi possiamo fare il run dell’applicazione, ed il tutto dovrebbe girare sotto “Azure”.</p>
+
+<p>Soon altri post del tipo “come migrare un’applicazione ad Azure senza referenziare Azure <img style="border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none" class="wlEmoticon wlEmoticon-smile" alt="Smile" src="http://www.tostring.it/UserFiles/imperugo/wlEmoticon-smile_2_4.png" />“</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/03/24/quibrowser-it-runs-on-dexter/" itemprop="url">QuiBrowser.it runs on dexter</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-03-24T16:50:00Z"  itemprop="datePublished">March 24, 2011</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/03/24/quibrowser-it-runs-on-dexter/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-03-24-quibrowser-it-runs-on-dexter.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Chi segue i commit di <a title="Dexter Blog Engine Official Site" href="http://dexterblogengine.com/" target="_blank">Dexter</a> su <a href="http://dexterblogengine.codeplex.com/" target="_blank">codeplex</a>, sicuramente avrà notato che il progetto <strong>non è morto, tutt’altro</strong>.</p>  <p>In questi giorni, oltre al solito lavoro su Dexter, ho lavorato al porting del blog di <a href="http://quibrowser.it" target="_blank">QuiBrowser</a> che, da ieri, gira sulla “mia” piattaforma. La versione installata è ben diversa da quella utilizzata nel mio blog: di fatto l’ho praticamente “riscritta”, con conseguente ritardo (l’ennesimo) nel rilascio di una build.     <br />Tra le novità introdotte in questa versione (di cui parlerò in seguito) c’è la skin, realizzata sfruttando le principali caratteristiche messe a disposizione dall’<a title="Post about HTML5" href="http://tostring.it/tags/archive/html5" target="_blank">HTML5</a>: canvas, tag semantici, trasparenze, ombre, font custom, etc.</p>  <p>Il risultato:</p>  <p><a href="http://www.quibrowser.it/" target="_blank"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="23-03-2011 22-34-24" border="0" alt="23-03-2011 22-34-24" src="http://www.tostring.it/UserFiles/imperugo/23-03-2011%2022-34-24_5.gif" width="640" height="386" /></a></p>  <p>&#160;</p>  <p>Per chi fosse interessato all’argomento consiglio di buttarci un occhio.    <br />Ci sono un po’ di problemini con il server (tempi di risposta alti), ma presto passerà ad <a title="Azure" href="http://tostring.it/tags/archive/azure" target="_blank">Azure</a>&#160;<img style="border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none" class="wlEmoticon wlEmoticon-openmouthedsmile" alt="Open-mouthed smile" src="http://www.tostring.it/UserFiles/imperugo/wlEmoticon-openmouthedsmile_2.png" /></p>  <p>   <br /><strong>Un super mega grazie ad </strong><a title="Alessandro Giorgetti&#39;s Blog" href="http://www.primordialcode.com/" rel="nofollow" target="_blank"><strong>Alessandro</strong></a> che mi ha aiutato come sempre in questa folle impresa: un mito!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/03/08/web-camps-2011/" itemprop="url">Web Camps 2011</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-03-08T17:45:00Z"  itemprop="datePublished">March  8, 2011</time></span>
+	<span class="categories">eventi</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/03/08/web-camps-2011/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-03-08-web-camps-2011.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Il 15 marzo in Italia si terrà il <strong>Web Camps</strong>, organizzato da <strong>Microsoft Italia</strong>, al quale ho la fortuna di partecipare come speaker; nello specifico terrò due sessioni, la prima riguardante <a title="Post about HTML5" href="http://tostring.it/tags/archive/html5" target="_blank">HTML5</a> e CSS3, la seconda un’introduzione ad Orchard, il nuovo CMS Open Source di casa Microsoft.     <br /></p>  <p>&#160;<a href="http://www.tostring.it/UserFiles/imperugo/logo_MicrosoftWebCamps_2.gif"><img style="background-image: none; border-bottom: 0px; border-left: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top: 0px; border-right: 0px; padding-top: 0px" title="logo_MicrosoftWebCamps" border="0" alt="logo_MicrosoftWebCamps" src="http://www.tostring.it/UserFiles/imperugo/logo_MicrosoftWebCamps_thumb.gif" width="240" height="172" /></a>    <br /></p>  <p>Per gli appassionati del web direi che è un must! Agenda ed iscrizioni sono disponibili <a title="Microsoft Web Camp" href="http://www.microsoft.com/italy/webcamps/default.aspx" rel="nofollow" target="_blank">qui</a></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/02/10/webcast-su-html5-e-css3/" itemprop="url">WebCast su HTML5 e CSS3</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-02-10T17:32:00Z"  itemprop="datePublished">February 10, 2011</time></span>
+	<span class="categories">web dev</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/02/10/webcast-su-html5-e-css3/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-02-10-webcast-su-html5-e-css3.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Buona visione <img style="border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none" class="wlEmoticon wlEmoticon-smile" alt="Smile" src="http://www.tostring.it/UserFiles/imperugo/wlEmoticon-smile_2_3.png" /></p>  <p><a title="Web Design con CSS3 &amp; HTML5" href="http://www.microsoft.com/italy/beit/Msdn.aspx?video=0de95585-39d3-4385-bcda-8c2236be82cc" rel="nofollow" target="_blank"><img style="background-image: none; border-right-width: 0px; margin: ; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="10-02-2011 09-22-32" border="0" alt="10-02-2011 09-22-32" src="http://www.tostring.it/UserFiles/imperugo/10-02-2011%2009-22-32_3.png" width="554" height="346" /></a></p>  <p><a title="Introduzione alle novità con HTML5" href="http://www.microsoft.com/italy/beit/Msdn.aspx?video=ff3d2c62-ed7a-4204-b316-011af02fbef8" rel="nofollow" target="_blank"><img style="background-image: none; border-right-width: 0px; margin: ; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="10-02-2011 09-24-24" border="0" alt="10-02-2011 09-24-24" src="http://www.tostring.it/UserFiles/imperugo/10-02-2011%2009-24-24_3.png" width="554" height="348" /></a></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/8" class="prev">Prev</a>
+    
+    
+        <a href="/page/10" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

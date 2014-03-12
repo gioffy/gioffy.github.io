@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+        <title>Giorgio Formica</title>
+        <description>Giorgio Formica - </description>
+        <link></link>
+        <link></link>
+        <lastBuildDate>2014-03-12T22:31:14+01:00</lastBuildDate>
+        <pubDate>2014-03-12T22:31:14+01:00</pubDate>
+        <ttl>1800</ttl>
+
+
+        <item>
+                <title>Utilizzare CORS con Web API 2.0</title>
+                <description>&lt;p&gt;Con la versione 2.0 delle Web API è stato introdotto il supporto alle richieste cross domain, più comunemente chiamate CORS (Cross-Origin Resource Sharing).&lt;/p&gt;
+
+&lt;p&gt;Normalmente non è possibile effettuare richieste HTTP via Javascript da un source il cui dominio è differente da quello dell’endpoint chiamato. Tradotto in soldoni, se il nostro Javascript si trova su &lt;strong&gt;http://www.miosito.it/Index.html&lt;/strong&gt; non è possibile chiedere informazioni al sito &lt;strong&gt;http://www.tuosito.it/&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;I motivi sono semplicemente di sicurezza, e servono ad impedire che qualcuno possa attingere a informazioni personali tramite un JS “&lt;em&gt;maligno&lt;/em&gt;”.&lt;/p&gt;
+
+&lt;p&gt;Chiarito il perché di questo blocco, a volte può risultare necessario effettuare questo tipo di chiamate, e le strade possono essere diverse a seconda dei browser che si vogliono supportare. La prima ed universale soluzione è comunicare via &lt;a href=&quot;http://en.wikipedia.org/wiki/JSONP&quot;&gt;JSONP&lt;/a&gt;. Questo approccio è molto facile da utilizzare e tutti i browser lo supportano; l’unico incoveniente è il VERB della chiamata http che può essere solo in GET, con il conseguente limite dei caratteri utilizzabili.&lt;/p&gt;
+
+&lt;p&gt;Se, al contrario, vogliamo inviare parecchie informazioni non possiamo utilizzare questo approccio (una soluzione in questo caso è “proxare” lato server le chiamate JS e ribaltarle all’endpoint).&lt;/p&gt;
+
+&lt;p&gt;Un&amp;#39;altra soluzione è l’utilizzo del CORS, che da il titolo a questo articolo.
+In pratica la comunicazione CORS stabilisce, tramite delle recole che vedremo più avanti in questo articolo, che un client può accedere a delle informazioni da un dominio differente a condizione che il server lo consenta.
+ Ovviamente per far ciò è necessario che il browser permetta questo tipo di chiamata, cosa che purtroppo non è del tutto scontata. Internet Explorer in questo è stato fermo per molto tempo e, solo a partire dalla versione 10, ha introdotto il supporto completo a questo meccanismo di comunicazione.&lt;/p&gt;
+
+&lt;p&gt;La tabella seguente (&lt;a href=&quot;fonte&quot;&gt;http://caniuse.com/cors&lt;/a&gt;) mostra il supporto al CORS dai vari browsers&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2014-02-16-utilizzare-cors-con-web-api-20/cors.jpg&quot; alt=&quot;CORS SUPPORT TABLE&quot;&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;ci sono dei workaround che permettono di sfruttare CORS anche con IE 8/9 ma con alcuni limiti sui VERB della chiamata (maggiori info &lt;a href=&quot;http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx&quot;&gt;qui&lt;/a&gt; )&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Ora che abbiamo chiarito cos’è il CORS, è arrivato il momento di configurarlo utilizzando uno tra questi browsers: IE10/11, Chrome (tutte le versioni), Firefox dalla 3.5+ e Safari 4+.&lt;/p&gt;
+
+&lt;p&gt;A questo punto abbiamo bisogno di due progetti, uno per il client ed uno per il server, entrambi “hostati” su domini differenti (nel mio esempio ho sfruttato i websites di azure, quindi ho &lt;a href=&quot;http://imperdemo.azurewebsite.net&quot;&gt;http://imperdemo.azurewebsite.net&lt;/a&gt; per la parte server e &lt;a href=&quot;http://imperclient.azurewebsite.net&quot;&gt;http://imperclient.azurewebsite.net&lt;/a&gt; per la parte client).&lt;/p&gt;
+
+&lt;h2&gt;Applicazione Server&lt;/h2&gt;
+
+&lt;p&gt;Una volta creato il nostro progetto, come prima cosa è necessario abilitare il CORS per i domini che riteniamo &amp;quot;&lt;strong&gt;trusted&lt;/strong&gt;&amp;quot;, quindi nel mio esempio &lt;em&gt;imperclient.azurewebsite.net&lt;/em&gt;, nel Global.asax.cs&lt;/p&gt;
+
+&lt;p&gt;Se avete utilizzato il template di default di Visual Studio, il vostro golbal.asax.cs dovrebbe essere più o meno come questo.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c#&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;WebApiApplication&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Web&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpApplication&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Application_Start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;AreaRegistration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RegisterAllAreas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;GlobalConfiguration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Configure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WebApiConfig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;FilterConfig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RegisterGlobalFilters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GlobalFilters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Filters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;RouteConfig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RegisterRoutes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RouteTable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Routes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;BundleConfig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RegisterBundles&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BundleTable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Bundles&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+Da qui il file da modificare è quello contenente la configurazione delle Web API, quindi &quot;WebApiConfig.cs&quot; contenuto nella folder &quot;App_Start&quot;.
+
+
+&gt; N.B.: Prima di moficare il codice è necessario installare il corretto NuGet Packages; di fatto il template di Visual Studio delle Web API &quot;as is&quot; non contiene il package per il CORS, che va quindi installato manualmente.
+
+
+
+&lt;div class=&quot;nuget-badge&quot;&gt;
+    &lt;code&gt;PM&amp;gt; Install-Package Microsoft.AspNet.WebApi.Cors&lt;/code&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Una volta che tutti gli &amp;quot;ingredienti&amp;quot; sono pronti, non ci resta che abilitare il CORS a livello applicativo e specificare per ogni singolo controller i &amp;quot;trusted&amp;quot; domain così:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c# language-c#&quot; data-lang=&quot;c#&quot;&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Web.Http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;imperugo.webapi.cors.server&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;WebApiConfig&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// Web API configuration and services&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;EnableCors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// Web API routes&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MapHttpAttributeRoutes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+            &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Routes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MapHttpRoute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;DefaultApi&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;routeTemplate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;api/{controller}/{id}&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RouteParameter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Optional&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Mentre il nostro ValueController risulta così:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c# language-c#&quot; data-lang=&quot;c#&quot;&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Collections.Generic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Web.Http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Web.Http.Cors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;imperugo.webapi.cors.server.Controllers&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;    [EnableCors(origins: &amp;quot;http://imperclient.azurewebsites.net&amp;quot;, headers: &amp;quot;*&amp;quot;, methods: &amp;quot;*&amp;quot;)]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ValuesController&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ApiController&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// GET api/values/5&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;This is my controller response&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;La parte importante di quest&amp;#39;ultimo blocco di codice è l&amp;#39;attributo &lt;strong&gt;EnableCors&lt;/strong&gt; dove viene specificato l&amp;#39;url accettato per la richeista, gli headers ed i vari metodi.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Se non si vuole &amp;quot;aprire&amp;quot; un intero controller a delle chiamate Cross Domain, è possibile utilizzare l&amp;#39;attributo anche solo sulla singola Action oppure lasciare l&amp;#39;attributo sul controller e disabilitare una singola Action tramite l&amp;#39;attributo DisableCors&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2&gt;Applicazione Client&lt;/h2&gt;
+
+&lt;p&gt;A questo punto, dato che la parte server è stata completata, non ci resta che creare un&amp;#39;altra applicazione con il compito di chiamare le nostre API appena create e deployate sul nostro server.&lt;/p&gt;
+
+&lt;p&gt;Il codice sottostante è un semplicissimo codice javascript, quindi può risiedere anche su una semplice pagina .html, senza la necessità di creare un&amp;#39;applicazione server side.&lt;/p&gt;
+
+&lt;p&gt;La pagina HTML sarà così composta:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;html language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;jumbotron&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;Test CORS (Cross-origin resource sharing)&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;lead&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;#&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;btn btn-primary btn-large&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;testButton&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Test it now&lt;span class=&quot;ni&quot;&gt;&amp;amp;raquo;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;response&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+        NoResponse
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;con il seguente codice javascript:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;js language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;language&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;javascript&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;feedbackArea&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#response&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#testButton&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ajax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;GET&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;http://imperdemo.azurewebsites.net/api/values&amp;#39;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;feedbackArea&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;html&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jqXHR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;textStatus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;errorThrown&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;feedbackArea&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;html&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jqXHR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseText&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;textStatus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/script&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Se abbiamo fatto tutto correttamente, non ci resta che deployare l&amp;#39;applicazione server e quella client.  Se utilizzate il template di Visual Studio, quest&amp;#39;ultima dovrebbe apparire così:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2014-02-16-utilizzare-cors-con-web-api-20/cors-client.jpg&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Il tutto dovrebbe dare un risultato tipo il seguente:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2014-02-16-utilizzare-cors-con-web-api-20/cors-client-show-response.jpg&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Al contrario se qualcosa non va, è necessario ricontrollare i punti sopra.&lt;/p&gt;
+
+&lt;h2&gt;Come funziona&lt;/h2&gt;
+
+&lt;p&gt;Il funzionamento del CORS è un semplice gioco di HEADERS tra il chiamante ed il server che riceve la risposta.
+Il browser (il client) aggiunge nell&amp;#39;header della chimata un&amp;#39;informazione riguardo al dominio corrente (imperclient.azurewebsites.net nel mio caso) con la chiave &lt;em&gt;Origin&lt;/em&gt;.
+Il server a sua volta verifica che tale valore sia tra quelli trusted e risponde con un&amp;#39;altra informazione (sempre nell&amp;#39;header) con la chiave &lt;em&gt;Access-Control-Allow-Origin&lt;/em&gt;
+Se i due valori &amp;quot;matchano&amp;quot; allora il browser utilizza la risposta, altrimenti si avrà un errore.
+In questo screenshot potete vedere l&amp;#39;header della richiesta e della risposta http, con evidenziati i valori utilizzati per il confronto&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2014-02-16-utilizzare-cors-con-web-api-20/cors-client-show-response-headers.jpg&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Di seguito invece il classico errore che restituisce Chrome nel momento in cui il CORS non funziona correttamente
+&lt;img src=&quot;/assets/2014-02-16-utilizzare-cors-con-web-api-20/cors-client-show-response-error.jpg&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+
+&lt;h2&gt;Conclusioni&lt;/h2&gt;
+
+&lt;p&gt;Per me che amo &amp;quot;spezzare&amp;quot; le mie applicazioni con un layer di API tra il front-end ed il backend, il CORS è una gran comodità, peccato purtroppo la non completa compatiblità con tutti i browser.
+La demo di questo sito è disponibile &lt;a href=&quot;/assets/2014-02-16-utilizzare-cors-con-web-api-20/sample.zip&quot;&gt;qui&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>/2014/02/18/utilizzare-cors-con-web-api-20/</link>
+                <guid>/2014/02/18/utilizzare-cors-con-web-api-20</guid>
+                <pubDate>2014-02-18T00:00:00+01:00</pubDate>
+        </item>
+
+        <item>
+                <title>I'm back!</title>
+                <description>&lt;p&gt;Ultimamente ho ritrovato un po’ la passione ed il tempo per lavorare sul blog, specie quello italiano.  Devo ammettere che è passato davvero molto dall’ultima volta che ho scritto, e di cose ne sono successe: un ruolo nuovo a lavoro e un bambino fantastico.&lt;/p&gt;
+
+&lt;p&gt;Quindi si riparte, ho aggiornato il blog (nell’aggiornarlo ho cancellato i commenti per sbaglio, sorry) e gli ho dato una  nuova veste grafica.
+Nelle prossime settimane pubblicherò diversi post sullo sviluppo web, la mia passione da sempre, ma non volevo riaprire il blog italiano subito con qualcosa di tech senza prima “chiacchierare” e, se volete, ripresentarmi.&lt;/p&gt;
+
+&lt;p&gt;Quindi, dato che ho già detto cosa mi è successo in questo anno fantastico, ho deciso di cominciare facendo un po’ di “pubblicità” al mio amico &lt;a title=&quot;Il blog di Matteo Pagani&quot; href=&quot;http://www.qmatteoq.com&quot; target=&quot;_blank&quot;&gt;Matteo&lt;/a&gt;, che ha scritto un libro &lt;b&gt;spaziale&lt;/b&gt; sullo sviluppo Windows Phone.
+Sottolineo la parola spaziale perché è riuscito a far capire ad uno come me, che di sviluppo mobile sa praticamente nulla, come fare un’app su Windows Phone (sinceramente mi ha anche aiutato a capire alcuni aspetti dello sviluppo su Windows 8).&lt;/p&gt;
+
+&lt;p&gt;Normalmente non amo i libri di molte pagine, perché a volte una tecnologia diventa obsoleta prima che finisco di leggerlo (ammetto che è un mio limite). Sono pochi i libri di un certo peso (inteso come numero di pagine) che sono riuscito a leggere con costanza e voglia.&lt;/p&gt;
+
+&lt;p&gt;Questo sicuramente è uno di quelli (insieme ai libri del mitico Dino Esposito).&lt;/p&gt;
+
+&lt;p&gt;Se siete anche solo minimamente interessati al mondo mobile, specie su tecnologia Microsoft, non potete non leggerlo.
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;img class=&quot;aligncenter&quot; style=&quot;margin-top: 10px; margin-bottom: 10px;&quot; alt=&quot;&quot; src=&quot;http://qmatteoq.tostring.it/UserFiles/uploaded/qmatteoq/libro_2.png&quot; width=&quot;70&quot; height=&quot;100&quot; /&gt;&lt;/p&gt;
+Ovviamente lo trovate su Amazon &lt;a href=&quot;http://www.amazon.it/Sviluppare-applicazioni-Windows-Digital-LifeStyle-ebook/dp/B00CS5OZNS/ref=sr_1_1?ie=UTF8&amp;amp;qid=1390813499&amp;amp;sr=8-1&amp;amp;keywords=sviluppare+applicazioni+per+windows+phone+8&quot; target=&quot;_blank&quot;&gt;qui&lt;/a&gt;.&lt;/p&gt;
+</description>
+                <link>/2014/01/27/im-back/</link>
+                <guid>/2014/01/27/im-back</guid>
+                <pubDate>2014-01-27T10:08:10Z</pubDate>
+        </item>
+
+        <item>
+                <title>override.tostring.it</title>
+                <description>&lt;p&gt;Anche se non come speravo, ce l’ho fatta. Il mio blog in inglese è ufficialmente online.    &lt;br /&gt;Il dominio è alquanto particolare per noi tecnici: &lt;a title=&quot;English Blog&quot; href=&quot;http://override.tostring.it/&quot; target=&quot;_blank&quot;&gt;&lt;strong&gt;override.tostring.it&lt;/strong&gt;&lt;/a&gt; . Lo stile del blog è lo stesso, quindi principalmente web, ma con la speranza di tornare a bloggare con la stessa frequenza di un anno e mezzo fa.&lt;/p&gt;  &lt;p&gt;Per chi mi segue, &lt;strong&gt;il blog in inglese non sarà una replica di quello italiano&lt;/strong&gt;, quindi potrete trovare contenuti esclusivi della versione inglese e viceversa.    &lt;br /&gt;Purtroppo il tempo non mi permette di scrivere un post in entrambe le lingue, ma di sicuro alcuni post saranno presenti in forme differenti su entrambi i blog.&lt;/p&gt;  &lt;p&gt;Purtroppo il blog gira su Wordpress. Dico purtroppo non per parlare male di Wordpress ma perché non sono riuscito a trovare il tempo di creare una build stabile di Dexter.   &lt;br /&gt;Spero di trovare il tempo (o i collaboratori) per arrivare ad una buona build e migrare il tutto.&lt;/p&gt;  &lt;p&gt;Tornando al blog, le idee sono tante e le scoprirete nei mesi a seguire, quindi…. Stay tuned!&lt;/p&gt;  &lt;p&gt;Website: &lt;a title=&quot;English Blog&quot; href=&quot;http://override.tostring.it/&quot; target=&quot;_blank&quot;&gt;&lt;strong&gt;override.tostring.it&lt;/strong&gt;&lt;/a&gt;    &lt;br /&gt;Rss: &lt;a href=&quot;http://feeds.feedburner.com/override/tostring/it&quot;&gt;&lt;strong&gt;http://feeds.feedburner.com/override/tostring/it&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>/2012/06/19/override-tostring-it/</link>
+                <guid>/2012/06/19/override-tostring-it</guid>
+                <pubDate>2012-06-19T16:15:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>Here we go….Web.NET Conference Europe</title>
+                <description>&lt;p&gt;
+    Dopo l&amp;rsquo;annuncio, prima via Twitter e poi tramite il blog di &lt;a href=&quot;http://codeclimber.net.nz/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot; title=&quot;Simone Chiaretta&#39;s blog&quot;&gt;Simone&lt;/a&gt;, eccomi qui a &amp;ldquo;sponsorizzare&amp;rdquo; la mia prima conferenza da organizzatore e non da speaker.&lt;/p&gt;
+
+&lt;p&gt;
+    &lt;strong&gt;Se siete appassionati di web e volete vedere/conoscere come il mondo dello sviluppo web si sta evolvendo, non potete mancare.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;
+    &lt;a href=&quot;http://tostring.it/UserFiles/imperugo/webnetconftitle_3_2.jpg&quot;&gt;&lt;img alt=&quot;webnetconftitle_3&quot; border=&quot;0&quot; height=&quot;146&quot; src=&quot;http://tostring.it/UserFiles/imperugo/webnetconftitle_3_thumb.jpg&quot; style=&quot;border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px 0px 8px; border-left: 0px; display: inline; padding-right: 0px&quot; title=&quot;webnetconftitle_3&quot; width=&quot;640&quot; /&gt;&lt;/a&gt; &lt;br /&gt;
+    Salvo cambiamenti nei prossimi giorni la conferenza &lt;strong&gt;si terr&amp;agrave; ad ottobre&lt;/strong&gt; - non abbiamo ancora le date ufficiali per via della location - e &lt;strong&gt;al 95% siamo su Milano&lt;/strong&gt;. &lt;br /&gt;
+    &lt;strong&gt;La conferenza &amp;egrave; Europea&lt;/strong&gt;, quindi &lt;strong&gt;le sessioni saranno in Inglese&lt;/strong&gt;, e dovrebbero esserci diversi &lt;strong&gt;speaker internazionali&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;
+    Giusto per darvi un assaggio di cosa si parler&amp;agrave;, eccovi un estratto:&lt;/p&gt;
+
+&lt;p&gt;
+    &amp;ldquo;&lt;strong&gt;Advanced JavaScript frameworks, HTML5, REST frameworks, cloud, lightweight http servers, real-time web, low-cerimony web frameworks, and much more... &lt;br /&gt;
+    both on .NET and other technologies&lt;/strong&gt;&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;
+    Abbiamo creato una &lt;a href=&quot;http://webnetconf.eu&quot; target=&quot;_blank&quot;&gt;pagina di lancio&lt;/a&gt; dove &amp;egrave; possibile registrarsi (grazie alle quasi 120 persone che lo hanno gi&amp;agrave; fatto), un account Twitter &lt;a href=&quot;https://twitter.com/#!/webnetconf&quot;&gt;@webnetconf&lt;/a&gt; (l&amp;rsquo;hashtag &amp;egrave; &lt;a href=&quot;https://twitter.com/#!/search/%23webnet12&quot;&gt;#webnet12&lt;/a&gt;) ed una pagina &lt;a href=&quot;https://www.facebook.com/WebnetConf&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot; title=&quot;Web.NET Conference Europe&quot;&gt;Facebook&lt;/a&gt;. &lt;br /&gt;
+    &lt;strong&gt;Nei prossimi giorni comunicheremo location e date ufficiali&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;
+    Se vi sentite parte del futuro del web, preparate le vostre proposte perch&amp;eacute; la Call For Paper sta arrivando.&lt;/p&gt;
+
+&lt;p&gt;
+    Stay tuned!&lt;/p&gt;
+</description>
+                <link>/2012/04/23/here-we-go-web-net-conference-europe/</link>
+                <guid>/2012/04/23/here-we-go-web-net-conference-europe</guid>
+                <pubDate>2012-04-23T15:55:53Z</pubDate>
+        </item>
+
+        <item>
+                <title>There's an app for that</title>
+                <description>&lt;p&gt;
+    Negli ultimi tempi, non essendo riuscito a bloggare con constanza a causa dei molti impegni, non ho avuto modo di comunicare l&amp;rsquo;esistenza di un&amp;rsquo;applicazione di tostring.it per Windows Phone.&lt;/p&gt;
+
+&lt;p&gt;
+    L&amp;rsquo;applicazione &amp;egrave; nello store da diversi mesi, &amp;egrave; ovviamente gratuita e la potete scaricare &lt;a href=&quot;http://www.windowsphone.com/it-IT/apps/47c404b1-021c-4d1e-a7fc-6ed5d8de2fa8&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot; title=&quot;tostring sul windows phone&quot;&gt;qui&lt;/a&gt;. Quello che offre &amp;egrave; piuttosto prevedibile: gli ultimi post e le stupidaggini che scrivo su Twitter J.&lt;/p&gt;
+
+&lt;p&gt;
+    L&amp;rsquo;app &amp;egrave; &amp;ldquo;Mango enabled&amp;rdquo; ed offre la possibilit&amp;agrave; di avere le notifiche &amp;ldquo;tile&amp;rdquo; e &amp;ldquo;toast&amp;rdquo; con un check periodico del feed del blog (ovviamente potete disabilitare il tutto).&lt;/p&gt;
+
+&lt;p&gt;
+    Questa applicazione non esisterebbe se non fosse per il buon &lt;a href=&quot;http://qmatteoq.tostring.it&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot; title=&quot;Matteo Pagani&#39;s blog&quot;&gt;Matteo&lt;/a&gt;, quindi un grazie &amp;egrave; d&amp;rsquo;obbligo. &lt;br /&gt;
+    Cosa curiosa, che ovviamente mi ha fatto molto piacere, &amp;egrave; stato scoprire che oggi (quindi ieri per chi legge il post) l&amp;rsquo;applicazione &amp;egrave; tra le feature app del marketplace, come potete vedere dallo screenshot seguente:&lt;/p&gt;
+
+&lt;p&gt;
+    &lt;a href=&quot;http://tostring.it/UserFiles/imperugo/photo.jpg&quot;&gt;&lt;img alt=&quot;photo&quot; border=&quot;0&quot; height=&quot;244&quot; src=&quot;http://tostring.it/UserFiles/imperugo/photo_thumb.jpg&quot; style=&quot;border-left-width: 0px; border-right-width: 0px; background-image: none; border-bottom-width: 0px; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-top-width: 0px&quot; title=&quot;photo&quot; width=&quot;148&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;
+    Qui alcuni screenshot dell&amp;rsquo;app:&lt;/p&gt;
+
+&lt;p&gt;
+    &lt;a href=&quot;http://tostring.it/UserFiles/imperugo/3f2b9f36-b054-4e4e-974a-f49b3a955858_2.png&quot;&gt;&lt;img alt=&quot;3f2b9f36-b054-4e4e-974a-f49b3a955858&quot; border=&quot;0&quot; height=&quot;244&quot; src=&quot;http://tostring.it/UserFiles/imperugo/3f2b9f36-b054-4e4e-974a-f49b3a955858_thumb.png&quot; style=&quot;border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px 3px; border-left: 0px; display: inline; padding-right: 0px&quot; title=&quot;3f2b9f36-b054-4e4e-974a-f49b3a955858&quot; width=&quot;148&quot; /&gt;&lt;/a&gt;&lt;a href=&quot;http://tostring.it/UserFiles/imperugo/9d943c08-b2dc-4092-96c1-5d86ef04c74c_2.png&quot;&gt;&lt;img alt=&quot;9d943c08-b2dc-4092-96c1-5d86ef04c74c&quot; border=&quot;0&quot; height=&quot;244&quot; src=&quot;http://tostring.it/UserFiles/imperugo/9d943c08-b2dc-4092-96c1-5d86ef04c74c_thumb.png&quot; style=&quot;border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px 3px; border-left: 0px; display: inline; padding-right: 0px&quot; title=&quot;9d943c08-b2dc-4092-96c1-5d86ef04c74c&quot; width=&quot;148&quot; /&gt;&lt;/a&gt;&lt;a href=&quot;http://tostring.it/UserFiles/imperugo/ed1bba52-e387-4de2-8f3e-dc6735a783ef_2.png&quot;&gt;&lt;img alt=&quot;ed1bba52-e387-4de2-8f3e-dc6735a783ef&quot; border=&quot;0&quot; height=&quot;244&quot; src=&quot;http://tostring.it/UserFiles/imperugo/ed1bba52-e387-4de2-8f3e-dc6735a783ef_thumb.png&quot; style=&quot;border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px 3px; border-left: 0px; display: inline; padding-right: 0px&quot; title=&quot;ed1bba52-e387-4de2-8f3e-dc6735a783ef&quot; width=&quot;148&quot; /&gt;&lt;/a&gt;&lt;a href=&quot;http://tostring.it/UserFiles/imperugo/82f7ccd0-53d5-4bde-b1a5-fa15f2fb6274_2.png&quot;&gt;&lt;img alt=&quot;82f7ccd0-53d5-4bde-b1a5-fa15f2fb6274&quot; border=&quot;0&quot; height=&quot;244&quot; src=&quot;http://tostring.it/UserFiles/imperugo/82f7ccd0-53d5-4bde-b1a5-fa15f2fb6274_thumb.png&quot; style=&quot;border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px 3px; border-left: 0px; display: inline; padding-right: 0px&quot; title=&quot;82f7ccd0-53d5-4bde-b1a5-fa15f2fb6274&quot; width=&quot;148&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;
+    Buon download!&lt;/p&gt;
+
+&lt;p style=&quot;height: 20px&quot;&gt;
+    &lt;iframe allowtransparency=&quot;&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; src=&quot;http://www.facebook.com/plugins/like.php?href=http://tostring.it/blog/post/there-is-an-app-for-that/&amp;amp;layout=standard&amp;amp;show_faces=false&amp;amp;width=450&amp;amp;action=like&amp;amp;font=verdana&amp;amp;colorscheme=light&amp;amp;height=10&quot; style=&quot;border-top: medium none; height: 80px; border-right: medium none; width: 450px; border-bottom: medium none; overflow: hidden; border-left: medium none&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;
+</description>
+                <link>/2012/04/19/theres-an-app-for-that/</link>
+                <guid>/2012/04/19/theres-an-app-for-that</guid>
+                <pubDate>2012-04-19T16:00:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>I Bundle di ASP.NET MVC 4</title>
+                <description>&lt;p&gt;L’ultima release (attualmente in beta) di &lt;a title=&quot;ASP.NET MVC&quot; href=&quot;http://tostring.it/tags/archive/mvc&quot;&gt;ASP.NET MVC&lt;/a&gt;, di cui abbiamo visto alcune novità &lt;a title=&quot;What&#39;s new in Razor&quot; href=&quot;http://tostring.it/blog/post/whats-new-in-razor-v2/&quot; target=&quot;_blank&quot;&gt;qui&lt;/a&gt; e &lt;a title=&quot;Il tilde in Razor&quot; href=&quot;http://tostring.it/blog/post/whats-new-in-razor-v2/&quot; target=&quot;_blank&quot;&gt;qui&lt;/a&gt;, introduce veramente molte feature interessanti, una delle quali è rappresentata dai Bundle.
+Ormai noi tutti conosciamo l’importanza di ridurre al minimo il numero di richieste dal client verso il server. Quando parliamo di riduzione delle richieste, includiamo un po’ tutto: dai fogli di stile, ai javascript, e magari anche i dati tramite l’utilizzo di AJAX.&lt;/p&gt;
+
+&lt;p&gt;Per i primi due viene utilizzata la tecnica del “combine” e “minify” di più file in un’unica richiesta. Questo approccio consiste nel raggruppare tutti i files dello stesso tipo in un unico file, e nel rimuovere tutti gli spazi e commenti non necessari.&lt;/p&gt;
+
+&lt;p&gt;Tradotto in soldoni, tutte queste richieste che abbiamo nella pagina :&lt;/p&gt;
+
+&lt;p&gt;[xml]
+&amp;lt;script src=&amp;quot;/Scripts/jquery-1.6.2.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;/Scripts/jquery-ui-1.8.11.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;/Scripts/jquery.validate.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;/Scripts/jquery.validate.unobtrusive.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;/Scripts/knockout-2.0.0.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+[/xml]&lt;/p&gt;
+
+&lt;p&gt;Diventano una sola&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;script&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/Scripts/combined.js&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ovviamente lavorare con un file unico, che sia questo un file javascript o css, risulta un po’ scomodo e, proprio per questo motivo, esistono diversi tool/framework che agevolano la creazione di un unico file a runtime o compile time.&lt;/p&gt;
+
+&lt;p&gt;Con ASP.NET MVC 4 effettuare il “combine” e “minify” è veramente semplice: basta utilizzare un apposito metodo ed il gioco è fatto.&lt;/p&gt;
+
+&lt;p&gt;Guardiamo il seguente codice:&lt;/p&gt;
+
+&lt;p&gt;[xml]
+&amp;lt;link href=&amp;quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&amp;quot;~/Content/css&amp;quot;)&amp;quot; rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; /&amp;gt;
+&amp;lt;script src=&amp;quot;@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl(&amp;quot;~/Scripts/js&amp;quot;)&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;[/xml]&lt;/p&gt;
+
+&lt;p&gt;È importante sapere che non tutti i files presenti nella folder specificata saranno inclusi nell’output del file, ma bensì solo quelli registrati nel bundle. In un prossimo post vedremo come creare bundle custom in modo da includere differenti file in differenti folder.&lt;/p&gt;
+
+&lt;p&gt;Stay tuned!&lt;/p&gt;
+</description>
+                <link>/2012/04/17/i-bundle-di-asp-net-mvc-4/</link>
+                <guid>/2012/04/17/i-bundle-di-asp-net-mvc-4</guid>
+                <pubDate>2012-04-17T16:00:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>Il 3D sbarca anche sul web</title>
+                <description>&lt;p&gt;
+    Questa volta non stiamo parlando di animazioni 3D per il web, bens&amp;igrave; per lo sviluppatore e non servono gli occhialini J.&lt;/p&gt;
+
+&lt;p&gt;
+    Per molti anni &lt;strong&gt;Firebug&lt;/strong&gt; &amp;egrave; stato sicuramente lo strumento pi&amp;ugrave; apprezzato dagli sviluppatori front end. Ad oggi tutti i browser integrano un qualcosa di simile e, nell&amp;rsquo;ultima versione, Firefox ha aggiunto un&amp;rsquo;interessantissima novit&amp;agrave;, la visualizzazione 3D della struttura del sito.&lt;/p&gt;
+
+&lt;p&gt;
+    Per capire a cosa mi sto riferendo, guardate questo screenshot :&lt;/p&gt;
+
+&lt;p&gt;
+    &lt;a href=&quot;http://tostring.it/UserFiles/imperugo/001.png&quot;&gt;&lt;img alt=&quot;001&quot; border=&quot;0&quot; height=&quot;385&quot; src=&quot;http://tostring.it/UserFiles/imperugo/001_thumb_1.png&quot; style=&quot;border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; border-left: 0px; display: inline; padding-right: 0px&quot; title=&quot;001&quot; width=&quot;644&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;
+    Per attivarla basta fare tasto destro sulla pagina, &amp;ldquo;Inspect Element&amp;rdquo; e premere il pulsante 3D come da screenshot:&lt;/p&gt;
+
+&lt;p&gt;
+    &lt;a href=&quot;http://tostring.it/UserFiles/imperugo/002.png&quot;&gt;&lt;img alt=&quot;002&quot; border=&quot;0&quot; height=&quot;392&quot; src=&quot;http://tostring.it/UserFiles/imperugo/002_thumb_1.png&quot; style=&quot;border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; border-left: 0px; display: inline; padding-right: 0px&quot; title=&quot;002&quot; width=&quot;644&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;
+    Una volta entrati nella modalit&amp;agrave; 3D &amp;egrave; possibile &amp;ldquo;zoomare&amp;rdquo;, ruotare e selezionare elementi con il semplice utilizzo del mouse.&lt;/p&gt;
+
+&lt;p&gt;
+    Ciauz&lt;/p&gt;
+
+&lt;p&gt;
+    .u&lt;/p&gt;
+
+&lt;p style=&quot;height: 20px&quot;&gt;
+    &lt;iframe allowtransparency=&quot;&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; src=&quot;http://www.facebook.com/plugins/like.php?href=http://tostring.it/blog/post/il-3d-sbarca-anche-sul-web/&amp;amp;layout=standard&amp;amp;show_faces=false&amp;amp;width=450&amp;amp;action=like&amp;amp;font=verdana&amp;amp;colorscheme=light&amp;amp;height=10&quot; style=&quot;border-top: medium none; height: 80px; border-right: medium none; width: 450px; border-bottom: medium none; overflow: hidden; border-left: medium none&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;
+</description>
+                <link>/2012/04/06/il-3d-sbarca-anche-sul-web/</link>
+                <guid>/2012/04/06/il-3d-sbarca-anche-sul-web</guid>
+                <pubDate>2012-04-06T16:00:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>Il Tilde Slash di Razor V2</title>
+                <description>&lt;p&gt;Su segnalazione del buon &lt;a title=&quot;Andrea Balducci&quot; href=&quot;https://twitter.com/#!/andreabalducci&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;Andrea&lt;/a&gt;, ho scoperto che, oltre ai “&lt;a title=&quot;What’s new in Razor v2&quot; href=&quot;http://tostring.it/blog/post/whats-new-in-razor-v2/&quot; target=&quot;_blank&quot;&gt;conditional attributes&lt;/a&gt;”, &lt;a title=&quot;Razor&amp;#39;s post&quot; href=&quot;http://tostring.it/tags/archive/razor&quot; rel=&quot;tag&quot; target=&quot;_blank&quot;&gt;Razor&lt;/a&gt; introduce un’altra novità chiamata “&lt;strong&gt;Tilde Slash&lt;/strong&gt;” ossia “~/”.&lt;/p&gt;
+
+&lt;p&gt;Il concetto è simile a quello espresso in un mio vecchio post su Spark (vedi &lt;a title=&quot;Spark View Engine&quot; href=&quot;http://tostring.it/blog/post/gestire-le-risorse-con-sparkviewengine/&quot;&gt;qui&lt;/a&gt;), con la differenza che in &lt;a title=&quot;Spark View Engine&quot; href=&quot;http://tostring.it/tags/archive/sparkviewengine&quot; target=&quot;_blank&quot;&gt;Spark&lt;/a&gt; si può specificare un dominio differente (molto comodo se si usa CDN).&lt;/p&gt;
+
+&lt;p&gt;In ogni caso l’utilizzo del Razor, con il Tilde Slash, aiuta lo sviluppatore nella scrittura del codice prendendosi in carico l’onere di risolvere automaticamente la url, eliminando così le noiose ripetizioni del ResolveUrl.&lt;/p&gt;
+
+&lt;p&gt;Dando un occhio al codice, questo markup &lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@Url.Content(&amp;quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;~/Content/mylogo.png&amp;quot;)&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;con Razor v2 diventa semplicemente questo&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;~/Content/mylogo.png&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Beh comodo no?&lt;/p&gt;
+</description>
+                <link>/2012/04/04/il-tilde-slash-di-razor-v2/</link>
+                <guid>/2012/04/04/il-tilde-slash-di-razor-v2</guid>
+                <pubDate>2012-04-04T16:00:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>What’s new in Razor v2</title>
+                <description>&lt;p&gt;Nel rilascio di &lt;a title=&quot;ASP.NET MVC&quot; href=&quot;http://tostring.it/tags/archive/mvc&quot;&gt;ASP.NET MVC&lt;/a&gt; 4 è inclusa anche la nuova release dell’ormai diffusissimo Razor View Engine. Per chi non lo sapesse &lt;a title=&quot;Razor&amp;#39;s post&quot; href=&quot;http://tostring.it/tags/archive/razor&quot; rel=&quot;tag&quot; target=&quot;_blank&quot;&gt;Razor&lt;/a&gt; è un “framework” che offre la possibilità di scrivere il codice presente nelle view con una sintassi differente da quella delle classiche pagine ASP.NET. &lt;/p&gt;
+
+&lt;p&gt;Prima di Razor, nel mondo Microsoft, l’utente era abituato ad utilizzare il WebFormViewEngine anche sotto ASP.NET MVC ma, essendo MVC molto orientato al testing, la scelta di creare un’alternativa è quasi d’obbligo.&lt;/p&gt;
+
+&lt;p&gt;Di fatto Razor non ha più una dipendenza verso System.Web.UI.Page, e di conseguenza dall’ HttpContext, Web Server (IIS), etc. &lt;/p&gt;
+
+&lt;p&gt;Questo permette allo sviluppatore di poter scrivere unit test anche per le View (quanti di voi lo hanno mai fatto?).&lt;/p&gt;
+
+&lt;p&gt;Dopo questa premessa sulla storia di Razor, andiamo a vedere cosa offre la nuova release J.&lt;/p&gt;
+
+&lt;p&gt;Al momento l’unica novità di rilievo che ho riscontrato è quella che dal team viene chiamata con il nome “Conditional Attribute”, ossia la possibilità di renderizzare o no un determinato attributo, il cui valore è dinamico, e quindi legato ad una variabile.&lt;/p&gt;
+
+&lt;p&gt;Per renderla più semplice, diamo un’occhiata al seguente codice:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Nome della classe css presa da una variabile --&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@myCssClass&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;.....&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+
+&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- markup necessario in caso la variabile sia nulla --&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;.....&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Come potete vedere, la variabile myCssClass viene utilizzata per impostare la classe css appunto, in base ad un qualcosa (un evento, un settaggio, etc) gestito server side.&lt;/p&gt;
+
+&lt;p&gt;Ma cosa succede se dovete gestire anche la possibilità di non impostare la classe? 
+  &lt;br /&gt;Precedentemente a Razor V2 l’approccio sarebbe stato più o meno questo:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;@{
+    var myCssClass = (bool)ViewBag.IsBol ? &amp;quot;boldClass&amp;quot; : null;
+}
+
+@if(myCssClass != null){
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@myCssClass&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;@ViewBag.Text&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+}
+else{
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;@ViewBag.Text&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Al contrario, con la nuova release di Razor, diventa tutto più semplice. Se impostate il valore della variabile myCssClass a null l’attributo non viene renderizzato, in caso contrario si.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@myCssClass&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;@ViewBag.Text&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Bisogna prestare attenzione al fatto che il contenuto string.empty (nel caso di una stringa) renderizza ugualmente l’attributo, quindi solo null impedisce il rendering.&lt;/p&gt;
+
+&lt;p&gt;Nel caso di value type tipo il booleano, la situazione non cambia molto. In questo caso il true renderizza l’attributo checked, mentre il false no.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- codice con --&amp;gt;&lt;/span&gt;
+
+@{
+    ViewBag.IsBol = true;
+}
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;checkbox&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;checked=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;@ViewBag.IsBol&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Razor Rulez!&lt;/p&gt;
+</description>
+                <link>/2012/04/03/whats-new-in-razor-v2/</link>
+                <guid>/2012/04/03/whats-new-in-razor-v2</guid>
+                <pubDate>2012-04-03T16:00:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>Review: Architecting Mobile Solutions for the Enterprise</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://tostring.it/UserFiles/imperugo/lrg_2.jpg&quot;&gt;&lt;img title=&quot;lrg&quot; style=&quot;border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; float: left; padding-top: 0px; padding-left: 0px; margin: 0px 8px 5px 0px; border-left: 0px; display: inline; padding-right: 0px&quot; border=&quot;0&quot; alt=&quot;lrg&quot; align=&quot;left&quot; src=&quot;http://tostring.it/UserFiles/imperugo/lrg_thumb.jpg&quot; width=&quot;201&quot; height=&quot;244&quot; /&gt;&lt;/a&gt;&lt;/p&gt;  &lt;p&gt;È la prima volta che mi capita di fare la review di un libro e, per essere alla prima esperienza, devo dire che ho l’opportunità di farlo per uno dei migliori autori internazionali che il mondo tecnico possa avere, il &lt;strong&gt;Super Dino Nazionale&lt;/strong&gt; aka &lt;a title=&quot;Dino Esposito&quot; href=&quot;http://twitter.com/#!/despos&quot; target=&quot;_blank&quot;&gt;&lt;strong&gt;Dino Esposito&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;  &lt;p&gt;Il libro in questione è “&lt;strong&gt;&lt;a title=&quot;Architecting Mobile Solutions for the Enterprise&quot; href=&quot;http://shop.oreilly.com/product/0790145336224.do&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;Architecting Mobile Solutions for the Enterprise&lt;/a&gt;&lt;/strong&gt;” e, come potete intuire dal nome, parla di mobile application.     &lt;br /&gt;Nonostante io abbia una predilezione verso le applicazioni web, questo libro mi ha subito affascinato perché affronta tematiche molto web oriented come &lt;strong&gt;&lt;a title=&quot;Posts about HTML5&quot; href=&quot;http://tostring.it/tags/archive/html5&quot; target=&quot;_blank&quot;&gt;HTML5&lt;/a&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;a title=&quot;Posts about jquery&quot; href=&quot;http://tostring.it/tags/archive/jquery&quot; target=&quot;_blank&quot;&gt;jQuery&lt;/a&gt;&lt;/strong&gt;, etc per sviluppare applicazioni mobile.&lt;/p&gt;  &lt;p&gt;Nell’ultimo periodo in azienda sono stato coinvolto nello sviluppo di applicazioni con queste caratteristiche (nel mio caso &lt;a title=&quot;Sencha Touch&quot; href=&quot;http://www.sencha.com/products/touch&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;Sencha Touch&lt;/a&gt; al posto di &lt;a title=&quot;JQuery Mobile&quot; href=&quot;http://jquerymobile.com/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;JQuery Mobile&lt;/a&gt;, ma poco cambia) ed ho avuto modo di toccare con mano quanto Dino spiega.&lt;/p&gt;  &lt;p&gt;Tornando al libro ho letto il capitolo sul responsive design, sia client-side tramite le media queries che server side con l’utilizzo di &lt;a title=&quot;Wurfl&quot; href=&quot;http://wurfl.sourceforge.net/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;Wurfl&lt;/a&gt;, e devo dire che mi è piaciuto parecchio. &lt;/p&gt;  &lt;p&gt;Dino è riuscito come sempre ad arrivare in profondità di concetti complessi, spiegandoli tuttavia in maniera del tutto semplice, il che rende ancor più appetibile il libro.&lt;/p&gt;  &lt;p&gt;Purtroppo non posso entrare molto nei dettagli in quanto il libro non è ancora disponibile, ma potete effettuare il pre-ordine da &lt;a href=&quot;http://shop.oreilly.com/product/0790145336224.do&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;qui&lt;/a&gt;.&lt;/p&gt;
+</description>
+                <link>/2012/03/15/review-architecting-mobile-solutions-for-the-enterprise/</link>
+                <guid>/2012/03/15/review-architecting-mobile-solutions-for-the-enterprise</guid>
+                <pubDate>2012-03-15T16:46:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>Problemi con Razor e Visual Studio 2011</title>
+                <description>&lt;p&gt;Chi come me si sta divertendo nel testare &lt;a title=&quot;ASP.NET MVC&quot; href=&quot;http://tostring.it/tags/archive/mvc&quot; target=&quot;_blank&quot;&gt;ASP.NET MVC&lt;/a&gt; 4 e lo sta facendo con &lt;a title=&quot;Visual Studio&quot; href=&quot;http://tostring.it/tags/archive/visual+studio&quot; target=&quot;_blank&quot;&gt;Visual Studio&lt;/a&gt; 2011, avrà sicuramento riscontrato dei problemi di stabilità da parte dell’editor Razor che causa continui freeze della UI.&lt;/p&gt;  &lt;p&gt;Tale problema non si verifica ogni qualvolta si cerca di editare una view realizzata con Razor, ma quando si cerca di indentare il codice HTML.    &lt;br /&gt;Inizialmente avevo attribuito il problema a Resharper, in quanto la versione installata è una super preview ma, una volta disinstallato quest’ultimo, ho notato che il problema persisteva e a quel punto è scattato il piano B: Google.&lt;/p&gt;  &lt;p&gt;A primo colpo ecco la soluzione:&lt;/p&gt;  &lt;p&gt;Basta andare su &lt;strong&gt;Tools&lt;/strong&gt; =&amp;gt; &lt;strong&gt;Options&lt;/strong&gt; =&amp;gt; &lt;strong&gt;Text Editor&lt;/strong&gt; =&amp;gt; &lt;strong&gt;HTML&lt;/strong&gt; =&amp;gt; &lt;strong&gt;Tab&lt;/strong&gt; ed impostare l’indenting option su &lt;strong&gt;Smart&lt;/strong&gt;.&lt;/p&gt;  &lt;p&gt;A questo punto Visual Studio torna a funzionare senza particolari crash e con Resharper J&lt;/p&gt;  &lt;p&gt;Fonte: &lt;a href=&quot;http://blogs.msdn.com/b/webdevtools/archive/2012/03/06/visual-studio-11-beta-razor-editor-issue-workaround.aspx&quot;&gt;http://blogs.msdn.com/b/webdevtools/archive/2012/03/06/visual-studio-11-beta-razor-editor-issue-workaround.aspx&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>/2012/03/12/problemi-con-razor-e-visual-studio-2011/</link>
+                <guid>/2012/03/12/problemi-con-razor-e-visual-studio-2011</guid>
+                <pubDate>2012-03-12T17:05:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>Internet Explorer si aggiorna</title>
+                <description>&lt;p&gt;Oggigiorno siamo circondati da una quantità di device a dir poco imbarazzante, dalle centinaia (ed anche troppe) distro di Android, fino ad arrivare a computer Windows based. All’interno di ognuno di questi device è presente un browser che, a causa della velocissima crescita dell’&lt;a title=&quot;Post su HTML5&quot; href=&quot;http://tostring.it/tags/archive/html5&quot; target=&quot;_blank&quot;&gt;HTML5&lt;/a&gt;, richiede continui aggiornamenti per stare al passo con le specifiche che si stanno man mano stabilizzando all’interno del &lt;a title=&quot;W3C&quot; href=&quot;http://www.w3.org/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;W3C&lt;/a&gt;.&lt;/p&gt;  &lt;p&gt;Tempo fa Google con Chrome ha introdotto una sorta di “&lt;strong&gt;Silent update&lt;/strong&gt;”, che consiste in un “servizio” Windows che ha il compito di controllare ed installare eventuali aggiornamenti del browser.     &lt;br /&gt;L’aspetto positivo di questo approccio è che l’utente non deve preoccuparsi di verificare se esiste una patch o una nuova versione del browser, mentre il lato negativo è il non controllo di ciò che avviene sulla nostra macchina (&lt;strong&gt;l’utente non riceve notifica di nessun aggiornamento&lt;/strong&gt;).&lt;/p&gt;  &lt;p&gt;Questa strada si è dimostrata molto positiva, e di fatto tutti gli utenti con Chrome hanno installato&amp;#160; l’ultima versione (17.x in questo momento), tant’è che Microsoft ha deciso di intraprendere lo stesso percorso aggiornando automaticamente tutte le versioni di &lt;a title=&quot;Internet Explore&quot; href=&quot;http://tostring.it/tags/archive/ie9&quot; target=&quot;_blank&quot;&gt;Internet Explorer&lt;/a&gt; alla 9 in maniera del tutto automatica.&lt;/p&gt;  &lt;p&gt;Tale aggiornamento offre sicuramente un set di vantaggi lato utente indiscutibili, dalle performance alla sicurezza (&lt;a title=&quot;The Nine Reasons Why IE9 is the Best Browser for Business Customers&quot; href=&quot;http://windowsteamblog.com/ie/b/ie/archive/2011/03/15/the-nine-reasons-why-ie9-is-the-best-browser-for-business-customers.aspx&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;&lt;strong&gt;Internet Explorer 9 si è dimostrato il browser più sicuro&lt;/strong&gt;&lt;/a&gt;), oltre al supporto per HTML5.&lt;/p&gt;  &lt;p&gt;Personalmente sono molto curioso di sapere se Microsoft sfrutterà questa tecnica anche per aggiornare IE9 con un subset di features HTML5 che questo non supporta. Di fatto Microsoft ha deciso di intraprendere una strada diversa da altri vendor tipo Google, implementando solo le specifiche mature i cui cambiamenti da qui alla chiusura dell’HTML5 saranno minimi se non nulli.    &lt;br /&gt;Fortunatamente/sfortunatamente (a seconda dei punti di vista) dall’uscita di IE9 molte features (websocket, fileapi, offline, input type, etc) sono “salite di grado” e risultano ora mature, tanto da poter essere promosse su un browser con IE9. La casa di Redmond ha dimostrato il suo interesse verso queste feature, e di fatto possiamo testarle su IE10 e Win8, quindi non mi stupirebbe se ci fosse un upgrade anche verso questo aspetto.&lt;/p&gt;  &lt;p&gt;Maggiori informazioni su IE9 e l’auto update sono disponibili in questo bellissimo &lt;a title=&quot;Internet Explorer pronto per l&amp;#39;aggiornamento automatico: come e perché?&quot; href=&quot;http://quibrowser.it/blog/post/2012/2/21/internet-explorer-pronto-per-laggiornamento-automatico-come-e-perche/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;post&lt;/a&gt;.&lt;/p&gt;  &lt;p&gt;Ciauz&lt;/p&gt;
+</description>
+                <link>/2012/02/23/internet-explorer-si-aggiorna/</link>
+                <guid>/2012/02/23/internet-explorer-si-aggiorna</guid>
+                <pubDate>2012-02-23T18:00:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>http o https?</title>
+                <description>&lt;p&gt;Quando ci troviamo a navigare pagine web con connessione protetta - e per connessione protetta intendo tramite il protocollo https - ed alcune delle sue risorse (immagini, javascript, css, etc) non puntano ad un indirizzo sicuro, rischiamo di avere una fastidiosa notifica da parte del browser che ci obbliga a dare il consenso per mostrare i contenuti non sicuri.&lt;/p&gt;  &lt;p&gt;Diamo un occhio all’html seguente per capire meglio di cosa stiamo parlando:&lt;/p&gt;  
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;    
+    
+    
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;description&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;author&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://mysite.com/css/mystyle.css&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://mysite.com/js/libs/modernizr-1.7.min.js?v=1.5.0.21&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Finché navighiamo la pagina sopra in http non c’è nessun problema ma, se proviamo ad aprire la stessa pagina in https, un buon browser dovrebbe notificarci il rischio a cui andiamo incontro (sia il css, sia jquery puntano ad una connessione http e non https). 
+  &lt;br /&gt;Per evitare il problema ci basta cambiare le url da http://.... ad https://..... nel caso la connessione corrente sia in https, e viceversa. 
+
+  &lt;br /&gt;Ovviamente questo cambio deve essere automatico e, riempire il codice di html di &lt;strong&gt;&lt;em&gt;if&lt;/em&gt;&lt;/strong&gt; che cambiano il protocollo, non è la soluzione corretta!&lt;/p&gt;
+
+&lt;p&gt;Fortunatamente esiste un rimedio più semplice e pulito che consiste nella rimozione dall’url della parte relativa al tipo di protocollo; quindi dobbiamo rimuovere &lt;strong&gt;&lt;em&gt;http:&lt;/em&gt;&lt;/strong&gt; o &lt;strong&gt;&lt;em&gt;https:&lt;/em&gt;&lt;/strong&gt; e lasciare semplicemente il &lt;strong&gt;&lt;em&gt;//&lt;/em&gt;&lt;/strong&gt; come mostrato di seguito.&lt;/p&gt;
+
+&lt;p&gt;[xml]
+    &amp;lt;meta name=&amp;quot;description&amp;quot; content=&amp;quot;&amp;quot; /&amp;gt;
+    &amp;lt;meta name=&amp;quot;author&amp;quot; content=&amp;quot;&amp;quot; /&amp;gt;
+    &amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;//mysite.com/css/mystyle.css&amp;quot; /&amp;gt;
+    &amp;lt;script src=&amp;quot;//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js&amp;quot; type=&amp;quot;text/javascript&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script type=&amp;quot;text/javascript&amp;quot; src=&amp;quot;//mysite.com/js/libs/modernizr-1.7.min.js?v=1.5.0.21&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+[/xml]&lt;/p&gt;
+
+&lt;p&gt;A questo punto sarà il browser a “switchare” in automatico dalla connessione &lt;strong&gt;&lt;em&gt;http/https&lt;/em&gt;&lt;/strong&gt; in base a quella corrente.&lt;/p&gt;
+
+&lt;p&gt;Questa tecnica prende il nome di “&lt;strong&gt;network-path reference&lt;/strong&gt;” (maggiori info &lt;a title=&quot;Relative Reference RFC 3986&quot; href=&quot;http://tools.ietf.org/html/rfc3986#section-4.2&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;qui&lt;/a&gt;) e funziona anche per i css, come potete vedere sotto:&lt;/p&gt;
+
+&lt;p&gt;[css].mycssclass { background: url(//mysite.com/myimage.jpg); }[/css]&lt;/p&gt;
+
+&lt;p&gt;Inoltre questo approccio funziona egregiamente con tutti i browser, tranne che con Internet Explorer 7 e 8 dove, solo per i tag &lt;link /&gt;o @import, il download della risorsa avviene due volte (maggiori info &lt;a title=&quot;5a Missing schema double download&quot; href=&quot;http://www.stevesouders.com/blog/2010/02/10/5a-missing-schema-double-download/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;qui&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;Figo no?&lt;/p&gt;
+</description>
+                <link>/2011/11/04/http-o-https/</link>
+                <guid>/2011/11/04/http-o-https</guid>
+                <pubDate>2011-11-04T17:15:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>Attenzione al %20 nelle url</title>
+                <description>&lt;p&gt;Giorni fa ho avuto a che fare con un piccolo problema riguardante le url di una mia applicazione web. In pratica mi trovavo con delle richieste verso un indirizzo tipo il seguente “&lt;strong&gt;/mycontroller/myaction/myid%20&lt;/strong&gt;” (per chi non lo sapesse %20 equivale allo spazio) che, non per volere mio, restituiva sempre un &lt;strong&gt;404&lt;/strong&gt; invece di dirottare la chiamata verso il mio controller.&lt;/p&gt;  &lt;p&gt;Come si può ben immaginare il problema è dovuto a quel &lt;em&gt;%20&lt;/em&gt; che, per qualche strano motivo, non viene digerito dal sistema di routing di &lt;a title=&quot;ASP.NET Posts&quot; href=&quot;http://tostring.it/tags/archive/asp.net&quot; target=&quot;_blank&quot;&gt;ASP.NET&lt;/a&gt; 3.5 SP1.&lt;/p&gt;  &lt;p&gt;Ovviamente un url del genere può sembrare raro in un’applicazione web, e molti di voi si chiederanno il perché di tale indirizzo, quindi provo a spiegarlo di seguito &lt;img style=&quot;border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none&quot; class=&quot;wlEmoticon wlEmoticon-smile&quot; alt=&quot;Smile&quot; src=&quot;http://tostring.it/UserFiles/imperugo/wlEmoticon-smile_2_13.png&quot; /&gt;.&lt;/p&gt;  &lt;p&gt;La settimana scorsa mi trovavo a sviluppare un textbox autocomplete con jquery per un’applicazione ASP.NET MVC; sfortunatamente le features richieste non erano coperte dalle migliaia di esempi presenti in rete, quindi mi sono dovuto armare di coraggio e, a colpi di javascript e json, sono riuscito a realizzare la textbox che trovate &lt;a title=&quot;Alumni web site!&quot; href=&quot;http://alumni.polimi.it/it/Wall&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;qui&lt;/a&gt;.&lt;/p&gt;  &lt;p&gt;All’apparenza il funzionamento è identico a quello di tutte le textbox con autocomplete. Per capire il problema sopra mostrato, non è necessario addentrarsi nel codice javascript o nel modo in cui ho implementato la textbox, ma basta capire cosa fa per mostrare i suggerimenti all’utente.&lt;/p&gt;  &lt;p&gt;Nel momento in cui l’utente digita qualcosa, questo qualcosa viene inviato ad una Action di un controller MVC che non fa altro che eseguire una query con un like e restituire i primi 7 elementi. Questo vuol dire che ogni volta in cui l’utente digita una lettera all’interno della textbox, via javascript viene inviato il testo digitato per eseguire l’operazione sopra descritta.    &lt;br /&gt;Passando alla pratica, quando l’utente digita “Mario”, una chiamata tipo la seguente “&lt;strong&gt;/Search/PersonSuggestion/Mario&lt;/strong&gt;” viene effettuata.&lt;/p&gt;  &lt;p&gt;Supponiamo ora di voler raffinare la ricerca in quanto troppe persone si chiamano Mario, e noi vogliamo trovare il classicissimo Mario Rossi.&lt;/p&gt;  &lt;p&gt;Nel momento in cui l’utente deve aggiungere “ Rossi” (spazio Rossi), la chiamata diventa più o meno così:&lt;/p&gt;  &lt;p&gt;“&lt;strong&gt;/Search/PersonSuggestion/Mario%20Rossi&lt;/strong&gt;”&lt;/p&gt;  &lt;p&gt;Ovviamente prima di arrivare a digitare Rossi c’è uno spazio, quindi verrà effettuata una chiamata come questa: “&lt;strong&gt;/Search/PersonSuggestion/Mario%20&lt;/strong&gt;”&lt;/p&gt;  &lt;p&gt;Ed eccoci arrivati al problema iniziale: il 404 da parte del server.&lt;/p&gt;  &lt;p&gt;Il motivo risiede nel fatto che il runtime di ASP.NET effettua una validazione delle url in entrata, applicando le stesse regole del filesystem. Questo vuol dire che, così come non possiamo creare una folder con lo spazio alla fine (quindi “Mario “), non possiamo neanche avere un url con lo stesso spazio.&lt;/p&gt;  &lt;p&gt;Ovviamente questo tipo di validazione è “aggirabile” grazie ad una proprietà dal curioso nome “RelaxedUrlToFileSystemMapping”, da aggiungere alla sezione HttpRuntime del web.config come mostrato di seguito.&lt;/p&gt;  
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;system.web&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;httpRuntime&lt;/span&gt; 
+            &lt;span class=&quot;na&quot;&gt;requestValidationMode=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;2.0&amp;quot;&lt;/span&gt; 
+            &lt;span class=&quot;na&quot;&gt;executionTimeout=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;20&amp;quot;&lt;/span&gt; 
+            &lt;span class=&quot;na&quot;&gt;requestPathInvalidCharacters=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt; 
+            &lt;span class=&quot;na&quot;&gt;relaxedUrlToFileSystemMapping=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;true&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ciauz &lt;/p&gt;
+</description>
+                <link>/2011/11/02/attenzione-al-%2520-nelle-url/</link>
+                <guid>/2011/11/02/attenzione-al-%20-nelle-url</guid>
+                <pubDate>2011-11-02T17:15:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>WPC 2011. Save the date!</title>
+                <description>&lt;p&gt;&lt;a href=&quot;http://tostring.it/UserFiles/imperugo/b1_180x150_2.jpg&quot;&gt;&lt;img style=&quot;background-image: none; border-right-width: 0px; margin: 0px 8px 0px 0px; padding-left: 0px; padding-right: 0px; display: inline; float: left; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px&quot; title=&quot;Stampa&quot; border=&quot;0&quot; alt=&quot;Stampa&quot; align=&quot;left&quot; src=&quot;http://tostring.it/UserFiles/imperugo/b1_180x150_thumb.jpg&quot; width=&quot;184&quot; height=&quot;154&quot; /&gt;&lt;/a&gt; Anche quest’anno (per il terzo anno consecutivo), ho la fortuna di partecipare come speaker alla più importante conferenza italiana sul mondo Microsoft e non solo.     &lt;br /&gt;Specifico il “non solo”, perché proprio io sarò lì per parlare di &lt;a title=&quot;HTML articles&quot; href=&quot;http://tostring.it/tags/archive/html5&quot; target=&quot;_blank&quot;&gt;HTML5&lt;/a&gt; che, come tutti sappiamo, non è una tecnologia Microsoft, ma è sicuramente un percorso importante per il futuro delle applicazione web e non. &lt;/p&gt;  &lt;p&gt;Anche il “e non” non è a caso J. Oltre ad una sessione full immersion su HTML5 in cui mostrerò tutto ciò che ad oggi possiamo utilizzare e cosa arriverà a breve, parteciperò sempre come speaker ad un’altra sessione sul data entry in Windows 8 dove, insieme al mitico &lt;a title=&quot;Salvatore Di Fazio&amp;#39;s blog&quot; href=&quot;http://bitvector.tostring.it/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;Salvuzzo&lt;/a&gt;, mostreremo come accedere e mostrare dati in un’applicazione Metro UI con C# e HTML5+JS.&lt;/p&gt;  &lt;p&gt;Direi che di motivi per non mancare ce ne sono tanti. Se non vi bastano date un’occhiata agli &lt;a title=&quot;WPC Speakers&quot; href=&quot;http://www.wpc2011.it/speakers.aspx&quot; target=&quot;_blank&quot;&gt;speaker&lt;/a&gt; e all’&lt;a title=&quot;WPC Agenda&quot; href=&quot;http://www.wpc2011.it/agenda.aspx&quot; target=&quot;_blank&quot;&gt;agenda&lt;/a&gt;, aggiungeteci che l’early bird è stata prolungata fino al 31 ottobre, e a questo punto non avete proprio più scuse &lt;img style=&quot;border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none&quot; class=&quot;wlEmoticon wlEmoticon-smile&quot; alt=&quot;Smile&quot; src=&quot;http://tostring.it/UserFiles/imperugo/wlEmoticon-smile_2_12.png&quot; /&gt;&lt;/p&gt;  &lt;p&gt;&amp;#160;&lt;/p&gt;  &lt;p&gt;See you there!&lt;/p&gt;
+</description>
+                <link>/2011/10/28/wpc-2011-save-the-date/</link>
+                <guid>/2011/10/28/wpc-2011-save-the-date</guid>
+                <pubDate>2011-10-28T16:30:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>Sincronizzare più folder con DropBox</title>
+                <description>&lt;p&gt;Chiacchierando con amici e colleghi, ho notato che molti fanno uso di DropBox come tool/repository per condividere e “backuppare” le informazioni più importanti. Uno dei motivi per cui ritengo DropBox un ottimo tool è sicuramente il buon funzionamento ed il supporto praticamente a tutte le piattaforme (Windows, Mac, iPhone, Android, etc).&lt;/p&gt;  &lt;p&gt;Tuttavia uno dei più grandi limiti di DropBox è la folder di Sync. Una volta installato si ha la possibilità di effettuare il sync ed il backup solo della folder creata dal client, con l’obbligo di copiare tutti i nostri file al suo interno, rinunciando alla struttura presente nel nostro Hard Drive.&lt;/p&gt;  &lt;p&gt;Fortunatamente è ora possibile aggirare questo problema scaricando “&lt;strong&gt;Drop Box Folder Sync&lt;/strong&gt;” da qui &lt;a href=&quot;http://wiki.dropbox.com/TipsAndTricks/SyncOtherFolders&quot;&gt;http://wiki.dropbox.com/TipsAndTricks/SyncOtherFolders&lt;/a&gt;&lt;/p&gt;  &lt;p&gt;Una volta installato il client, possiamo aggiungere e togliere tutte le folder che preferiamo in qualsiasi parte dell’hard-disk; infatti, cliccando con il tasto destro su una cartella, si noterà l’aggiunta di due nuove voci di menù:&lt;/p&gt;  &lt;ul&gt;   &lt;li&gt;&lt;strong&gt;Sync with DropBox&lt;/strong&gt;; &lt;/li&gt;    &lt;li&gt;&lt;strong&gt;UnSync with DropBox&lt;/strong&gt;; &lt;/li&gt; &lt;/ul&gt;  &lt;p&gt;Inutile spiegarne il significato. &lt;/p&gt;  &lt;p&gt;Ciauz&lt;/p&gt;
+</description>
+                <link>/2011/10/26/sincronizzare-piu-folder-con-dropbox/</link>
+                <guid>/2011/10/26/sincronizzare-piu-folder-con-dropbox</guid>
+                <pubDate>2011-10-26T16:30:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>Dominio stai lontano dalle mie View</title>
+                <description>&lt;p&gt;Tutti i giorni mi capita di consultare esempi e progetti fatti da altri, sia nel mondo dell’open source che nel mondo del lavoro.&lt;/p&gt;  &lt;p&gt;Moltissime volte ho visto applicazioni &lt;a title=&quot;Posts about mvc&quot; href=&quot;http://tostring.it/tags/archive/mvc&quot; target=&quot;_blank&quot;&gt;MVC&lt;/a&gt; che hanno il “vizietto” di utilizzare le classi del dominio direttamente dentro le View. Devo ammettere che anche io in passato sono stato tentato - a volte ho anche ceduto - di percorrere questa strada per accorciare i tempi di sviluppo ma, ancora una volta, mi trovo a blaterare su questo errore.&lt;/p&gt;  &lt;p&gt;Partendo dalla premessa che noi siamo pagati per sviluppare del buon codice (non credo che mai nessuno vi abbia mai detto – “ti pago, ma scrivi un codice di merda!”), e che non dobbiamo scrivere il codice a nostra comodità perché siamo pigri, volevo ricordare alcuni dei problemi che si posso incontrare utilizzando il dominio nella view:&lt;/p&gt;  &lt;ul&gt;   &lt;li&gt;&lt;b&gt;La view può avere maggior complessità&lt;/b&gt; (non è detto che l’entity abbia le info come le vuole la view, e quindi questa deve recuperarle ed adattarle): questo rischia di creare scenari la cui testabilità della view può diventare difficile, se non impossibile; &lt;/li&gt;    &lt;li&gt;&lt;b&gt;Query inaspettate&lt;/b&gt;. Spesso le entity di dominio sono “proxate” da un O/RM, questo vuol dire che colui che realizzerà la view potrà accedere ad una property che scatenerà a sua volta una query onerosa (magari vuole mostrare il numero di prodotti e fa un count su IList&amp;lt;Product&amp;gt;, finendo con il caricare tutti i prodotti); &lt;/li&gt;    &lt;li&gt;&lt;b&gt;Problemi di balancing&lt;/b&gt;. Per lo stesso motivo di cui sopra (proxy dell’O/RM), le entity di dominio possono non essere serializzabili, escludendo così la possibilità di effettuare caching sui dati delle view. &lt;/li&gt;    &lt;li&gt;&lt;b&gt;Crescita applicativa bloccata&lt;/b&gt;. Se all’improvviso, per imposizioni del client o per scelte architetturali, ci si trova nella situazione in cui tutta la logica di accesso ai dati finisce in un servizio e le view non possono arrivare direttamente all’O/RM, siamo costretti a riscrivere tutta la parte dinamica delle view attingendo ai DTO restituiti dal servizio. &lt;/li&gt; &lt;/ul&gt;  &lt;p&gt;Capisco la comodità e la velocità nell’utilizzare il dominio nella view, ma fidatevi, alla lunga paga la strada corretta!&lt;/p&gt;  &lt;p&gt;Ciauz&lt;/p&gt;
+</description>
+                <link>/2011/10/25/dominio-stai-lontano-dalle-mie-view/</link>
+                <guid>/2011/10/25/dominio-stai-lontano-dalle-mie-view</guid>
+                <pubDate>2011-10-25T16:30:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>La compilazione di ASP.NET</title>
+                <description>&lt;p&gt;Il web.config è sicuramente familiare a tutti noi sviluppatori web, ma ci sono alcuni attributi che valgono la scrittura di un post ad hoc.&lt;/p&gt;  &lt;p&gt;Oltre al classico connectionstrings e appsettings, in tutti i file di configurazione per applicazioni web esiste una sezione chiamata “&lt;em&gt;compilation&lt;/em&gt;”, che permette di impostare un set di parametri che andranno ad influenzare la compilazione delle nostre pagine web.&lt;/p&gt;  &lt;p&gt;Alcuni di questi attributi parlano da soli - inutile spiegare a cosa serve l’attributo &lt;em&gt;debub=”true”&lt;/em&gt; - , ma ce ne sono altri che spesso si tralasciano o non si conoscono affatto.&lt;/p&gt;  &lt;p&gt;Per esempio recentemente ho scoperto l’esistenza dell’attributo &lt;em&gt;optimizeCompilations&lt;/em&gt; che, se impostato su &lt;em&gt;true&lt;/em&gt;, può aumentare in maniera significativa i tempi di compilazione delle pagine web (maggiori informazioni qui &lt;a href=&quot;http://blogs.msdn.com/b/davidebb/archive/2009/04/15/a-new-flag-to-optimize-asp-net-compilation-behavior.aspx&quot;&gt;http://blogs.msdn.com/b/davidebb/archive/2009/04/15/a-new-flag-to-optimize-asp-net-compilation-behavior.aspx&lt;/a&gt;).&lt;/p&gt;  &lt;p&gt;Anche l’attributo &lt;em&gt;batch&lt;/em&gt; ha lo scopo di migliorare le performance di compilazione ma, a differenza dell’attributo &lt;em&gt;optimizeCompilations&lt;/em&gt;, questo è impostato di default su true, quindi possiamo omettere questo attributo nel nostro file di configurazione.&lt;/p&gt;  &lt;p&gt;Un altro interessante attributo è &lt;em&gt;numRecompilesBeforeAppRestart&lt;/em&gt; che, se impostato con dei valori corretti, può evitare alcuni noiosi restart dell’applicativo.&lt;/p&gt;  &lt;p&gt;In ogni caso il mio preferito resta l’attributo &lt;em&gt;tempDirectory&lt;/em&gt; &lt;img style=&quot;border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none&quot; class=&quot;wlEmoticon wlEmoticon-smile&quot; alt=&quot;Smile&quot; src=&quot;http://tostring.it/UserFiles/imperugo/wlEmoticon-smile_2_11.png&quot; /&gt;. Questo attributo permette di specificare la directory dove verranno salvati i file temporanei di compilazione.     &lt;br /&gt;Il perché mi piace particolarmente questo attributo è dovuto al fatto che uso un RAM Disk (personalmente uso questo &lt;a href=&quot;http://memory.dataram.com/products-and-services/software/ramdisk&quot;&gt;http://memory.dataram.com/products-and-services/software/ramdisk&lt;/a&gt;) e, impostando la compilazione dei file di ASP.NET su questo particolare drive, si ottengono delle performance notevoli, specie in fase di startup.&lt;/p&gt;  &lt;p&gt;Concludo con un pezzo della mia configurazione :&lt;/p&gt;  
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;compilation&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;tempDirectory=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;G:\aspnet.temp\&amp;quot;&lt;/span&gt; 
+                    &lt;span class=&quot;na&quot;&gt;optimizeCompilations=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;true&amp;quot;&lt;/span&gt; 
+                    &lt;span class=&quot;na&quot;&gt;batch=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;true&amp;quot;&lt;/span&gt; 
+                    &lt;span class=&quot;na&quot;&gt;debug=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;true&amp;quot;&lt;/span&gt; 
+                    &lt;span class=&quot;na&quot;&gt;defaultLanguage=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;c#&amp;quot;&lt;/span&gt; 
+                    &lt;span class=&quot;na&quot;&gt;numRecompilesBeforeAppRestart=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;250&amp;quot;&lt;/span&gt; 
+                    &lt;span class=&quot;na&quot;&gt;targetFramework=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;4.0&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;assemblies&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;add&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;assembly=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;System.Web.Abstractions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;add&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;assembly=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;add&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;assembly=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;System.Web.Routing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;add&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;assembly=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;add&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;assembly=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/assemblies&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/compilation&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ciauz!&lt;/p&gt;
+</description>
+                <link>/2011/10/14/la-compilazione-di-asp-net/</link>
+                <guid>/2011/10/14/la-compilazione-di-asp-net</guid>
+                <pubDate>2011-10-14T16:00:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>Alcuni webcast su ASP.NET MVC e molto altro.</title>
+                <description>&lt;p&gt;Con il mio consueto ritardo (scusate ma è un periodo pienissimo), volevo postare alcuni webcast miei e di &lt;a title=&quot;Simone Chiaretta&amp;#39;s blog&quot; href=&quot;http://codeclimber.net.nz/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;Simone Chiaretta&lt;/a&gt; riguardanti il mondo del web developer in generale. &lt;/p&gt;  &lt;p&gt;Gli argomenti trattati infatti coprono la parte di sviluppo, ma anche argomenti come &lt;a title=&quot;Posts about SQL&quot; href=&quot;http://tostring.it/tags/archive/sql&quot; target=&quot;_blank&quot;&gt;SQL&lt;/a&gt; CE con Entity Framework Code First ed &lt;a title=&quot;Posts about IIS&quot; href=&quot;http://tostring.it/tags/archive/iis&quot; target=&quot;_blank&quot;&gt;IIS&lt;/a&gt; Express.&lt;/p&gt;  &lt;p&gt;Come sempre feedback e domande sono i benvenuti, anche in base alle vostre esperienze!&lt;/p&gt;  &lt;p&gt;Buona Visione&lt;/p&gt;  &lt;h3&gt;IIS Express&lt;/h3&gt;  &lt;p&gt;&lt;iframe style=&quot;width: 512px; height: 288px&quot; src=&quot;http://channel9.msdn.com/Blogs/PietroBrambati/ASPNET-MVC-3-IIS-Express/player?w=512&amp;amp;h=288&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;  &lt;h3&gt;ASP.NET MVC Razor&lt;/h3&gt;  &lt;p&gt;&lt;iframe style=&quot;width: 512px; height: 288px&quot; src=&quot;http://channel9.msdn.com/Blogs/PietroBrambati/ASPNET-MVC-3-Razor/player?w=512&amp;amp;h=288&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;  &lt;h3&gt;ASP.NET MVC 3 - Dependency Injection(DI)&lt;/h3&gt;  &lt;p&gt;&lt;iframe style=&quot;width: 512px; height: 288px&quot; src=&quot;http://channel9.msdn.com/Blogs/PietroBrambati/ASPNET-MVC-3-Dependency-InjectionDI/player?w=512&amp;amp;h=288&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;  &lt;h3&gt;ASP.NET MVC 3 - SQL CE 4&lt;/h3&gt;  &lt;p&gt;&lt;iframe style=&quot;width: 512px; height: 288px&quot; src=&quot;http://channel9.msdn.com/Blogs/PietroBrambati/ASPNET-MVC-3-SQL-CE-4/player?w=512&amp;amp;h=288&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;  &lt;h3&gt;ASP.NET MVC 3 - Le novità&lt;/h3&gt;  &lt;p&gt;&lt;iframe style=&quot;width: 512px; height: 288px&quot; src=&quot;http://channel9.msdn.com/Blogs/PietroBrambati/ASPNET-MVC-3-Le-novit/player?w=512&amp;amp;h=288&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;
+</description>
+                <link>/2011/10/11/alcuni-webcast-su-asp-net-mvc-e-molto-altro/</link>
+                <guid>/2011/10/11/alcuni-webcast-su-asp-net-mvc-e-molto-altro</guid>
+                <pubDate>2011-10-11T16:00:00Z</pubDate>
+        </item>
+
+        <item>
+                <title>E son Tre!</title>
+                <description>&lt;p&gt;Nonostante lo scherzetto di Google (vedi immagine sotto), anche quest’anno ho ricevuto la mail che mi comunicava il rinnovo dell’Award Microsoft &lt;a title=&quot;MVP Official Site&quot; href=&quot;http://mvp.support.microsoft.com/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;MVP&lt;/a&gt; su ASP.NET/IIS.&lt;/p&gt;  &lt;p&gt;&lt;a href=&quot;http://tostring.it/UserFiles/imperugo/SNAGHTML35e584a4.png&quot;&gt;&lt;img style=&quot;background-image: none; border-bottom: 0px; border-left: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top: 0px; border-right: 0px; padding-top: 0px&quot; title=&quot;SNAGHTML35e584a4&quot; border=&quot;0&quot; alt=&quot;SNAGHTML35e584a4&quot; src=&quot;http://tostring.it/UserFiles/imperugo/SNAGHTML35e584a4_thumb.png&quot; width=&quot;640&quot; height=&quot;263&quot; /&gt;&lt;/a&gt;&lt;/p&gt;  &lt;p&gt;Inutile parlare ancora di quanto è un piacere per me far parte di questo gruppo che, oltre ad essere un insieme di professionisti, si sta dimostrando anche un insieme di amici.    &lt;br /&gt;Un super grazie al mio lead ed amico &lt;a title=&quot;Alessandro Teglia&amp;#39;s Blog&quot; href=&quot;http://belead.wordpress.com/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;Alessandro&lt;/a&gt;!&lt;/p&gt;  &lt;p&gt;Grazie ancora a tutti. &lt;/p&gt;
+</description>
+                <link>/2011/10/03/e-son-tre/</link>
+                <guid>/2011/10/03/e-son-tre</guid>
+                <pubDate>2011-10-03T16:30:00Z</pubDate>
+        </item>
+
+
+</channel>
+</rss>

@@ -1,0 +1,415 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Unit test su HttpModule ed un HttpHandler - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2010/05/19/unit-test-su-httpmodule-ed-un-httphandler/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Unit test su HttpModule ed un HttpHandler</h1>
+	<div class="entry-content" itemprop="articleBody"><p><a title="ASP.NET MVC Search" href="http://www.imperugo.tostring.it/tags/archive/mvc" target="_blank">ASP.NET MVC</a> ha aperto un mondo nuovo allo sviluppo di applicazioni web, ossia quello del testing. Di fatto, grazie ad MVC sono stati astratti alcuni concetti che precedentemente impedivano la testabilità delle webforms.</p>  <p>Purtroppo anche con MVC alcune cose rimangono scomode da testare, come gli HttpModule e HttpHandler; anzi, nella normale implementazione non sono proprio testabili. Cercando un po’ in rete ho scovato questo <a title="Unit Testable HttpModule and HttpHandlers" href="http://weblogs.asp.net/rashid/archive/2009/03/12/unit-testable-httpmodule-and-httphandler.aspx" rel="nofollow" target="_blank">post</a>, che mostra un approccio molto elegante su come effettuare Unit Test anche sui moduli e sugli handler, ma procediamo per gradi.</p>  <p>Con l’uscita del&#160; ServicePack 1 del <a title=".NET Framework Search" href="http://www.imperugo.tostring.it/tags/archive/.net" target="_blank">.NET Framework</a> è stata introdotta una nuova libreria, la “<strong><em>System.Web.Abstraction</em></strong>”, contenente una serie di wrapper che hanno lo scopo di impedire l’utilizzo diretto di alcune classi (come l’HttpContext) e, di conseguenza, permettono di testare del codice precedentemente non testabile (HttpModule e HttpHandler).     <br />Per far ciò è necessario creare delle classi base da cui tutti i Module/Handler andranno ad ereditare e gestire gli eventi a livello di baseclass, permettendo così un’eventuale override della classe concreta nel caso del Module, o un’implementazione nel caso dell’Httphandler. Nell’esempio seguente viene mostrata la base classe per un HttpModule:</p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="c1">/// &lt;summary&gt;</span>
+<span class="c1">///        The base class for the HttpModules</span>
+<span class="c1">/// &lt;/summary&gt;</span>
+<span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">BaseHttpModule</span> <span class="p">:</span> <span class="n">IHttpModule</span>
+<span class="p">{</span>
+    <span class="cp">#region IHttpModule Members</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Initializes a module and prepares it to handle requests.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;An &lt;see cref=&quot;T:System.Web.HttpApplication&quot;/&gt; that provides access to the methods, properties, and events common to all application objects within an ASP.NET application&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">Init</span><span class="p">(</span><span class="n">HttpApplication</span> <span class="n">context</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">BeginRequest</span> <span class="p">+=</span> <span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">OnBeginRequest</span><span class="p">(</span><span class="k">new</span> <span class="n">HttpContextWrapper</span><span class="p">(((</span><span class="n">HttpApplication</span><span class="p">)</span><span class="n">sender</span><span class="p">).</span><span class="n">Context</span><span class="p">));</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">Error</span> <span class="p">+=</span> <span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">OnError</span><span class="p">(</span><span class="k">new</span> <span class="n">HttpContextWrapper</span><span class="p">(((</span><span class="n">HttpApplication</span><span class="p">)</span><span class="n">sender</span><span class="p">).</span><span class="n">Context</span><span class="p">));</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">EndRequest</span> <span class="p">+=</span> <span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">OnEndRequest</span><span class="p">(</span><span class="k">new</span> <span class="n">HttpContextWrapper</span><span class="p">(((</span><span class="n">HttpApplication</span><span class="p">)</span><span class="n">sender</span><span class="p">).</span><span class="n">Context</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Disposes of the resources (other than memory) used by the module that implements &lt;see cref=&quot;T:System.Web.IHttpModule&quot;/&gt;.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="k">public</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">Dispose</span><span class="p">()</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="cp">#endregion</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Method called when a server receive a webrequest before other requests</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">OnBeginRequest</span><span class="p">(</span><span class="n">HttpContextBase</span> <span class="n">context</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Method called when an error occurred.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">OnError</span><span class="p">(</span><span class="n">HttpContextBase</span> <span class="n">context</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Method called when a server receive a webrequest and all methods in the request life cycle are completed.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">OnEndRequest</span><span class="p">(</span><span class="n">HttpContextBase</span> <span class="n">context</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Da qui l’implementazione di un Module (nell’esempio il ReferrerModule di <a title="Dexter Blog Engine Category" href="http://www.imperugo.tostring.it/categories/archive/Dexter" target="_blank">dexter</a> semplificato) è piuttosto banale, l’unica differenza è che invece di agganciare un evento va effettuato l’override del metodo virtual presente sulla classe base, come mostrato di seguito:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">ReferrerModule</span> <span class="p">:</span> <span class="n">BaseHttpModule</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="n">ILogger</span> <span class="n">logger</span><span class="p">;</span>
+    <span class="k">private</span> <span class="n">ITraceService</span> <span class="n">traceService</span><span class="p">;</span>
+    <span class="k">private</span> <span class="n">IUrlBuilderService</span> <span class="n">urlbuilder</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="n">ILogger</span> <span class="n">Logger</span>
+    <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">logger</span> <span class="p">??</span> <span class="p">(</span><span class="n">logger</span> <span class="p">=</span> <span class="n">IoC</span><span class="p">.</span><span class="n">Resolve</span><span class="p">&lt;</span><span class="n">ILogger</span><span class="p">&gt;());</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="n">ITraceService</span> <span class="n">TraceService</span>
+    <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">traceService</span> <span class="p">??</span> <span class="p">(</span><span class="n">traceService</span> <span class="p">=</span> <span class="n">IoC</span><span class="p">.</span><span class="n">Resolve</span><span class="p">&lt;</span><span class="n">ITraceService</span><span class="p">&gt;());</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="n">IUrlBuilderService</span> <span class="n">Urlbuilder</span>
+    <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">urlbuilder</span> <span class="p">??</span> <span class="p">(</span><span class="n">urlbuilder</span> <span class="p">=</span> <span class="n">IoC</span><span class="p">.</span><span class="n">Resolve</span><span class="p">&lt;</span><span class="n">IUrlBuilderService</span><span class="p">&gt;());</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="nf">ReferrerModule</span> <span class="p">()</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="nf">ReferrerModule</span> <span class="p">(</span> <span class="n">ILogger</span> <span class="n">logger</span> <span class="p">,</span> <span class="n">ITraceService</span> <span class="n">traceService</span> <span class="p">,</span> <span class="n">IUrlBuilderService</span> <span class="n">urlbuilder</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">logger</span> <span class="p">=</span> <span class="n">logger</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">traceService</span> <span class="p">=</span> <span class="n">traceService</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">urlbuilder</span> <span class="p">=</span> <span class="n">urlbuilder</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">OnEndRequest</span> <span class="p">(</span> <span class="n">HttpContextBase</span> <span class="n">context</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">base</span><span class="p">.</span><span class="n">OnEndRequest</span> <span class="p">(</span> <span class="n">context</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">UrlReferrer</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="n">TraceService</span><span class="p">.</span><span class="n">AddReferrer</span><span class="p">(</span><span class="n">url</span><span class="p">.</span><span class="n">ToString</span><span class="p">(),</span> <span class="n">referrer</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>A questo punto il test è facilmente scrivibile, come mostrato sotto:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="na">[TestMethod]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">OnEndRequest_WithValidRequestUrl_ShouldInvokeTheServiceMethod</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">//Arrage</span>
+    <span class="kt">var</span> <span class="n">httpContext</span> <span class="p">=</span> <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateStub</span><span class="p">&lt;</span><span class="n">HttpContextBase</span><span class="p">&gt;</span> <span class="p">();</span>
+    <span class="kt">var</span> <span class="n">httpRequest</span> <span class="p">=</span> <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateStub</span><span class="p">&lt;</span><span class="n">HttpRequestBase</span><span class="p">&gt;();</span>
+    <span class="kt">var</span> <span class="n">httpResponse</span> <span class="p">=</span> <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateStub</span><span class="p">&lt;</span><span class="n">HttpResponseBase</span><span class="p">&gt;();</span>
+
+    <span class="n">httpContext</span><span class="p">.</span><span class="n">Expect</span> <span class="p">(</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Request</span> <span class="p">).</span><span class="n">Return</span> <span class="p">(</span> <span class="n">httpRequest</span> <span class="p">);</span>
+    <span class="n">httpContext</span><span class="p">.</span><span class="n">Expect</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Response</span><span class="p">).</span><span class="n">Return</span><span class="p">(</span><span class="n">httpResponse</span><span class="p">);</span>
+        
+    <span class="n">Uri</span> <span class="n">currentUrl</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Uri</span> <span class="p">(</span> <span class="s">&quot;http://www.tostring.it&quot;</span><span class="p">);</span>
+    <span class="n">Uri</span> <span class="n">urlReferrer</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Uri</span> <span class="p">(</span> <span class="s">&quot;http://www.bing.com/search?q=imperugo&quot;</span><span class="p">);</span>
+    
+    <span class="n">httpRequest</span><span class="p">.</span><span class="n">Expect</span> <span class="p">(</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Url</span> <span class="p">).</span><span class="n">Return</span> <span class="p">(</span> <span class="n">currentUrl</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">httpRequest</span><span class="p">.</span><span class="n">Expect</span> <span class="p">(</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">UrlReferrer</span> <span class="p">).</span><span class="n">Return</span> <span class="p">(</span> <span class="n">urlReferrer</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="n">ITraceService</span> <span class="n">traceService</span> <span class="p">=</span> <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateMock</span><span class="p">&lt;</span><span class="n">ITraceService</span><span class="p">&gt;</span> <span class="p">();</span>
+
+    <span class="kt">var</span> <span class="n">module</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ReferrerModule</span> <span class="p">(</span>
+        <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateStub</span><span class="p">&lt;</span><span class="n">ILogger</span><span class="p">&gt;</span> <span class="p">()</span> <span class="p">,</span>
+        <span class="n">traceService</span> <span class="p">,</span>
+        <span class="n">MockRepository</span><span class="p">.</span><span class="n">GenerateStub</span><span class="p">&lt;</span><span class="n">IUrlBuilderService</span><span class="p">&gt;</span> <span class="p">()</span>
+        <span class="p">);</span>
+
+    <span class="c1">//Act</span>
+    <span class="n">module</span><span class="p">.</span><span class="n">OnBeginRequest</span><span class="p">(</span><span class="n">httpContext</span><span class="p">);</span>
+
+    <span class="c1">//TODO:Assert</span>
+    <span class="n">traceService</span><span class="p">.</span><span class="n">AssertWasNotCalled</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">AddReferrer</span><span class="p">(</span><span class="n">Arg</span><span class="p">&lt;</span><span class="n">Uri</span><span class="p">&gt;.</span><span class="n">Is</span><span class="p">.</span><span class="n">Equal</span><span class="p">(</span><span class="n">currentUrl</span><span class="p">),</span> <span class="n">Arg</span><span class="p">&lt;</span><span class="n">Uri</span><span class="p">&gt;.</span><span class="n">Is</span><span class="p">.</span><span class="n">Equal</span><span class="p">(</span><span class="n">urlReferrer</span><span class="p">)));</span>
+    
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Come potete vedere, se si ha la necessità di iniettare delle dipendenze potete creare un secondo costruttore che accetti l’instanza della dipendenza e gestire l’eventuale null nella property di get o nel costruttore parameterless (nel mio caso ero obbligato a gestire la dipendenza dalle properties perchè non avevo ancora inizializzato l’IoC Container al momento in cui l’HttpModule viene registrato nell’applicazione, problema che in Dexter si andrà a risolvere nelle prossime release).</p>
+
+<p>Per quanto riguarda un HttpHandler l’approccio è esattamente lo stesso, classe base, metodi virtual ed override.</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="c1">/// &lt;summary&gt;</span>
+<span class="c1">///        The base class for the HttpHandlers</span>
+<span class="c1">/// &lt;/summary&gt;</span>
+<span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">HttpHandlerBase</span> <span class="p">:</span> <span class="n">IHttpHandler</span>
+<span class="p">{</span>
+    <span class="cp">#region IHttpHandler Members</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Gets a value indicating whether another request can use the &lt;see cref=&quot;T:System.Web.IHttpHandler&quot;/&gt; instance.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;value&gt;&lt;/value&gt;</span>
+    <span class="c1">/// &lt;returns&gt;true if the &lt;see cref=&quot;T:System.Web.IHttpHandler&quot;/&gt; instance is reusable; otherwise, false.</span>
+    <span class="c1">/// &lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="k">virtual</span> <span class="kt">bool</span> <span class="n">IsReusable</span>
+    <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="k">false</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Enables processing of HTTP Web requests by a custom HttpHandler that implements the &lt;see cref=&quot;T:System.Web.IHttpHandler&quot;/&gt; interface.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;An &lt;see cref=&quot;T:System.Web.HttpContext&quot;/&gt; object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">ProcessRequest</span><span class="p">(</span><span class="n">HttpContext</span> <span class="n">context</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ProcessRequest</span><span class="p">(</span><span class="k">new</span> <span class="n">HttpContextWrapper</span><span class="p">(</span><span class="n">context</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="cp">#endregion</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Enables processing of HTTP Web requests by a custom HttpHandler that implements the &lt;see cref=&quot;T:System.Web.IHttpHandler&quot;/&gt; interface.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;An &lt;see cref=&quot;T:System.Web.HttpContext&quot;/&gt; object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">abstract</span> <span class="k">void</span> <span class="nf">ProcessRequest</span><span class="p">(</span><span class="n">HttpContextBase</span> <span class="n">context</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Buopn Testing
+  <br />Ciauz</p>
+
+<p>.u</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#MVC" title="">MVC</a>
+	
+	  <a href="/tag#Testing" title="">Testing</a>
+	
+	  <a href="/tag#Unit Test" title="">Unit Test</a>
+	
+	  <a href="/tag#ASP.NET" title="">ASP.NET</a>
+	
+	  <a href="/tag#HttpHandler" title="">HttpHandler</a>
+	
+	  <a href="/tag#HttpModule" title="">HttpModule</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2010/05/18/testmex-tab-snippet/" title="Previous Post: 
+Testmex =&gt; tab (snippet)">&laquo; Testmex =&gt; tab (snippet)</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2010/05/24/invocare-una-action-utilizzando-il-jsonresult-in-post-con-jquery-ed-asp-net-mvc-2/" title="next Post: 
+Invocare una action utilizzando il JSonResult in post con JQuery ed ASP.NET MVC 2">Invocare una action utilizzando il JSonResult in post con JQuery ed ASP.NET MVC 2 &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2010/05/19/unit-test-su-httpmodule-ed-un-httphandler/';
+        var disqus_url = 'http://gioffy.github.io/2010/05/19/unit-test-su-httpmodule-ed-un-httphandler/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

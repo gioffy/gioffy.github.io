@@ -1,0 +1,438 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/32/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/09/03/cambiare-la-finestra-loutput-del-trace-di-asp-net-ajax/" itemprop="url">Cambiare la finestra l’output del Trace di ASP.NET AJAX</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-09-03T08:36:06Z"  itemprop="datePublished">September  3, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/09/03/cambiare-la-finestra-loutput-del-trace-di-asp-net-ajax/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-09-03-cambiare-la-finestra-loutput-del-trace-di-asp-net-ajax.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Fin dalla prima versione di ASP.NET esiste la possibilit&agrave; di avere un tracciato del ciclo di vita della richiesta web, per poter monitorare e comprendere al meglio ci&ograve; che accade nella nostra applicazione web.    <br />
+Personalmente lo ritengo uno strumento indispensabile quando si &egrave; nella situazione di dover lavorare su pagine web particolarmente complesse, in cui i fattori partecipanti alla costruzione dell&rsquo;output possono rendere difficile l&rsquo;individuazione di un particolare problema: proprio in questi contesti il <strong><a title="ASP.NET Trace" target="_blank" rel="nofollow" href="http://msdn.microsoft.com/en-us/library/y13fw6we(VS.71).aspx">Trace</a></strong> di <a target="_blank" rel="nofollow" href="http://www.asp.net">ASP.NET</a> pu&ograve; riverlarsi un ottimo alleato.</p>
+
+<p>Ovviamente questo tipo di problematica si pu&ograve; riscontrare anche per tutte le pagine ricche di chiamate <a target="_blank" rel="nofollow" href="http://en.wikipedia.org/wiki/Ajax_(programming)">AJAX</a> o <a target="_blank" rel="nofollow" href="http://en.wikipedia.org/wiki/Javascript_">Javascript</a> e, per fortuna dello sviluppatore, anche in questo caso &egrave; disponibile una libreria client-side che permette di effettuare un <strong><a title="ASP.NET Trace" target="_blank" rel="nofollow" href="http://msdn.microsoft.com/en-us/library/y13fw6we(VS.71).aspx">Trace</a>&nbsp;</strong>delle chiamate.     <br />
+Di fatto, in una semplice pagina <a target="_blank" rel="nofollow" href="http://www.asp.net">ASP.NET</a> in cui sia presente uno <a target="_blank" rel="nofollow" href="http://msdn.microsoft.com/it-it/library/system.web.ui.scriptmanager.aspx">ScriptManager</a> &egrave; possibile invocare l&rsquo;apposito metodo &ldquo;Sys.Debug.trace&rdquo; ed il contenuto del messaggio verr&agrave; mostrato nella finestra di output di VisualStudio.</p>
+
+<p>Lo snippet seguente mostra l&rsquo;utilizzo del &ldquo;trace&rdquo; su semplici funzioni ajax:    <br />
+&nbsp;</p>
+
+<pre class="brush: xml; ruler: true;">
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot;&gt;
+    function testMessage(param) {
+        Sys.Debug.trace(Date() + &quot; - Button1 clicked&quot;);
+    }
+&lt;/script&gt;</pre>
+
+<p>Lo screenshot seguente mostra la finestra di Output di Visual Studio che presenta il messaggio invocato dal trace via javascript:</p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/8-11-2009%202-05-44%20PM_2.png" rel="shadowbox[Cambiare-la-finestra-l’output-del-Trace-di-ASPNET-AJAX];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase singlelineignorecase="" style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="8-11-2009 2-05-44 PM" border="0" alt="8-11-2009 2-05-44 PM" height="181" width="604" src="http://imperugo.tostring.it/Content/Uploaded/image/8-11-2009%202-05-44%20PM_thumb.png" /></a></p>
+
+<p>Personalmente non ritengo molto comoda la visualizzazione dei Trace invocati tramite javascript nella finestra di output, in quanto vengono mischiati ad altre informazioni generate da Visual Studio stesso o dal compilatore. 
+     <br />
+Fortunatamente &egrave; possibile aggiungere, in alternativa, una textarea all&rsquo;interno della pagina web, che mostrer&agrave; tutti i <strong><a title="ASP.NET Trace" target="_blank" rel="nofollow" href="http://msdn.microsoft.com/en-us/library/y13fw6we(VS.71).aspx">Trace</a>&nbsp;</strong>client-side. Per poter sfruttare questa modalit&agrave; &egrave; necessario aggiungere una textarea all&rsquo;interno della pagina web in cui si desidera mostrare il Trace, ed il suo <strong><em>ID</em></strong> dovr&agrave; essere &ldquo;<strong><em>TraceConsole</em></strong>&rdquo;, come mostrato dallo snippet seguente:</p>
+
+<pre class="brush: xml; ruler: true;">
+&lt;asp:TextBox Columns=&quot;100&quot; Rows=&quot;5&quot; runat=&quot;server&quot; ID=&quot;TraceConsole&quot; TextMode=&quot;MultiLine&quot;&gt;&lt;/asp:TextBox&gt;</pre>
+
+<p>Lo screenshot seguente mostra il trace nella textarea in azione. 
+     <br />
+<br />
+<a href="http://imperugo.tostring.it/Content/Uploaded/image/8-11-2009%202-04-41%20PM_2.png" rel="shadowbox[Cambiare-la-finestra-l’output-del-Trace-di-ASPNET-AJAX];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase singlelineignorecase="" style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="8-11-2009 2-04-41 PM" border="0" alt="8-11-2009 2-04-41 PM" height="206" width="604" src="http://imperugo.tostring.it/Content/Uploaded/image/8-11-2009%202-04-41%20PM_thumb.png" /></a></p>
+
+<p>Ulteriori informazioni riguardarti il Trace di applicazioni web sono disponibili <a href="http://msdn.microsoft.com/en-us/library/y13fw6we%28VS.71%29.aspx">qui</a>.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/09/02/im-back-part-1/" itemprop="url">I’m back part 1</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-09-02T06:24:17Z"  itemprop="datePublished">September  2, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/09/02/im-back-part-1/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-09-02-im-back-part-1.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Dico &ldquo;part 1&rdquo; perch&eacute; il provider non sembra essere ancora molto stabile, cmq sta di fatto che per pi&ugrave; di mezza giornata il blog &egrave; rimasto offline per problemi di routing tra il server web e la <a href="http://en.wikipedia.org/wiki/Storage_area_network" rel="nofollow" target="_blank" title="SAN (Storage area network)">SAN</a>&nbsp; contente i files.</p>
+
+<p>
+    Con questo down ho approfittato per effettuare il deploy di una nuova versione di <a href="http://imperugo.tostring.it/About/Dexter" target="_blank" title="Dexter Blog Engine">Dexter</a> (sempre pi&ugrave; vicino alla prima beta) che include un buon BugFixing ed un BackOffice utilizzabile :).</p>
+
+<p>
+    Speriamo non ricapiti :) <br />
+    Stay Tuned!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/08/31/fluentnhibernate-1-0-rtm/" itemprop="url">FluentNHibernate 1.0 RTM</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-08-31T09:36:37Z"  itemprop="datePublished">August 31, 2009</time></span>
+	<span class="categories">orm</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/08/31/fluentnhibernate-1-0-rtm/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-08-31-fluentnhibernate-1-0-rtm.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Era gi&agrave; nell&rsquo;aria (maggiori info <a href="http://imperugo.tostring.it/Blog/Post/Fluent-NH-10-in-RC" target="_blank" title="Fluent NH 10 in RC">qui</a>), ed infatti &egrave; disponibile la versione RTM di <a href="http://fluentnhibernate.org/" rel="nofollow" target="_blank" title="FluentNHibernate">FluentNHibernate</a> 1.0 come annunciato dal blog di NHibernate <a href="http://nhforge.org/blogs/nhibernate/archive/2009/08/29/fluent-nhibernate-1-0.aspx" rel="nofollow" target="_blank" title="Fluent NHibernate 1.0 RTM Out">qui</a>.</p>
+
+<p>
+    Tutti i changeset del FluentMapping, AutoMapping e Conventions le trovate <a href="http://wiki.fluentnhibernate.org/Release_notes_1.0" rel="nofollow" target="_blank" title="FluentNhibernate 1.0 RTM Changeset">qui</a>, mentre a questo <a href="http://fluentnhibernate.org/downloads" rel="nofollow" target="_blank" title="FluentNHibernate 1.0 RTM">indirizzo</a> trovate il download.</p>
+
+<p>
+    Buon Mapping :)</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/08/28/il-feed-di-twitter/" itemprop="url">Il Feed di Twitter</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-08-28T18:26:55Z"  itemprop="datePublished">August 28, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/08/28/il-feed-di-twitter/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-08-28-il-feed-di-twitter.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><a title="Twitter" href="http://www.twitter.com" rel="nofollow" target="_blank">Twitter</a> sta prendendo sempre pi&ugrave; piede e, seguire i continui aggiornamenti delle persone con cui sei in contatto, diventa sempre pi&ugrave; impegnativo.</p>
+
+<p>Fortunatamente &egrave; disponibile un Feed RSS con gli aggiornamenti di tutti i tuoi contatti; tale feed, per motivi di privacy, &egrave; visibile solo tramite autenticazione che, per chi usa come me <a title="GoogleReader" href="http://www.google.com/reader/view/" rel="nofollow" target="_blank">GoogleReader</a>, pu&ograve; risultare un problema.</p>
+
+<p>Di fatto, <a title="GoogleReader" href="http://www.google.com/reader/view/" rel="nofollow" target="_blank">GoogleReader</a> non gestisce l&rsquo;autenticazione per i feed, ma esistono servizi esterni che ripubblicano il feed sotto autenticazione in un feed <em>free</em> (ovviamente sta nel buon senso della persona non rendere pubblico il feed, altrimenti la tanto agognata <a title="Alla faccia della privacy" href="http://imperugo.tostring.it/Blog/Post/Alla-faccia-della-privacy" target="_blank">privacy</a> &egrave; da dimenticare).     <br />
+Uno di questi siti &egrave; <a href="http://freemyfeed.com/">FreeMyFeed</a>, semplice e con pochi click ti permette di avere a disposizione il tuo feed nel newsaggregator.</p>
+
+<p>Una soluzione alternativa pu&ograve; essere un client come <a href="http://tweetdeck.com/beta/">TweetDec</a> (multipiattaforma compreso IPhone) che oltre a <a title="Twitter" href="http://www.twitter.com" rel="nofollow" target="_blank">Twitter</a> ti permette di seguire ed interagire anche con Facebook.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/08/27/alla-faccia-della-privacy/" itemprop="url">Alla faccia della privacy</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-08-27T14:10:15Z"  itemprop="datePublished">August 27, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/08/27/alla-faccia-della-privacy/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-08-27-alla-faccia-della-privacy.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>L&rsquo;altro giorno mi sono deciso a comprare un orologio per le mie scalate/sciate in montagna quindi, da bravo tecnologico, mi sono messo a fare una ricerca in rete su quale prodotto scegliere.</p>
+
+<p>Personalmente ero orientato su un prodotto della SUUNTO, societ&agrave; specializzata in questo tipo di apparecchiature.   <br />
+Oggi, a distanza di tre giorni dalla ricerca mi ritrovo banner mirati in moltissimi site della rete (tra cui anche Facebook) come mostrano gli screenshot seguenti.</p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/26-Aug-09%2018-53-19_4.png" rel="shadowbox[Alla-faccia-della-privacy];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase width="244" height="59" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/26-Aug-09%2018-53-19_thumb_1.png" alt="26-Aug-09 18-53-19" title="26-Aug-09 18-53-19" style="border: 0px none ; display: inline;" singlelineignorecase="" /></a></p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/26-Aug-09%2018-53-59_4.png" rel="shadowbox[Alla-faccia-della-privacy];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase width="244" height="122" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/26-Aug-09%2018-53-59_thumb_1.png" alt="26-Aug-09 18-53-59" title="26-Aug-09 18-53-59" style="border: 0px none ; display: inline;" singlelineignorecase="" /></a></p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/26-Aug-09%2018-52-58_10.png" rel="shadowbox[Alla-faccia-della-privacy];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase width="154" height="244" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/26-Aug-09%2018-52-58_thumb_4.png" alt="26-Aug-09 18-52-58" title="26-Aug-09 18-52-58" style="border: 0px none ; display: inline;" singlelineignorecase="" /></a></p>
+
+<p>Ora la domanda &egrave;:</p>
+
+<p><u><em><strong>Chi ha fornito le informazioni riguardanti le mie ricerche alle societ&agrave; di ADV?</strong></em></u></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/31" class="prev">Prev</a>
+    
+    
+        <a href="/page/33" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

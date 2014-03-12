@@ -1,0 +1,477 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/34/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/08/10/lucene-net-in-dexter/" itemprop="url">Lucene.Net in Dexter</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-08-10T19:19:40Z"  itemprop="datePublished">August 10, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/08/10/lucene-net-in-dexter/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-08-10-lucene-net-in-dexter.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    La settimana scorsa parlavo con <a href="http://codeclimber.net.nz/default.aspx" rel="nofollow friend met co-worker colleague" target="_new" title="Simone Chiaretta's Blog">Simone</a> (<a href="http://codeclimber.net.nz/archive/2009/08/03/reducing-the-bounce-rate-of-tech-blogs-with-subtext-and.aspx" rel="nofollow" target="_blank" title="Reducing the bounce rate of tech blogs with subtext and">qui</a> trovate un suo post a riguardo) della possibilit&agrave; di integrare il motore di <a href="http://incubator.apache.org/lucene.net/" rel="nofollow" target="_blank" title="Lucene.Net project">Lucence.Net</a> come search provier per il proprio blog engine (sia io che <a href="http://codeclimber.net.nz/default.aspx" rel="nofollow friend met co-worker colleague" target="_new" title="Simone Chiaretta's Blog">Simone</a> siamo dev su due progetti differenti di BlogEngine). <br />
+    Per chi non lo conoscesse <a href="http://incubator.apache.org/lucene.net/" rel="nofollow" target="_blank" title="Lucene.Net project">Lucence.Net</a> &egrave; il porting di un gi&agrave; ben noto Framework, presente nel mondo <a href="http://www.java.com/en/" rel="nofollow" target="_blank" title="Java Official Site">Java</a> da diversi anni, che permette di effettuare ricerche <a href="http://en.wikipedia.org/wiki/Full-text" target="_blank">full-text</a> su un database proprietario basato su filesystem qiundi senza la necessit&agrave; di dover installare nulla sul server. <br />
+    Gi&agrave; in passato avevo avuto modo di utilizzarlo (vedi <a href="http://imperugo.tostring.it/Blog/Post/Ricerca-all-interno-dei-documenti">qui</a> e <a href="http://imperugo.tostring.it/Blog/Post/Ricerca-all-interno-dei-documenti-Parte-2">qui</a>), ma devo dire che l&rsquo;ultima versione &egrave; parecchio migliorata in stabilit&agrave; (la versione precedente al subentro di <a href="http://www.jboss.org/">JBoss</a> lamentava problemi di integrit&agrave; del database). <br />
+    La cosa brillante di questo Framework risiede nella sua velocit&agrave; di ricerca a dir poco impressionate, come mostrato dallo screenshot seguente:</p>
+
+<p>
+    <a href="http://imperugo.tostring.it/Content/Uploaded/image/8-9-2009%201-32-16%20PM_2.png" rel="shadowbox[LuceneNet-in-Dexter];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img alt="8-9-2009 1-32-16 PM" border="0" height="275" singlelineignorecase="" src="http://imperugo.tostring.it/Content/Uploaded/image/8-9-2009%201-32-16%20PM_thumb.png" style="border: 0px none ; display: inline;" title="8-9-2009 1-32-16 PM" width="584" /></a></p>
+
+<p>
+    Oltre alla velocit&agrave; di ricerca, ci sono diverse features che lo rendono appetibile, come la possibilit&agrave; di avere un &ldquo;<strong>Did you mean</strong>&rdquo; stile <a href="http://www.google.com" rel="nofollow" target="_blank" title="Google">google</a>, gli Analyzer personalizzati per la lingua (es: cercando persona vengono cercati anche i termini comuni tipo persone) e la possibilit&agrave; di effettuare ricerche per similarit&agrave;, ossia creare una correlazione tra i contenuti.</p>
+
+<p>
+    <a href="http://imperugo.tostring.it/Content/Uploaded/image/8-10-2009%206-10-37%20PM_2.png" rel="shadowbox[LuceneNet-in-Dexter];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img alt="8-10-2009 6-10-37 PM" border="0" height="342" singlelineignorecase="" src="http://imperugo.tostring.it/Content/Uploaded/image/8-10-2009%206-10-37%20PM_thumb.png" style="border: 0px none ; display: inline;" title="8-10-2009 6-10-37 PM" width="584" /></a></p>
+
+<p>
+    Come potete vedere dagli screenshot precedenti, la prossima build di <a href="http://imperugo.tostring.it/About/Dexter" target="_blank" title="Dexter Blog Engine">Dexter</a> implementa gi&agrave; <a href="http://incubator.apache.org/lucene.net/" rel="nofollow" target="_blank" title="Lucene.Net project">Lucence.Net</a> v.2.4 sia come search engine che come correlatore di contenuti. <br />
+    <br />
+    Purtroppo questo Framework &egrave; molto scarso dal lato della documentazione, sia per il porting .NET che per la versione Java, il che mi fa apprezzare ancor di pi&ugrave; gli sforzi realizzati da <a href="http://www.microsoft.com" rel="nofollow" target="_blank" title="Microsoft Corporation">Microsoft</a> e da tutte le altre organizzazioni, che compiono per fornire agli sviluppatori una documentazione adeguata. <br />
+    Speriamo che anche per Lucence si sforzino un po&rsquo; di pi&ugrave;.</p>
+
+<p>
+    Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/08/07/net-ria-services-e-silverlight-update/" itemprop="url">.NET RIA Services e Silverlight (update)</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-08-07T10:08:32Z"  itemprop="datePublished">August  7, 2009</time></span>
+	<span class="categories">silverlight</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/08/07/net-ria-services-e-silverlight-update/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-08-07-net-ria-services-e-silverlight-update.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>La settimana scorsa avevo pubblicato un elenco di link che spiegavano cosa sono e come si utilizzano i .NET <a title="Rich Internet Application" href="http://it.wikipedia.org/wiki/Rich_Internet_application" rel="nofollow" target="_blank">Ria</a> Services.    <br />
+Tutti i link erano basati su un percorso di <a href="http://blogs.msdn.com/brada/default.aspx">Brad Abrams</a>, che ovviamente non si &egrave; fermato ed ha pubblicato nuovi interessantissimi articoli.    <br />
+Proprio per questo motivo ho aggiornato il post precedente in modo da avere in un unico repository tutti gli articoli di <a href="http://blogs.msdn.com/brada/default.aspx">Brad Abrams</a> riguardanti i .NET Ria Services.</p>
+
+<p>Il <a title=".NET RIA Services e Silverlight" href="http://imperugo.tostring.it/Blog/Post/NET-RIA-Services-e-Silverlight" target="_blank">post</a>.</p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/08/06/configurare-il-routing-di-asp-net-mvc-tramite-xml/" itemprop="url">Configurare il Routing di ASP.NET MVC tramite XML</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-08-06T09:42:34Z"  itemprop="datePublished">August  6, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/08/06/configurare-il-routing-di-asp-net-mvc-tramite-xml/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-08-06-configurare-il-routing-di-asp-net-mvc-tramite-xml.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    L&rsquo;altro giorno mi &egrave; stato chiesto se era possibile configurare il routing di <a href="http://www.asp.net/mvc" rel="nofollow" target="_blank">ASP.NET MVC</a> tramite file di configurazione. Purtroppo al momento non ho saputo rispondere ma, dopo una breve ricerca su internet, ho trovato un articolo che spiega come crearsi una custom section nel file di configurazione, permettendo cos&igrave; di cambiare le regole di routing senza dover necessariamente ricompilare l&rsquo;applicazione.</p>
+
+<p>
+    Il post &egrave; disponibile <a href="http://mnour.blogspot.com/2008/11/mvc-routing-using-custom-configuration.html" rel="nofollow" target="_blank" title="MVC routing using custom configuration">qui</a>. <br />
+    Inoltre&nbsp; <a href="http://haacked.com/" rel="nofollow" target="_blank">Phil Haack</a> tempo fa, ha proposto una <a href="http://haacked.com/archive/2008/04/22/defining-asp.net-mvc-routes-and-views-in-ironruby.aspx" rel="nofollow" target="_blank" title="Defining asp.net mvc routes and views in ironruby">soluzione alternativa</a> che sfrutta IronRuby per cambiare il routing.</p>
+
+<p>
+    Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/08/05/la-was-in-iis7/" itemprop="url">La WAS in IIS7</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-08-05T00:46:44Z"  itemprop="datePublished">August  5, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/08/05/la-was-in-iis7/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-08-05-la-was-in-iis7.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Con l&rsquo;uscita di <strong>Windows Vista</strong> e <strong>Windows Server 2008</strong> &egrave; stata introdotta la <strong>WAS</strong> (<strong>Windows Activation Service</strong>), che permette di &ldquo;hostare&rdquo; su <strong>IIS (Internet Information Services)</strong> servizi WCF anche per protocolli differenti dal tradizionale SOAP (<strong>basicHttpBinding</strong> e <strong>HttpBinding</strong>).    <br />
+Precedentemente a queste versioni di sistema operativo era necessario realizzare un servizio Windows che &ldquo;hostasse&rdquo; il servizio WCF, complicando cos&igrave; tutta la procedura di deploy.    <br />
+IIS7, con la WAS, abbatte totalmente i problemi legati al rilascio e manutenzione dei servizi in quanto &egrave; sufficiente copiare la singola assembly del servizio all&rsquo;interno del nostro sito web o modificare la sua configurazione e sar&agrave; lui ad occuparsi di tutto il resto.</p>
+
+<p>Sia in Windows Vista che in Windows Server 2008 la WAS non &egrave; presente di default: va quindi installata a mano nell&rsquo;apposita sezione &ldquo;Programs and Features&rdquo;, come mostrato dagli screenshots seguenti:</p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-29-19%20PM_6.png" rel="shadowbox[La-WAS-in-IIS7];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase width="244" height="184" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-29-19%20PM_thumb_2.png" alt="8-1-2009 3-29-19 PM" title="8-1-2009 3-29-19 PM" style="border: 0px none ; display: inline;" singlelineignorecase="" /></a> <a href="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-31-56%20PM_2.png" rel="shadowbox[La-WAS-in-IIS7];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase width="244" height="184" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-31-56%20PM_thumb.png" alt="8-1-2009 3-31-56 PM" title="8-1-2009 3-31-56 PM" style="border: 0px none ; display: inline;" singlelineignorecase="" /></a> <a href="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-33-15%20PM_2.png" rel="shadowbox[La-WAS-in-IIS7];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase width="244" height="184" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/8-1-2009%203-33-15%20PM_thumb.png" alt="8-1-2009 3-33-15 PM" title="8-1-2009 3-33-15 PM" style="border: 0px none ; display: inline;" singlelineignorecase="" /></a></p>
+
+<p>Una volta completata la procedura di installazione verr&agrave; automaticamente configurato il DefaultSite per supportare i protocolli <strong>non-http</strong>, quindi <strong><em>NET.TCP, NET.PIPE e NET.MSMQ</em></strong>.</p>
+
+<p>A dimostrazione di quanto appena detto, se si prova ad editare a mano il file XML contenente la configurazione di IIS7 (%windir%\System32\inetsrv\config\applicationHost.config) e si controlla l&rsquo;apposita area del Default Site, si dovrebbe avere una configurazione come la seguente:</p>
+
+<pre class="brush: xml; ruler: true;">
+&lt;site name=&quot;Default Web Site&quot; id=&quot;1&quot; serverAutoStart=&quot;true&quot;&gt;
+    &lt;application path=&quot;/WCFService&quot; applicationPool=&quot;DefaultAppPool&quot; enabledProtocols=&quot;http,net.tcp,net.pipe,net.msmq&quot;&gt;
+        &lt;virtualDirectory path=&quot;/&quot; physicalPath=&quot;C:\inetpub\wwwroot\WCFService&quot; /&gt;     
+    &lt;/application&gt;
+
+    &lt;bindings&gt;
+        &lt;binding protocol=&quot;https&quot; bindingInformation=&quot;*:443:&quot; /&gt;
+        &lt;binding protocol=&quot;http&quot; bindingInformation=&quot;*:80:&quot; /&gt;
+        &lt;binding protocol=&quot;net.pipe&quot; bindingInformation=&quot;*&quot; /&gt;
+        &lt;binding protocol=&quot;net.msmq&quot; bindingInformation=&quot;localhost&quot; /&gt;
+        &lt;binding protocol=&quot;net.tcp&quot; bindingInformation=&quot;808:*&quot; /&gt;
+    &lt;/bindings&gt;
+&lt;/site&gt; </pre>
+
+<p>Nel caso la configurazione non coincida con quella appena mostrata, &egrave; possibile eseguire manualmente il comando di configurazione ed abilitazione per i nostri siti web.   <br />
+Di seguito potete trovare l&rsquo;elenco dei comandi disponibile per i protocolli non-HTTP:</p>
+
+<blockquote>
+<p><strong><em>%windir%\system32\inetsrv\appcmd.exe set site &quot;Default Web Site&quot; -+bindings.[protocol='net.pipe',bindingInformation='*']</em></strong></p>
+<p><strong><em>%windir%\system32\inetsrv\appcmd.exe set site &quot;Default Web Site&quot; -+bindings.[protocol='net.tcp',bindingInformation='808:*']</em></strong></p>
+<p><strong><em>%windir%\system32\inetsrv\appcmd.exe set site &quot;Default Web Site&quot; -+bindings.[protocol='net.msmq',bindingInformation='localhost']</em></strong></p>
+<p><strong><em>%windir%\system32\inetsrv\appcmd.exe set site &quot;Default Web Site&quot; -+bindings.[protocol='msmq.formatname&quot;',bindingInformation='localhost']</em></strong></p>
+</blockquote>
+
+<p>Una volta completata la configurazione, &egrave; necessario abilitare i protocolli per tutte le applicazioni che necessitano di hostare WCF in modalit&agrave; non-HTTP.   <br />
+Il comando seguente mostra come fare:</p>
+
+<blockquote>
+<p><strong><em>%windir%\system32\inetsrv\appcmd.exe set app &quot;Default Web Site/MyVirtual&quot; /enabledProtocols:http,net.pipe, net.tcp, net.msmq</em></strong></p>
+</blockquote>
+
+<p>A questo punto da Visual Studio, per aggiungere il servizio net.tcp hostato in IIS basta aggiungere l&rsquo;indirizzo del file .svc presente nel web server ed il gioco &egrave; fatto, come mostrato di seguito:</p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/8-3-2009%209-12-37%20PM_2.png" rel="shadowbox[La-WAS-in-IIS7];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase width="244" height="198" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/8-3-2009%209-12-37%20PM_thumb.png" alt="8-3-2009 9-12-37 PM" title="8-3-2009 9-12-37 PM" style="border: 0px none ; display: inline;" singlelineignorecase="" /></a></p>
+
+<p>Anche se si specifica un indirizzo http, questo non vuol dire che il servizio viene esposto in http o il proxy punta ad un binding http, ma sar&agrave; direttamente IIS a comunicare al client il protocollo utilizzato.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/08/04/urlencode-e-iis7/" itemprop="url">UrlEncode e IIS7</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-08-04T00:30:15Z"  itemprop="datePublished">August  4, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/08/04/urlencode-e-iis7/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-08-04-urlencode-e-iis7.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Quando si costruiscono url dinamici in base a delle variabili di applicazione, &egrave; bene utilizzare l&rsquo;apposito metodo <strong><em>UrlEncode</em></strong> della classe statica <strong><em>HttpUtility</em></strong>, che ha il compito di effettuare il replace di tutti i caratteri non compatibili con gli url.    <br />
+<br />
+Per esempio l&rsquo;url seguente <a href="http://imperugo.tostring.it/Categories/Archive/Windows%20Communication%20Foundation">http://imperugo.tostring.it/Categories/Archive/Windows Communication Foundation</a> dovrebbe diventare <a href="http://imperugo.tostring.it/Categories/Archive/Windows+Communication+Foundation">http://imperugo.tostring.it/Categories/Archive/Windows+Communication+Foundation</a>    <br />
+Di fatto <strong><em>HttpUtility.UrlEncode(&quot;Windows Communication Foundation&quot;)</em></strong> sostituisce lo spazio con il carattere &ldquo;+&rdquo;.    <br />
+<br />
+Quando la propria applicazione risiede su un web server come IIS7.x (Windows Vista, Windows Server 2008, Windows 7, Windows Server 3008 R2) si possono riscontrare dei problemi con questo tipo di url in quanto per default sono bloccati tutti gli url contenenti pi&ugrave; di un carattere di escape - nel nostro esempio il &ldquo;+&rdquo; - sollevando un&rsquo;eccezione come la seguente:</p>
+
+<blockquote>
+<p>HTTP Error 404.11 - Not Found     <br />
+The request filtering module is configured to deny a request that contains a double escape sequence.</p>
+</blockquote>
+
+<p>Per disabilitare questa protezione e poter sfruttare l&rsquo;urlEncode &egrave; necessario agire sulla configurazione di IIS nell&rsquo;apposito file di configurazione (%windir%\System32\inetsrv\config\applicationHost.config) o nell&rsquo;apposita sezione del web.config dell&rsquo;applicazione come mostrato di seguito</p>
+
+<pre class="brush: xml; ruler: true;">
+&lt;system.webServer&gt;
+  &lt;security&gt;
+      &lt;requestFiltering allowDoubleEscaping=&quot;true&quot; /&gt;
+  &lt;/security&gt;
+  &lt;!-- ..... --&gt; 
+&lt;/system.webServer&gt;</pre>
+
+<p>In questo modo non si avranno eccezioni per tutti gli url contenenti caratteri di escape.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/33" class="prev">Prev</a>
+    
+    
+        <a href="/page/35" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

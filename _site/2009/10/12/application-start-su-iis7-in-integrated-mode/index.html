@@ -1,0 +1,304 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Application Start su IIS7 in Integrated Mode - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2009/10/12/application-start-su-iis7-in-integrated-mode/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Application Start su IIS7 in Integrated Mode</h1>
+	<div class="entry-content" itemprop="articleBody"><p>La settimana scorsa mi sono imbattuto in uno “strano” errore&#160; sollevato da <strong><a title="Internet Information Service" href="http://imperugo.tostring.it/blog/search?q=IIS&amp;searchButton=Go" target="_blank">Internet Information Service 7 (IIS7)</a></strong>: nello specifico veniva sollevata una <em><a title="System.Web.HttpException" href="http://msdn.microsoft.com/en-us/library/system.web.httpexception.aspx" rel="nofollow" target="_blank">System.Web.HttpException</a></em> con il seguente messaggio:</p>  <blockquote>   <p>Request is not available in this context</p> </blockquote>  <p>L’eccezione veniva sollevata dall’ <strong>Application_Start</strong> del <strong>Global.asax</strong>, in quanto cercavo di accedere all’<a title="HttpContext" href="http://msdn.microsoft.com/en-us/library/system.web.httpcontext.aspx" rel="nofollow" target="_blank">HttpContext</a> per effettuare il log di avvio dell’applicazione; in realtà non avevo necessità di accedere all’ HttpContext, ma il logger che utilizzavo di default ad ogni chiamata verificava che il Context non fosse nullo e nel caso aggiungeva info sull’url richiesto (Referrer, ecc), più o meno come mostrato di seguito:</p>  <pre class="brush: csharp; ruler: true;">public static IExtendedLogger General
+{
+    get
+    {
+        AddExtraInformation(general);
+        return general;
+    }
+}
+
+
+private static void AddExtraInformation(IExtendedLogger logger)
+{
+    HttpContext ctx = HttpContext.Current;
+
+    if (ctx != null)
+    {
+        logger.ThreadProperties[&quot;Url&quot;] = ctx.Request.Url;
+        logger.ThreadProperties[&quot;UrlReferrer&quot;] = ctx.Request.UrlReferrer;
+        logger.ThreadProperties[&quot;UserAgent&quot;] = ctx.Request.UserAgent;
+        logger.ThreadProperties[&quot;UserHostName&quot;] = ctx.Request.UserHostName;
+        logger.ThreadProperties[&quot;ServerVariables&quot;] = ServerVariables(ctx.Request.ServerVariables);
+        logger.ThreadProperties[&quot;Form&quot;] = ServerVariables(ctx.Request.Form);
+        logger.ThreadProperties[&quot;RawURL&quot;] = ctx.Request.RawUrl;
+        logger.ThreadProperties[&quot;ServerName&quot;] = ctx.Server.MachineName;
+        logger.ThreadProperties[&quot;ThreadLanguage&quot;] = Thread.CurrentThread.CurrentCulture.DisplayName;
+    }
+}</pre>
+
+<p>In realtà non c’è nulla di strano, di fatto lo stesso codice in un’altro webserver funzionava alla grande. “Sbingando” (cercando con <a title="Bing" href="http://www.bing.com" rel="nofollow" target="_blank">bing</a>) un po’, ho scoperto di non essere l’unico ad avere questo problema e la motivazione scatenante è dovuta da un insieme di fattori:</p>
+
+<ul>
+  <li>IIS 7/7.5; </li>
+
+  <li>Integrated Mode; </li>
+
+  <li>Accesso all’HttpContext dall’Application_Start del global.asax; </li>
+</ul>
+
+<p>L’unica soluzione che ho trovato (al momento) è quella di cambiare uno di questi fattori, quindi o cambiare la modalità da Integrated a Classic, o evitare di utilizzare l’HttpContext nell’Application_Start. 
+  <br />Personalmente ho scelto la seconda, ritengo che l’integrated mode di II7.x sia una delle features più interessanti (maggiori info <a title="IIS7 Integrated Security" href="http://learn.iis.net/page.aspx/244/how-to-take-advantage-of-the-iis7-integrated-pipeline/" rel="nofollow" target="_blank">qui</a>), o per lo meno è sicuramente più utile dell’HttpContext nell’Application_Start per un semplice log di avvio.</p>
+
+<p>Un’altra possibile soluzione può essere quella di “aspettare” che il metodo Application_Start sia concluso per poi accedere all’HttpContext come spiegato da <a title="Mike Volodarsky&#39;s Blog" href="http://mvolo.com/blogs/serverside/default.aspx" rel="nofollow" target="_blank">Mike Volodarsky</a> <a title="IIS7 Integrated mode: Request is not available in this context exception in Application_Start" href="http://mvolo.com/blogs/serverside/archive/2007/11/10/Integrated-mode-Request-is-not-available-in-this-context-in-Application_5F00_Start.aspx" rel="nofollow" target="_blank">qui</a> e mostrato dallo snippet seguente:</p>
+
+<pre class="brush: csharp; ruler: true;">void Application_BeginRequest(Object source, EventArgs e)
+{
+    HttpApplication app = (HttpApplication)source;
+    HttpContext context = app.Context;
+    // Attempt to peform first request initialization
+    FirstRequestInitialization.Initialize(context);
+}
+
+class FirstRequestInitialization
+{
+    private static bool s_InitializedAlready = false;
+    private static Object s_lock = new Object();
+    // Initialize only on the first request
+    public static void Initialize(HttpContext context)
+    {
+        if (s_InitializedAlready)
+        {
+            return;
+        }
+        lock (s_lock)
+        {
+            if (s_InitializedAlready)
+            {
+                return;
+            }
+            // Perform first-request initialization here ...
+            s_InitializedAlready = true;
+        }
+    }
+}</pre>
+
+<p>Ciauz</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#IIS" title="">IIS</a>
+	
+	  <a href="/tag#IIS 7.5" title="">IIS 7.5</a>
+	
+	  <a href="/tag#Exception" title="">Exception</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2009/10/08/asp-net-controls-per-ie8/" title="Previous Post: 
+ASP.NET Controls per IE8">&laquo; ASP.NET Controls per IE8</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2009/10/14/utilizzare-un-ramdisk-per-lesecuzione-dei-test/" title="next Post: 
+Utilizzare un RamDisk per l’esecuzione dei Test">Utilizzare un RamDisk per l’esecuzione dei Test &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2009/10/12/application-start-su-iis7-in-integrated-mode/';
+        var disqus_url = 'http://gioffy.github.io/2009/10/12/application-start-su-iis7-in-integrated-mode/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

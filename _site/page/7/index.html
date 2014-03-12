@@ -1,0 +1,712 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/7/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/05/19/usare-iexceptionfilter-per-loggare-le-eccezioni/" itemprop="url">Usare IExceptionFilter per loggare le eccezioni.</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-05-19T15:45:00Z"  itemprop="datePublished">May 19, 2011</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/05/19/usare-iexceptionfilter-per-loggare-le-eccezioni/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-05-19-usare-iexceptionfilter-per-loggare-le-eccezioni.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>In un post precedente (vedi <a title="Gli Action Filter ed i Global Filter di ASPNET MVC" href="http://www.tostring.it/blog/post/gli-action-filter-ed-i-global-filter-di-aspnet-mvc/" target="_blank">qui</a>) ho già introdotto il concetto di <a title="Action Filter posts" href="http://www.tostring.it/tags/archive/Filter" target="_blank">ActionFilter</a> e alcune opportunità che ci offre. In questo post vorrei mostrare come realizzarne uno custom per loggare le eccezioni.     <br />Per prima cosa è bene sapere che ogni ActionFilter deve ereditare da FilterAttribute, che è la classe base per tutti i Filter che si utilizzano in ASPNET <a title="ASP.NET MVC" href="http://tostring.it/tags/archive/mvc" target="_blank">MVC</a> e, se si vogliono catturare tutti gli errori non gestiti, è necessario implementare anche l’interfaccia IExceptionFilter.</p>  <p>Lo snippet seguente mostra l’implementazione dell’ActionFilter:</p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">LoggerFilterAttribute</span> <span class="p">:</span> <span class="n">FilterAttribute</span><span class="p">,</span> <span class="n">IExceptionFilter</span> <span class="p">{</span>
+    <span class="k">readonly</span> <span class="n">ILogger</span> <span class="n">logger</span><span class="p">;</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Initializes a new instance of the &lt;see cref=&quot;T:System.Web.Mvc.FilterAttribute&quot;/&gt; class.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="k">public</span> <span class="nf">LoggerFilterAttribute</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">logger</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Logger</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Initializes a new instance of the &lt;see cref=&quot;T:System.Web.Mvc.FilterAttribute&quot;/&gt; class.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="k">public</span> <span class="nf">LoggerFilterAttribute</span> <span class="p">(</span> <span class="n">ILogger</span> <span class="n">logger</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">logger</span> <span class="p">=</span> <span class="n">logger</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Called when an exception occurs.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;context&quot;&gt;The filter context.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">OnException</span> <span class="p">(</span> <span class="n">ExceptionContext</span> <span class="n">context</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">logger</span><span class="p">.</span><span class="n">Error</span> <span class="p">(</span> <span class="n">context</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">context</span><span class="p">.</span><span class="n">Exception</span> <span class="p">);</span>
+
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">HttpException</span><span class="p">(</span><span class="m">500</span><span class="p">,</span><span class="n">context</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">,</span><span class="n">context</span><span class="p">.</span><span class="n">Exception</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>A questo punto è sufficiente decorare i nostri Controller, o ancora meglio registrare il Filter come Global per poterlo sfruttare:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="na">[LoggerFilterAttribute()]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">HomeController</span> <span class="p">:</span> <span class="n">ControllerBase</span> <span class="p">{</span>
+  <span class="k">public</span> <span class="n">ActionResunt</span> <span class="nf">Index</span><span class="p">(){</span>
+    <span class="c1">//DO SOMETHING</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/05/16/gestione-dei-datetime-ed-i-vari-timezone/" itemprop="url">Gestione dei DateTime ed i vari TimeZone</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-05-16T15:50:00Z"  itemprop="datePublished">May 16, 2011</time></span>
+	<span class="categories">orm</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/05/16/gestione-dei-datetime-ed-i-vari-timezone/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-05-16-gestione-dei-datetime-ed-i-vari-timezone.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Tra le varie problematiche che ho incontrato nello sviluppare <a title="Dexter Blog Engine Official Site" href="http://dexterblogengine.com/" target="_blank">Dexter</a>, ce n’è una il cui rimedio è divenuto indispensabile nella maggior parte delle applicazioni, ossia una gestione un po’ più avanzata del DateTime all’interno dell’applicazione.     <br />Durante la migrazione tra i vari server, ho riscontrato un problema con i vari DateTime di ciascuno di essi; essendo dislocati in aree geografiche diverse, restituivano infatti valori nettamente differenti per via del fuso orario dal server vecchio a quello nuovo.</p>  <p>Il primo server su cui risiedeva il mio blog era su un provider il cui fuso orario era impostato su <a title="Fuso orario" href="http://it.wikipedia.org/wiki/Fuso_orario#UTC-5_.28EST_-_Eastern_Standard_Time.29" rel="nofollow" target="_blank">EST</a>, che differisce di tre ore rispetto all’orario del nuovo server che è impostato sulla <a title="Fuso Orario" href="http://it.wikipedia.org/wiki/Fuso_orario#UTC-8_.28PST_-_Pacific_Standard_Time.29" rel="nofollow" target="_blank">PST</a>. Questa differenza ha causato un’errata visualizzazione degli orari dei post sul mio blog, che risultavano sfalzati di tre ore</p>  <p>Oltre a sistemare tutti i valori memorizzati nel database con una query, ho deciso di affrontare e risolvere il problema in modo da non avere una dipendenza del fuso orario nelle date memorizzate, essendo quindi libero di gestire l’output dell’ora nel TimeZone a me più congeniale.</p>  <p>Per prima cosa ho realizzato uno UserType per NHibernate che convertisse tutte le date in ingresso verso il databse in formato UTC e, in fase di idratazione della entity, le convertisse nel TimeZone da me configurato. Questa operazione, in codice, si traduce più o meno così:</p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="na">[Serializable]</span>
+<span class="k">internal</span> <span class="k">class</span> <span class="nc">DateTimeUtc</span> <span class="p">:</span> <span class="n">IUserType</span> <span class="p">{</span>
+    <span class="cp">#region IUserType Members</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Determines whether the specified &lt;see cref=&quot;System.Object&quot;/&gt; is equal to this instance.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;x&quot;&gt;The &lt;see cref=&quot;System.Object&quot;/&gt; to compare with this instance.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;y&quot;&gt;The y.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;</span>
+    <span class="c1">///     &lt;c&gt;true&lt;/c&gt; if the specified &lt;see cref=&quot;System.Object&quot;/&gt; is equal to this instance; otherwise, &lt;c&gt;false&lt;/c&gt;.</span>
+    <span class="c1">/// &lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="k">new</span> <span class="kt">bool</span> <span class="nf">Equals</span> <span class="p">(</span> <span class="kt">object</span> <span class="n">x</span> <span class="p">,</span> <span class="kt">object</span> <span class="n">y</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">ReferenceEquals</span> <span class="p">(</span> <span class="n">x</span> <span class="p">,</span> <span class="n">y</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">x</span> <span class="p">==</span> <span class="k">null</span> <span class="p">||</span> <span class="n">y</span> <span class="p">==</span> <span class="k">null</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">.</span><span class="n">Equals</span> <span class="p">(</span> <span class="n">y</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Returns a hash code for this instance.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;x&quot;&gt;The x.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;</span>
+    <span class="c1">/// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. </span>
+    <span class="c1">/// &lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="nf">GetHashCode</span> <span class="p">(</span> <span class="kt">object</span> <span class="n">x</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="p">==</span> <span class="k">null</span>
+                   <span class="p">?</span> <span class="k">typeof</span> <span class="p">(</span> <span class="n">DateTime</span> <span class="p">).</span><span class="n">GetHashCode</span> <span class="p">(</span> <span class="p">)</span> <span class="p">+</span> <span class="m">473</span>
+                   <span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">GetHashCode</span> <span class="p">(</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Retrieve an instance of the mapped class from a JDBC resultset.</span>
+    <span class="c1">/// Implementors should handle possibility of null values.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;rs&quot;&gt;a IDataReader&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;names&quot;&gt;column names&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;owner&quot;&gt;the containing entity&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+    <span class="c1">/// &lt;exception cref=&quot;T:NHibernate.HibernateException&quot;&gt;HibernateException&lt;/exception&gt;</span>
+    <span class="k">public</span> <span class="kt">object</span> <span class="nf">NullSafeGet</span> <span class="p">(</span> <span class="n">IDataReader</span> <span class="n">rs</span> <span class="p">,</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">names</span> <span class="p">,</span> <span class="kt">object</span> <span class="n">owner</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="kt">object</span> <span class="n">obj</span> <span class="p">=</span> <span class="n">NHibernateUtil</span><span class="p">.</span><span class="n">DateTime</span><span class="p">.</span><span class="n">NullSafeGet</span> <span class="p">(</span> <span class="n">rs</span> <span class="p">,</span> <span class="n">names</span><span class="p">[</span> <span class="m">0</span> <span class="p">]</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">obj</span> <span class="p">==</span> <span class="k">null</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">var</span> <span class="n">dbValue</span> <span class="p">=</span> <span class="p">(</span> <span class="n">DateTime</span> <span class="p">)</span> <span class="n">obj</span><span class="p">;</span>
+
+        <span class="n">SiteConfiguration</span> <span class="n">configuration</span> <span class="p">=</span> <span class="n">DexterContainer</span><span class="p">.</span><span class="n">Resolve</span> <span class="p">&lt;</span><span class="n">IConfigurationRepository</span><span class="p">&gt;</span> <span class="p">(</span> <span class="p">).</span><span class="n">Configuration</span><span class="p">;</span>
+
+        <span class="n">dbValue</span> <span class="p">=</span> <span class="n">configuration</span> <span class="p">!=</span> <span class="k">null</span>
+                      <span class="p">?</span> <span class="n">System</span><span class="p">.</span><span class="n">TimeZoneInfo</span><span class="p">.</span><span class="n">ConvertTimeFromUtc</span> <span class="p">(</span> <span class="n">dbValue</span> <span class="p">,</span> <span class="n">configuration</span><span class="p">.</span><span class="n">TimeZone</span> <span class="p">)</span>
+                      <span class="p">:</span> <span class="n">dbValue</span><span class="p">.</span><span class="n">ToUniversalTime</span> <span class="p">(</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">dbValue</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Write an instance of the mapped class to a prepared statement.</span>
+    <span class="c1">/// Implementors should handle possibility of null values.</span>
+    <span class="c1">/// A multi-column type should be written to parameters starting from index.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;cmd&quot;&gt;a IDbCommand&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;value&quot;&gt;the object to write&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;index&quot;&gt;command parameter index&lt;/param&gt;</span>
+    <span class="c1">/// &lt;exception cref=&quot;T:NHibernate.HibernateException&quot;&gt;HibernateException&lt;/exception&gt;</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">NullSafeSet</span> <span class="p">(</span> <span class="n">IDbCommand</span> <span class="n">cmd</span> <span class="p">,</span> <span class="kt">object</span> <span class="k">value</span> <span class="p">,</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">value</span> <span class="p">==</span> <span class="k">null</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="p">(</span> <span class="p">(</span> <span class="n">IDataParameter</span> <span class="p">)</span> <span class="n">cmd</span><span class="p">.</span><span class="n">Parameters</span><span class="p">[</span> <span class="n">index</span> <span class="p">]</span> <span class="p">).</span><span class="n">Value</span> <span class="p">=</span> <span class="n">DBNull</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">myValue</span> <span class="p">=</span> <span class="p">(</span> <span class="n">DateTime</span> <span class="p">)</span> <span class="k">value</span><span class="p">;</span>
+
+            <span class="n">SiteConfiguration</span> <span class="n">configuration</span> <span class="p">=</span> <span class="n">DexterContainer</span><span class="p">.</span><span class="n">Resolve</span><span class="p">&lt;</span><span class="n">IConfigurationRepository</span><span class="p">&gt;</span> <span class="p">(</span> <span class="p">).</span><span class="n">Configuration</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">configuration</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="n">myValue</span> <span class="p">=</span> <span class="n">myValue</span><span class="p">.</span><span class="n">Kind</span> <span class="p">==</span> <span class="n">DateTimeKind</span><span class="p">.</span><span class="n">Unspecified</span>
+                              <span class="p">?</span> <span class="n">System</span><span class="p">.</span><span class="n">TimeZoneInfo</span><span class="p">.</span><span class="n">ConvertTimeToUtc</span> <span class="p">(</span> <span class="n">myValue</span> <span class="p">,</span> <span class="n">configuration</span><span class="p">.</span><span class="n">TimeZone</span> <span class="p">)</span>
+                              <span class="p">:</span> <span class="n">myValue</span><span class="p">.</span><span class="n">ToUniversalTime</span> <span class="p">(</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="n">myValue</span><span class="p">.</span><span class="n">ToUniversalTime</span> <span class="p">(</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="p">(</span> <span class="p">(</span> <span class="n">IDataParameter</span> <span class="p">)</span> <span class="n">cmd</span><span class="p">.</span><span class="n">Parameters</span><span class="p">[</span> <span class="n">index</span> <span class="p">]</span> <span class="p">).</span><span class="n">Value</span> <span class="p">=</span> <span class="n">myValue</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Return a deep copy of the persistent state, stopping at entities and at collections.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;value&quot;&gt;generally a collection element or entity field&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;a copy&lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="kt">object</span> <span class="nf">DeepCopy</span> <span class="p">(</span> <span class="kt">object</span> <span class="k">value</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">value</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// During merge, replace the existing (&lt;paramref name=&quot;target&quot;/&gt;) value in the entity</span>
+    <span class="c1">/// we are merging to with a new (&lt;paramref name=&quot;original&quot;/&gt;) value from the detached</span>
+    <span class="c1">/// entity we are merging. For immutable objects, or null values, it is safe to simply</span>
+    <span class="c1">/// return the first parameter. For mutable objects, it is safe to return a copy of the</span>
+    <span class="c1">/// first parameter. For objects with component values, it might make sense to</span>
+    <span class="c1">/// recursively replace component values.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;original&quot;&gt;the value from the detached entity being merged&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;target&quot;&gt;the value in the managed entity&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;owner&quot;&gt;the managed entity&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;the value to be merged&lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="kt">object</span> <span class="nf">Replace</span> <span class="p">(</span> <span class="kt">object</span> <span class="n">original</span> <span class="p">,</span> <span class="kt">object</span> <span class="n">target</span> <span class="p">,</span> <span class="kt">object</span> <span class="n">owner</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">original</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Reconstruct an object from the cacheable representation. At the very least this</span>
+    <span class="c1">/// method should perform a deep copy if the type is mutable. (optional operation)</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;cached&quot;&gt;the object to be cached&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;owner&quot;&gt;the owner of the cached object&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;</span>
+    <span class="c1">/// a reconstructed object from the cachable representation</span>
+    <span class="c1">/// &lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="kt">object</span> <span class="nf">Assemble</span> <span class="p">(</span> <span class="kt">object</span> <span class="n">cached</span> <span class="p">,</span> <span class="kt">object</span> <span class="n">owner</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">cached</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Transform the object into its cacheable representation. At the very least this</span>
+    <span class="c1">/// method should perform a deep copy if the type is mutable. That may not be enough</span>
+    <span class="c1">/// for some implementations, however; for example, associations must be cached as</span>
+    <span class="c1">/// identifier values. (optional operation)</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;value&quot;&gt;the object to be cached&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;a cacheable representation of the object&lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="kt">object</span> <span class="nf">Disassemble</span> <span class="p">(</span> <span class="kt">object</span> <span class="k">value</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">value</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// The SQL types for the columns mapped by this type.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;value&gt;&lt;/value&gt;</span>
+    <span class="k">public</span> <span class="n">SqlType</span><span class="p">[]</span> <span class="n">SqlTypes</span> <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span>
+                <span class="k">new</span> <span class="nf">SqlType</span> <span class="p">(</span> <span class="n">DbType</span><span class="p">.</span><span class="n">DateTime</span> <span class="p">)</span>
+            <span class="p">};</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// The type returned by &lt;c&gt;NullSafeGet()&lt;/c&gt;</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;value&gt;&lt;/value&gt;</span>
+    <span class="k">public</span> <span class="n">Type</span> <span class="n">ReturnedType</span> <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="k">typeof</span> <span class="p">(</span> <span class="n">DateTime</span> <span class="p">);</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Are objects of this type mutable?</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;value&gt;&lt;/value&gt;</span>
+    <span class="k">public</span> <span class="kt">bool</span> <span class="n">IsMutable</span> <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="k">false</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="cp">#endregion</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Una volta affrontato il problema del salvataggio della data, rimaneva soltanto quello riguardante i filtri delle query che, per i campi DateTime, dovevano effettuare una conversione in formato UTC più o meno in questo modo:</p>
+
+<p><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML2d258d7.png" target="_blank"><img style="background-image: none; border-bottom: 0px; border-left: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top: 0px; border-right: 0px; padding-top: 0px" title="SNAGHTML2d258d7" border="0" alt="SNAGHTML2d258d7" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML2d258d7_thumb.png" width="244" height="158" /></a></p>
+
+<p>Purtroppo mi è capitato più volte di dimenticarmi di effettuare quel ToUniversalDateTime all’assegnazione del parametro di una query, con l’ovvio problema di avere risultati sballati in fase di visualizzazione.</p>
+
+<p>Fortunatamente con la versione 3.2 di NHibernate è stato rivisto parzialmente il Driver di SqlServer, che ora espone un metodo &quot;AdjustCommand” subito prima dell’ExecuteQuery. Il codice seguente mostra come effettuare automaticamente la conversione dal DateTimeKind.Local al DateTimeKind.Utc:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">DexterSqlClientDriver</span> <span class="p">:</span> <span class="n">SqlClientDriver</span> <span class="p">{</span>
+    
+    <span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">AdjustCommand</span> <span class="p">(</span> <span class="n">System</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">IDbCommand</span> <span class="n">command</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">parameter</span> <span class="k">in</span> <span class="n">command</span><span class="p">.</span><span class="n">Parameters</span><span class="p">.</span><span class="n">Cast</span><span class="p">&lt;</span><span class="n">SqlParameter</span><span class="p">&gt;</span> <span class="p">(</span> <span class="p">).</span><span class="n">Where</span> <span class="p">(</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">SqlDbType</span> <span class="p">==</span> <span class="n">SqlDbType</span><span class="p">.</span><span class="n">DateTime</span> <span class="p">&amp;&amp;</span> <span class="p">(</span> <span class="n">x</span><span class="p">.</span><span class="n">Value</span> <span class="k">is</span> <span class="n">DateTime</span> <span class="p">)</span> <span class="p">))</span> <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">dateTimeValue</span> <span class="p">=</span> <span class="p">((</span> <span class="n">DateTime</span> <span class="p">)</span><span class="n">parameter</span><span class="p">.</span><span class="n">Value</span><span class="p">).</span><span class="n">ToUniversalTime</span> <span class="p">(</span>  <span class="p">);</span>
+            <span class="n">parameter</span><span class="p">.</span><span class="n">Value</span> <span class="p">=</span> <span class="n">dateTimeValue</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>A questo punto, il codice di esecuzione della query si semplifica ancor di più poiché il developer non deve sapere, o ricordarsi, che il formato della data sul database è differente, in quanto la conversione avviene in automatico.
+  <br />Il risultato è il seguente:</p>
+
+<p><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML2d2e78f.png" target="_blank"><img style="background-image: none; border-bottom: 0px; border-left: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top: 0px; border-right: 0px; padding-top: 0px" title="SNAGHTML2d2e78f" border="0" alt="SNAGHTML2d2e78f" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML2d2e78f_thumb.png" width="244" height="165" /></a></p>
+
+<p>Comodo no?</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/05/13/alcuni-link-utili/" itemprop="url">Alcuni link utili</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-05-13T15:45:00Z"  itemprop="datePublished">May 13, 2011</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/05/13/alcuni-link-utili/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-05-13-alcuni-link-utili.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><p>Seguire tutte le tecnologie di cui siamo appassionati diventa sempre più difficile, e le quantità di informazioni presenti in rete a volte superano di gran lunga il tempo che si ha a disposizione per studiarle/lavorarci; se proviamo a seguire l’hashtag #<a title="Post about HTML5" href="http://tostring.it/tags/archive/html5" target="_blank">html5</a> su twitter ci rendiamo conto che arrivano centinaia di tweet al minuto.     <br />Proprio da queste problematiche ed esigenze è nata l’idea di creare dei post con cadenza più o meno regolare (l’idea è sul settimanale) che raccolgono i principali link per le tecnologie di cui sono appasionato.     <br />Buona lettura <img style="border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none" class="wlEmoticon wlEmoticon-smile" alt="Smile" src="http://www.tostring.it/UserFiles/imperugo/wlEmoticon-smile_2_7.png" /></p>  <h3><strong>Windows </strong><a title="Azure" href="http://tostring.it/tags/archive/azure" target="_blank"><strong>Azure</strong></a><strong>:</strong></h3>  <ul>   <li>Windows Azure Toolkit for iOS (<a title="http://bit.ly/lvUiYU" href="http://bit.ly/lvUiYU">http://bit.ly/lvUiYU</a>) </li>    <li>Windows Azure AppFabric Caching Service (<a title="http://bit.ly/mq2qIp" href="http://bit.ly/mq2qIp">http://bit.ly/mq2qIp</a>) </li>    <li>SQL Azure Diagnostics Tool Available (<a title="http://bit.ly/im8yc8" href="http://bit.ly/im8yc8">http://bit.ly/im8yc8</a>) </li> </ul>  <h3><font style="font-weight: bold"></font></h3>  <h3><font style="font-weight: bold">HTML5:</font></h3>  <ul>   <li>HTML5 WebSockets and Real-Time Tutorials and Resources (<a title="http://bit.ly/kwQXyB" href="http://bit.ly/kwQXyB">http://bit.ly/kwQXyB</a>) </li>    <li>10 Best Javascript Drawing and Canvas Libraries (<a title="http://bit.ly/FpOPs" href="http://bit.ly/FpOPs">http://bit.ly/FpOPs</a>) </li>    <li>39 Ridiculous Things To Do With CSS3 Box Shadows (<a title="http://bit.ly/gsdWmQ" href="http://bit.ly/gsdWmQ">http://bit.ly/gsdWmQ</a>) </li>    <li>oCanvas (<a title="http://ocanvas.org/" href="http://ocanvas.org/">http://ocanvas.org/</a>) </li>    <li>Html5 Snippets (<a title="http://html5snippets.com/" href="http://html5snippets.com/">http://html5snippets.com/</a>) </li>    <li>CSS3 Generator (<a title="http://www.css3.me/" href="http://www.css3.me/">http://www.css3.me/</a>) </li>    <li>AngryBirds HTML5 version (<a title="http://bit.ly/ixh6zU" href="http://bit.ly/ixh6zU">http://bit.ly/ixh6zU</a>) </li> </ul>  <h3><font style="font-weight: bold"></font></h3>  <h3><font style="font-weight: bold">ASPNET </font><a title="ASP.NET MVC" href="http://tostring.it/tags/archive/mvc" target="_blank"><font style="font-weight: bold">MVC</font></a><font style="font-weight: bold">:</font></h3>  <ul>   <li>Download ASP.NET Web Pages with Razor Syntax Resources (<a title="http://bit.ly/mDECm5" href="http://bit.ly/mDECm5">http://bit.ly/mDECm5</a>) </li>    <li>Localized Releases of ASP.NET MVC 3 Tools Update (<a title="http://bit.ly/jx3zjl" href="http://bit.ly/jx3zjl">http://bit.ly/jx3zjl</a>) </li>    <li>New NuGet Documentation Site (<a title="http://bit.ly/m7A21T" href="http://bit.ly/m7A21T">http://bit.ly/m7A21T</a>) </li> </ul>  <h3><font style="font-weight: bold"></font></h3>  <h3><font style="font-weight: bold">Testing:</font></h3>  <ul>   <li>CHESS: Find and Reproduce Heisenbugs in Concurrent Programs (<a title="http://bit.ly/cH7EOI" href="http://bit.ly/cH7EOI">http://bit.ly/cH7EOI</a>) </li> </ul></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/05/11/gli-action-filter-ed-i-global-filter-di-aspnet-mvc/" itemprop="url">Gli Action Filter ed i Global Filter di ASPNET MVC</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-05-11T15:45:00Z"  itemprop="datePublished">May 11, 2011</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/05/11/gli-action-filter-ed-i-global-filter-di-aspnet-mvc/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-05-11-gli-action-filter-ed-i-global-filter-di-aspnet-mvc.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Già dalla prima release di<strong> ASPNET </strong><a title="ASP.NET MVC" href="http://tostring.it/tags/archive/mvc" target="_blank"><strong>MVC</strong></a> è stato introdotto il concetto di <strong>Action Filter</strong>, ossia un attributo che può decorare sia una singola Action o che addirittura un intero Controller. </p>  <p>Lo scopo di questi Filter è quello di <strong>aggiungere funzionalità che spesso ci troveremmo a scrivere con molta frequenza</strong>, o addirittura per ogni singola chiamata; per capire il concetto è sufficiente pensare ad una serie di Action che dovranno essere accessibili soltanto agli utenti loggati. Se provate ad immaginare questo scenario, un possibile risultato potrebbe essere questo:</p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">HomeController</span> <span class="p">:</span> <span class="n">Controller</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Index</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(!</span><span class="n">HttpContext</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">Identity</span><span class="p">.</span><span class="n">IsAuthenticated</span><span class="p">)</span>
+            <span class="n">Redirect</span> <span class="p">(</span> <span class="s">&quot;/Login&quot;</span> <span class="p">);</span>
+
+        <span class="c1">//TODO: Fai qualcosa</span>
+
+        <span class="k">return</span> <span class="nf">View</span> <span class="p">(</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Products</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(!</span><span class="n">HttpContext</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">Identity</span><span class="p">.</span><span class="n">IsAuthenticated</span><span class="p">)</span>
+            <span class="n">Redirect</span> <span class="p">(</span> <span class="s">&quot;/Login&quot;</span> <span class="p">);</span>
+
+        <span class="c1">//TODO: Fai qualcosa</span>
+
+        <span class="k">return</span> <span class="nf">View</span> <span class="p">(</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Details</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(!</span><span class="n">HttpContext</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">Identity</span><span class="p">.</span><span class="n">IsAuthenticated</span><span class="p">)</span>
+            <span class="n">Redirect</span> <span class="p">(</span> <span class="s">&quot;/Login&quot;</span> <span class="p">);</span>
+
+        <span class="c1">//TODO: Fai qualcosa</span>
+
+        <span class="k">return</span> <span class="nf">View</span> <span class="p">(</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Come si può notare in tutte e tre le Action c’è un blocco di codice ripetuto che non fa altro che verificare che l’utente corrente sia autenticato e, nel caso non lo sia, lo reindirizza alla pagina di Login. Lo scopo degli Action Filter è di racchiudere tutta la logica che può essere comune alle Action, indipendentemente dal Binder in entrata e da ciò che la Action stessa deve fare, permettendoci così di sostituire tutte quelle righe di codice con un semplice attributo. Di fatto l’esecuzione del Filter avviene prima dell’esecuzione del codice presente all’interno della Action.
+  <br />Lo snippet seguente mostra le stesse identiche Action dell’esempio precedente, ma con l’utilizzo degli Action Filter:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">HomeController</span> <span class="p">:</span> <span class="n">Controller</span> <span class="p">{</span>
+<span class="na">    [Authorize]</span>
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Index</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//TODO: Fai qualcosa</span>
+
+        <span class="k">return</span> <span class="nf">View</span> <span class="p">(</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="na">    [Authorize]</span>
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Products</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//TODO: Fai qualcosa</span>
+
+        <span class="k">return</span> <span class="nf">View</span> <span class="p">(</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="na">    [Authorize]</span>
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Details</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//TODO: Fai qualcosa</span>
+
+        <span class="k">return</span> <span class="nf">View</span> <span class="p">(</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Oppure</span> <span class="n">a</span> <span class="n">livello</span> <span class="n">di</span> <span class="n">controller</span>
+
+<span class="na">[Authorize]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">HomeController</span> <span class="p">:</span> <span class="n">Controller</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Index</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//TODO: Fai qualcosa</span>
+
+        <span class="k">return</span> <span class="nf">View</span> <span class="p">(</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Products</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//TODO: Fai qualcosa</span>
+
+        <span class="k">return</span> <span class="nf">View</span> <span class="p">(</span> <span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Details</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//TODO: Fai qualcosa</span>
+
+        <span class="k">return</span> <span class="nf">View</span> <span class="p">(</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>All’interno di MVC esistono già diversi Action Filter, come l’Authorize mostrato sopra, oltre ad altri come OutputCache, HandleError, etc; inoltre nulla ci vieta di crearne dei nostri custom, come mostrato in un mio precedente post (<a title="Realizzare un ActionFilter per ottimizzare le nostre pagine web" href="http://imperugo.tostring.it/Blog/Post/Realizzare-un-ActionFilter-per-ottimizzare-le-nostre-pagine-web" target="_blank">qui</a>).</p>
+
+<p>L’ultima release di MVC (la 3, di cui ho già parlato in parte <a title="Un MIX 2011 ricco di novità" href="http://tostring.it/blog/post/un-mix-2011-ricco-di-novita/" target="_blank">qui</a>) offre la possibilità di registrare i controlli in modalità globale per tutta l’applicazione, evitandoci così il noioso copia ed incolla per tutti i controller dell’applicazione. </p>
+
+<p>Per far ciò è necessario registrare l’Action Filter nel global.asax, come mostrato di seguito:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="k">protected</span> <span class="k">void</span> <span class="nf">Application_Start</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">AreaRegistration</span><span class="p">.</span><span class="n">RegisterAllAreas</span> <span class="p">(</span> <span class="p">);</span>
+
+    <span class="n">GlobalFilters</span><span class="p">.</span><span class="n">Filters</span><span class="p">.</span><span class="n">Add</span> <span class="p">(</span> <span class="k">new</span> <span class="n">HandleErrorAttribute</span> <span class="p">(</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">GlobalFilters</span><span class="p">.</span><span class="n">Filters</span><span class="p">.</span><span class="n">Add</span> <span class="p">(</span> <span class="k">new</span> <span class="n">AuthorizeAttribute</span> <span class="p">(</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="n">RegisterRoutes</span> <span class="p">(</span> <span class="n">RouteTable</span><span class="p">.</span><span class="n">Routes</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Non male direi.</p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2011/05/09/introduzione-a-nuget/" itemprop="url">Introduzione a NuGet</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2011-05-09T15:45:00Z"  itemprop="datePublished">May  9, 2011</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2011/05/09/introduzione-a-nuget/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2011-05-09-introduzione-a-nuget.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Sicuramente la parola <a title="NuGet Official Site" href="http://www.nuget.org/" rel="nofollow" target="_blank">NuGet</a>, precedentemente conosciuto come NuPack, non è un termine nuovo per i tecnici; non avendo però mai avuto modo di parlarne colgo l’occasione per scrivere questo post, che riassume un po’ il suo funzionamento e ne spiega gli scenari d’uso.     <br /><strong>In primis NuGet è un’extension free per </strong><a title="http://www.tostring.it/tags/archive/visual+studio" href="http://tostring.it/tags/archive/visual+studio" target="_blank"><strong>Visual Studio</strong></a><strong> 2010</strong>, quindi per chi non utilizza questa release di VS questo post può risultare poco utile. Lo scopo dell’extension è di agevolare lo sviluppatore nell’utilizzo di Framework esterni, principalmente Open Source all’interno dei propri progetti C# o VB. </p>  <p>Ogni mia solution utilizza diversi pacchetti come <a title="Posts su NHibernate" href="http://www.tostring.it/categories/archive/nhibernate/">NHibernate</a>, <a title="ConfORM" href="http://tostring.it/tags/archive/conform" target="_blank">ConfORM</a>, Castle, <a title="jQuery" href="http://tostring.it/tags/archive/jquery" target="_blank">JQuery</a> etc, e, specie in fase di startup, è necessario aggiungere queste librerie sia ad ogni progetto sia al source control;     <br />NuGet facilita parecchio questa fase permettendoci con pochi click, di completare gli step descritti precedentemente, ma anche di <strong>aggiornare le librerie a versioni più recenti</strong> con estrema facilità.</p>  <h3>Installazione:</h3>  <p>Essendo questo tool sviluppato dal team di <a title="ASP.NET posts" href="http://tostring.it/tags/archive/asp.net" target="_blank">ASP.NET</a>/<a title="ASP.NET MVC" href="http://tostring.it/tags/archive/mvc" target="_blank">MVC</a>, l’istallazione è disponibile <strong>sia tramite gli ASP.NET MVC 3 Tools Update</strong> (download <a title="ASP.NET MVC 3 Tools Update downlaod" href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=82cbd599-d29a-43e3-b78b-0f863d22811a" rel="nofollow" target="_blank">qui</a>) che tramite la <strong>gallery delle extension di Visual Studio</strong> (<a title="NuGet Package Manager" href="http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c" rel="nofollow" target="_blank">qui</a>). Se siete sviluppatori web consiglio l’installazione di NuGet insieme ad MVC, che include altre ottime features per il mondo “WWW”; se invece il vostro target di sviluppo non è il web, sicuramente l’installazione della singola extension è la soluzione migliore.</p>  <h3>Utilizzo:</h3>  <p>Una volta installato il tutto è possibile utilizzare NuGet in due differenti modi:</p>  <ul>   <li><strong>Riga di comando direttamente dentro Visual Studio</strong> (molt geek ma poco utile a mio avviso); </li>    <li><strong>Tramite l’apposita UI</strong>. </li> </ul>  <p>Se si opta per la prima soluzione basta digitare all’interno della finestra “<strong>Package Manager Console</strong>” (disponibile dopo l’installazione di NuGet dal menu View =&gt; Other Windows) il comando “Install-Package”, seguito dal nome del package da installare. Supponendo di voler installare jquery, il codice da scrivere deve essere il suguente:</p>  <p><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" border="0" alt="image" src="http://www.tostring.it/UserFiles/imperugo/image_3_2.png" width="640" height="85" /></p>  <p>Se invece si opta per l’utilizzo tramite la UI di Visual Studio è sufficiente andare sul progetto desiderato e, cliccando con il tasto destro sulle reference, premere “<strong>Add Library Package Reference</strong>” e ricercare JQuery, come mostrato dagli screenshot seguenti:</p>  <p><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3ecbbb5c.png"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="SNAGHTML3ecbbb5c" border="0" alt="SNAGHTML3ecbbb5c" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3ecbbb5c_thumb.png" width="320" height="202" /></a><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3eccda80.png"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="SNAGHTML3eccda80" border="0" alt="SNAGHTML3eccda80" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3eccda80_thumb.png" width="320" height="202" /></a></p>  <p><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3ecedf9e.png"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="SNAGHTML3ecedf9e" border="0" alt="SNAGHTML3ecedf9e" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3ecedf9e_thumb.png" width="320" height="202" /></a><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3effd3fb.png"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="SNAGHTML3effd3fb" border="0" alt="SNAGHTML3effd3fb" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3effd3fb_thumb.png" width="320" height="202" /></a></p>  <h3>Dipendenze:</h3>  <p>Oltre al download della singola libreria, NuGet si occupa di fornire al nostro download anche le dipendenze del package scelto. Riferendosi ad un esempio pratico, se si prova a scaricare Castle Windsor verrà scaricato anche il package di Castle.Core, in quanto necessario al funzionamento del primo; il tutto risulterà come una duplice installazione di librerie tramite NuGet, ossia è come installare prima Castle.Core e poi Castle.Windsor. Lo screenshot seguente mostra la dipendenza:</p>  <p><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3f150ee9.png"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="SNAGHTML3f150ee9" border="0" alt="SNAGHTML3f150ee9" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3f150ee9_thumb.png" width="240" height="151" /></a></p>  <h3>FileSystem:</h3>  <p>Ovviamente, tutti i package installati nelle nostre solution devono essere fruibili anche in assenza di connessione, e questo significa che esiste una copia in locale all’interno del proprio FileSystem. Il comportamento di default di NuGet è quello di copiare tutte le librerie all’interno della folder (packages) presente nella stessa folder della solution.    <br />Purtroppo nella versione attuale di NuGet (la 1.3, e ricordiamoci che stiamo parlando di un “prodotto” in beta) non esiste ufficialmente la possibilità di specificare in che folder devono essere installati i package. Alcune settimane fa il buon <a title="Il blog di Andrea Saltarello" href="http://blogs.ugidotnet.org/pape" rel="nofollow" target="_blank">Andrea</a> ha <a title="Usare path custom con NuGet" href="http://blogs.ugidotnet.org/pape/archive/2011/03/30/usare-path-custom-con-nuget.aspx" rel="nofollow" target="_blank">postato</a> un “trick” che permette di cambiare i settings di NuGet e poter gestire liberamente il path che conterrà le librerie. Come detto dal PM del progetto Phil Haack qui:</p>  <p><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3f06ea2a.png"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="SNAGHTML3f06ea2a" border="0" alt="SNAGHTML3f06ea2a" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3f06ea2a_thumb.png" width="240" height="170" /></a></p>  <p>Le prossime release saranno incompatibili con la soluzione descritta da Andrea. Speriamo di avere a disposizione una soluzione alternativa.</p>  <h3>Gallery:</h3>  <p>Ovviamente è già disponibile un gran numero di package che si possono utilizzare liberamente,&#160; ed esiste un apposito sito che ci consente di consultare l’archivio e di lasciare dei feedback sulle varie librerie o di caricarne di nuove. Il sito in questione è <a href="http://www.nuget.org">http://www.nuget.org</a>&#160;</p>  <p><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3efc4016.png"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="SNAGHTML3efc4016" border="0" alt="SNAGHTML3efc4016" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3efc4016_thumb.png" width="240" height="163" /></a><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3efc90d4.png"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="SNAGHTML3efc90d4" border="0" alt="SNAGHTML3efc90d4" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3efc90d4_thumb.png" width="240" height="163" /></a></p>  <p><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3efd9bdc.png"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="SNAGHTML3efd9bdc" border="0" alt="SNAGHTML3efd9bdc" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3efd9bdc_thumb.png" width="240" height="163" /></a><a href="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3efcd1ab.png"><img style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="SNAGHTML3efcd1ab" border="0" alt="SNAGHTML3efcd1ab" src="http://www.tostring.it/UserFiles/imperugo/SNAGHTML3efcd1ab_thumb.png" width="240" height="163" /></a></p>  <h3>Estendibilità:</h3>  <p>NuGet è fortemente basato su feed xml per la consultazione dei package disponibili e, andando sui suoi setting, potete aggiungere feed custom per installazione di pacchetti “privati”, e quindi utilizzare questa potente extension anche per librerie non open source o non rilasciate pubblicamente.    <br />Sul sito di Codeplex (<a href="http://nuget.codeplex.com">http://nuget.codeplex.com</a>) è disponibile un’ottima documentazione che, tra le tante info, spiega come creare ed “hostare” un proprio feed all’interno di Nuget (vedi <a title="Hosting Your Own NuGet Feeds" href="http://nuget.codeplex.com/wikipage?title=Hosting%20Your%20Own%20Local%20and%20Remote%20NuPack%20Feeds" rel="nofollow" target="_blank">qui</a>).     <br /></p>  <h3>Considerazioni:</h3>  <p>Sinceramente rientra tra i “Must Have” e, una volta rotto il ghiaccio, è difficile farne a meno. Una cosa che sicuramente sarebbe carina è la possibilità di configurare i package per il singolo download. Per esempio è possibile utilizzare NHIbernate con diversi proxy (LingFu, Castle, etc.), e in NuGet trovate tanti pacchetti quante sono le opzioni. Sicuramente la possibilità di personalizzarsi il package può essere di aiuto nello “sfoltire” una gallery molto grande.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/6" class="prev">Prev</a>
+    
+    
+        <a href="/page/8" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

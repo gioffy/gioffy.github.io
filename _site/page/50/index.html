@@ -1,0 +1,537 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/50/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2006/05/18/limpersonate-di-asp-net-e-i-thread/" itemprop="url">L'impersonate di asp.net e i thread</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2006-05-18T00:00:00Z"  itemprop="datePublished">May 18, 2006</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2006/05/18/limpersonate-di-asp-net-e-i-thread/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2006-05-18-limpersonate-di-asp-net-e-i-thread.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><span>Ieri notte, insieme al mio amico Fabio, stavamo sviluppando un applicazione web non eccessivamente complessa fino a quando non si &egrave; verificato un problema di permessi. <br />
+Entro meglio nel dettaglio per far capire la cosa:<br />
+La prima caratteristica dell'applicazione &egrave; che dovendo accedere a determinate cartelle protette non doveva usare l'utente ASP.NET per eseguire le operazioni, ma bensi un utente membro di un dominio che per comodift&agrave; chiamer&ograve; farmuser.<br />
+Per far si che l'utente utilizzato non sia asp.net basta andare ad aggiungere nel web.config la riga sull'identity, come la seguente:</span></p>
+
+<pre title="code" class="brush: xhtml">
+&lt;identity impersonate=&quot;true&quot; userName=&quot;farmuser&quot; password=&quot;farmpass&quot; /&gt;</pre>
+<p><span> </span></p>
+<p>Fatto ci&ograve; sembra tutto ok, fino a quando non andavamo a utilizzare dei thread in una situazione simile alla seguente:</p>
+<p>La pagina aspx lancia un nuovo thread (nel mio caso passando per un metodo statico) ed seguiva un blocco di codice tipo il seguente:</p>
+<pre title="code" class="brush: csharp">
+indexerThread = new Thread(new ThreadStart(Run)); 
+indexerThread.Priority = ThreadPriority.Lowest; 
+indexerThread.Name = &quot;Indexer&quot;; 
+indexerThread.Start();
+
+</pre>
+
+<p><span> </span></p>
+
+<p>Il metodo statico run eseguiva delle operazioni su file, e qui sono cominciati gli errori. :)</p>
+
+<p>L'inghippo lo abbiamo trovato nei nuovi file creati dal metodo run che avevano come utente ASP.NET, ma poi quando dovevano essere rinominati e/o cancellati dall'utente farmuser, il runtime ci stampava un bell'errore di accesso negato.</p>
+
+<p>Armati di pazienza (molta pi&ugrave; Fabio che io) tramite</p>
+
+<pre title="code" class="brush: csharp">
+WindowsIdentity.GetCurrent().Name&nbsp;</pre>
+
+<p><span>ci siamo messi a cercare dove veniva cambiato l'utente e questo avveniva all'interno del metodo run; quindi se da una pagina asp.net si lancia un thread&nbsp;anche se si ha impostato l'imperosnificazione dell'utente asp.net nel web config, il secondo thread ha sempre come user ASP.NET. </span></p>
+
+<p>Per risolvere il problema (dopo vari tentativi e ricerche su google) siamo arrivati a questa soluzione:</p>
+
+<pre title="code" class="brush: csharp">
+internal static System.Security.Principal.WindowsIdentity ApplicationIdentity;&nbsp;</pre>
+
+<p>dentro il nostro metodo statico</p>
+
+<pre title="code" class="brush: csharp">
+ApplicationIdentity = System.Security.Principal.WindowsIdentity.GetCurrent();</pre>
+
+<pre title="code" class="brush: csharp">
+indexerThread = new Thread(new ThreadStart(Run)); 
+indexerThread.Priority = ThreadPriority.Lowest; 
+indexerThread.Name = &quot;Indexer&quot;; 
+indexerThread.Start();</pre>
+
+<p>e dentro il run</p>
+
+<pre title="code" class="brush: csharp">
+ApplicationIdentity.Impersonate();</pre>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2006/04/26/ricerca-allinterno-dei-documenti-parte-2/" itemprop="url">Ricerca all'interno dei documenti Parte 2</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2006-04-26T00:00:00Z"  itemprop="datePublished">April 26, 2006</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2006/04/26/ricerca-allinterno-dei-documenti-parte-2/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2006-04-26-ricerca-allinterno-dei-documenti-parte-2.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><span>Per chi si fosse perso il <a href="http://imperugo.tostring.it/Blog/Post/Ricerca-all-interno-dei-documenti">post</a> precedente, sto realizzando un motore di ricerca per indicizzare dei documenti. <br />
+Beh rispetto alla versione precedente posso dire di aver fatto dei bei passi in avanti, ora posso paginare (pu&ograve; sembrare una stupidata, ma vi assicuro che con dotLucene non lo &egrave;), ed avere ottime performance. <br />
+La paginazione &egrave; stata dura, in quanto dotLucene non ha una query tipo il COUNT di una SELECT, quindi mi sono dovuto arrangiare un po' creado un sistema a parte per la paginare, effettuando una sola query in modo da non perdere in performance. <br />
+Ora con 2200 documenti indicizzati riesco a fare una ricerca avendo 1951 risultati in 0.0625 secondi. :) !!!!Spettacolo direi, anche se spero di migliorare ancora le performance passando alla versione nuova del motore. <br />
+<br />
+Per completare l'operona ora manca veramente poco, inserire i Filtri per la lingua Italiana, in modo da togliere tutti gli articoli (il,del, per,ecc) dall'indicizzazione e poco altro ancora. <br />
+<br />
+Per i test mi sono divertito a fare un interfaccia un po' particolare, mi ricorda qualcosa. Secondo voi che??? <a href="http://daniele.aspitalia.com/"><br />
+<br />
+Daniele </a>&nbsp;quando l'ha vista mi ha detto che sono megalomane.<br />
+<br />
+<img border="0" src="http://photos1.blogger.com/blogger/2782/1333/400/schermata.jpg" alt=" " style="margin: 0px auto 10px; display: block; text-align: center;" /> Le prestazioni: <img border="0" src="http://photos1.blogger.com/blogger/2782/1333/400/prestazioni.jpg" alt=" " style="margin: 0px auto 10px; display: block; text-align: center;" /> </span></p>
+
+<p>&nbsp;</p>
+
+<p>Un rigranziamento particolare a Fabio (cyber), che mi ha aiutato mentre imprecavo quando il motore non andava.</p>
+
+<p>&nbsp;</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2006/04/05/ricerca-allinterno-dei-documenti/" itemprop="url">Ricerca all'interno dei documenti</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2006-04-05T00:00:00Z"  itemprop="datePublished">April  5, 2006</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2006/04/05/ricerca-allinterno-dei-documenti/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2006-04-05-ricerca-allinterno-dei-documenti.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><span>In questi giorni sono parecchio incasinato con il lavoro e per questo sto tralasciando un po' la comunity, (forum, blog, ecc.) e me ne scuso, d'altro canto il lavoro &egrave; sempre il lavoro. </span></p>
+
+<p>In particolar modo&nbsp;sto lavorando alla realizzazione di un motore di ricerca un po' diverso dal solito, ossia con la possibilit&agrave; di indicizzare dei documenti presenti all'interno del nostro sito o indicizzare pagine esterne tramite url.</p>
+
+<p>Per capire bene la cosa immaginiamo un sito dove le news, articoli, delibere, ecc, vengono create dinamicamte tramite un CMS o un FTP da parte dell'amministratore.&nbsp;<br />
+Nel motore di ricerca del sito dobbiamodo dare la posssibilit&agrave; di indicizzare anche il testo contenuto&nbsp;in questi file.Operazione solitamente scomoda se il cms non offre questa possibilit&agrave; o l'amministratore non scrive le keyword del documento distribuito on-line in qualche field che ci andiamo a leggere successivamente.</p>
+
+<p>Partendo da quest'idea la prima cosa fatta &egrave; stata una ricerca sul web di prodotti gi&agrave; esistenti e qui sono incappato su <a href="http://www.dotlucene.net/" onclick="blankUrl(this.href); return false;">DotLucene</a>, motore di ricerca realizzato in .Net, che per lo storage dell'indice utilizza un file e non un database. Da l&igrave; sono finito su <a href="http://www.seekafile.org/" onclick="blankUrl(this.href); return false;">SeekaFile</a>, che non &egrave; altro che un servizio windows che indicizza dei file presenti all'interno di un path impostato da noi, con in pi&ugrave; una dependency&nbsp;sul file che, nel caso venga modificato, l'indice &egrave; automaticamente aggiornato.Funzione spettacolare, ma non sempre si ha la possibilit&agrave; di installare dei servizi custom sul server, quindi ho preso il tutto, ho scorporato il servizio, gli ho aggiunto un po' di plug-in per leggere l'html direttamente da un url ripulendolo e indicizzando solo il testo, stessa cosa per i PDF e RTF e ottenendo come risultato di ricerche e indicizzazione delle mie custom entity e collection (ormani le uso da tutte le parti, non mi ricordo neanche come si crea un datatable).</p>
+
+<p>L'aspetto&nbsp;pi&ugrave; interessante di questa versione da me creata &egrave; che tutto &egrave; utilizzabile senza realizzare nessun setup ma soltanto impostando dei valori nel web.config ed effettuando una chiamata quando si crea, upload o modifica un file.<br />
+L'indicizzazione avviene tramite thread, con una gestione della coda, a volte per leggere un pdf di diversi mega e ripulirlo la macchina pu&ograve; impiegare diversi secondo, ma la ricerca continua a funzionare e tutti gli altri file da indicizzare sono in attesa che finisca il primo thread.<br />
+L'indicizzazione avviene in&nbsp;lowpriority, il che significa che in caso altre applicazioni sul server richiedano risore lui le rilascia, aspettando che la macchina si meno indaffarata :)</p>
+
+<p>Ricapitolando le caratteristiche del motore.</p>
+
+<ul>
+    <li>Indicizzazione su file senza Database;</li>
+    <li>Non necessita di installazione;</li>
+    <li>Indicizza documenti DOC,PDF,XLS,PPT,RTF,HTML,TXT,XML;</li>
+    <li>Indicizza direttamente l'HTML da un url (grabba il codice lo filtra e lo indicizza)</li>
+    <li>Possibilit&agrave; di crearsi plug-in personalizzati e caricarli a runtime;</li>
+    <li>Possibilit&agrave; di indicizzare direttamente delle directory;</li>
+    <li>Utilizzo di custom entity e collection;</li>
+    <li>Gestione della coda di indicizzazione;</li>
+    <li>Low priority per l'indicizzazione.</li>
+    <li>e poi non so vediamo un po' l'ispirazione cosa porta :)</li>
+</ul>
+
+<p>Per chi fosse interessato alla cosa non posso che dire Stay Tuned!!.<br />
+( frase brutalmente copiata, non dico a chi, ma sono sicuro che lui lo sa )</p>
+
+<p>Ovviamente se avete esperienze, idee o altro sono ben accette.<br />
+Chiss&agrave; che non mi venga in mente di realizzare un desktop search tipo quello di Google o Microsoft, il principio &egrave; lo stesso. :D</p>
+
+<p>&nbsp;</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2006/03/20/un-pannello-per-gestire-la-cache/" itemprop="url">Un pannello per gestire la cache</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2006-03-20T00:00:00Z"  itemprop="datePublished">March 20, 2006</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2006/03/20/un-pannello-per-gestire-la-cache/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2006-03-20-un-pannello-per-gestire-la-cache.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>In rete ho &quot;scovato&quot; questo interessante&nbsp;<a onclick="blankUrl(this.href); return false;" style="text-decoration: none; color: rgb(34, 69, 113); " href="http://aspadvice.com/blogs/ssmith/archive/2005/12/03/Cache_Manager_Almost_Ready.aspx">link</a>&nbsp;che mostra come realizzare un pannello di controllo per la gestione della cache nelle nostre applicazioni web.<br />
+Personalmente ritengo che in fase finale non serva in quanto un'applicazione dovrebbe cancellare e creare la cache automaticamente senza intervento dell'untente, ma in fase di sviluppo pu&ograve; diventare molto utile per capire come muoversi.<br />
+<br />
+Una schermata del pannello:<br />
+<br />
+<a onclick="blankUrl(this.href); return false;" style="text-decoration: none; color: rgb(36, 77, 121); " href="http://aspadvice.com/photos/ssmith/images/14144/original.aspx"><img border="0" alt=" " style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; " src="http://aspadvice.com/photos/ssmith/images/14144/379x375.aspx" /></a><br />
+<br />
+Tra le caratteristiche pi&ugrave; interessanti la possibilit&agrave; di vedere il valore della cache massima utilizzata e quella attualmente disponibile oltre che la visualizzazione dei dati contenuti in cache per gli oggetti semplici (Datetime. ecc).</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2006/02/01/createdirectory-e-windows-2003/" itemprop="url">CreateDirectory e Windows 2003</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2006-02-01T01:00:00Z"  itemprop="datePublished">February  1, 2006</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2006/02/01/createdirectory-e-windows-2003/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2006-02-01-createdirectory-e-windows-2003.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><span>Ci sono delle cose che a volte proprio non capisco e che mi fanno imbufalire. Ho pubblicato un lavoro abbastanza semplice realizzato in .net 1.1 su un server web (tra quelli che vanno per la maggiore). Ma quando vado a provare l'applicazione mi trovo di fronte ad un bel errore nel create directory.<br />
+Lo stack mi diceva che non avevo l'autorizzazione necessaria per la creazione della cartella; vado a controllare nel mio pannello di controllo ed era tutto ok; provo a resettare i permessi, ma niente. Preso dalla disperazione chiamo il provider chiedo un controllo, ma niente da fare l'errore persiste.<br />
+Poi, cerca cerca su google trovo questo <a href="http://www.dotnet247.com/247reference/a.aspx?u=http://hatka.net/wlogdev/archive/2004/08/29/178.aspx">articolo</a> che mi risolve il problema, tranne per il fatto che se cerco di creare la cartella C:\Disney\Pluto e la cartella Disney non esiste lui va in errore.<br />
+<br />
+Il problema &egrave; facilmente risolvibile con questo codice: </span></p>
+
+<pre title="code" class="brush: csharp; ruler: true;">
+[DllImport(&quot;msvcrt.dll&quot;, SetLastError = true)] 
+     
+static extern int _mkdir(string path); 
+  
+static DirectoryInfo CreateDirectory(string path) 
+     
+{ 
+    int returnCode = _mkdir(path); 
+    
+    if (returnCode == -1)       
+    { 
+        string[] percorsi = path.Split(new Char[] {'\\'} ); 
+    
+        if(percorsi.Length &gt; 1)         
+        { 
+            if(Directory.Exists(percorsi[0]))  
+            { 
+                string percorso = percorsi[0] + &quot;\\&quot;; 
+ 
+
+                for (int i = 1; i &lt; percorsi.Length; i++) 
+                { 
+                    percorso += percorsi[i] + &quot;\\&quot;; 
+               
+                    if (!Directory.Exists(percorsi[i])) 
+                         _mkdir(percorso); 
+                } 
+            } 
+            else 
+                throw new ApplicationException(&quot;Drive not found.&quot;); 
+           
+        } 
+        else  
+            throw new ApplicationException(&quot;String format error!&quot;); 
+       
+    } 
+       
+    else if (returnCode != 0) 
+         
+    throw new ApplicationException(&quot;Error calling [msvcrt.dll]:_wmkdir(&quot; + path + &quot;), error code: &quot; + returnCode.ToString()); 
+
+    return new DirectoryInfo(path); 
+     
+} 
+</pre>
+
+<p>La sintassi per la creazione della cartella rimane la stessa, ma viene intercettata la funzione CreateDirecotry e sostituita con la nostra.<br />
+Un unica precisazione, all'interno del ciclo for utilizzo l'_mkdir per la creazione della cartella e non la mia funzione; faccio ci&ograve; per evitare la ricorsione.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/49" class="prev">Prev</a>
+    
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

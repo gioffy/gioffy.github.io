@@ -1,0 +1,434 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/40/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/30/effettuare-un-redirect-su-un-customerror/" itemprop="url">Effettuare un Redirect su un customError</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-30T01:01:54Z"  itemprop="datePublished">June 30, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/30/effettuare-un-redirect-su-un-customerror/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-30-effettuare-un-redirect-su-un-customerror.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Spesso, quando ci si trova a realizzare pagine web il cui risultato &egrave; fortemente legato ad una variabile come potrebbe essere un ID, si pu&ograve; avere la necessit&agrave; di effettuare un <em>Redirect</em> verso la pagina di customError specificata nel <em>web.config</em>, comunicando cos&igrave; al bot del motore di ricerca che il contenuto ricercato non &egrave; presente, e non deve quindi essere indicizzato.<br />
+La soluzione &egrave; presente nel .NET&nbsp;Framework e ci basta sollevare una HttpException specificando lo status code che si intende restituire come mostrato di seguito:</p>
+
+<p>&nbsp;</p>
+
+<pre class="brush: csharp; ruler: true;">
+if (post == null)
+    throw new HttpException(404, &quot;Data not found&quot;);</pre>
+
+<p>Per quanto riguarda il file di configurazione, esso dovrebbe essere tipo il seguente:</p>
+
+<pre class="brush: xml; ruler: true;">
+&lt;customErrors mode=&quot;On&quot; defaultRedirect=&quot;/Errors/Generic.aspx&quot;&gt;
+    &lt;error statusCode=&quot;403&quot; redirect=&quot;/Errors/403.aspx&quot; /&gt;
+    &lt;error statusCode=&quot;404&quot; redirect=&quot;/Errors/404.aspx&quot; /&gt;
+&lt;/customErrors&gt;</pre>
+
+<p>Precedentemente in questo post avevo proposto una soluzione basata su un extension method ma, esistendo gi&agrave; un qualcosa di analogo nel .NET&nbsp;Framework, aveva poco sensoe quindi il post &egrave; stato cambiato.</p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/29/forse-sono-troppi-anche-per/" itemprop="url">Forse sono troppi anche per ...</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-29T06:35:07Z"  itemprop="datePublished">June 29, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/29/forse-sono-troppi-anche-per/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-29-forse-sono-troppi-anche-per.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/mNumber2_4.gif" rel="shadowbox[Forse-sono-troppi-anche-per-];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase singlelineignorecase="" style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="mNumber2" border="0" alt="mNumber2" width="717" height="84" src="http://imperugo.tostring.it/Content/Uploaded/image/mNumber2_thumb_1.gif" /></a></p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/mNumber1_4.gif" rel="shadowbox[Forse-sono-troppi-anche-per-];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase singlelineignorecase="" style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="mNumber1" border="0" alt="mNumber1" width="715" height="286" src="http://imperugo.tostring.it/Content/Uploaded/image/mNumber1_thumb_1.gif" /></a>&nbsp;</p>
+
+<p>non male.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/29/experience-smooth-streaming/" itemprop="url">Experience Smooth Streaming</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-29T00:13:20Z"  itemprop="datePublished">June 29, 2009</time></span>
+	<span class="categories">silverlight</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/29/experience-smooth-streaming/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-29-experience-smooth-streaming.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Non so da quanto tempo esista&hellip;lo scopro oggi su consiglio di <a rel="nofollow" target="_blank" href="http://blogs.aspitalia.com/cradle">Marco</a>. <strong>Smooth Streaming</strong> &egrave; una extension per <a rel="nofollow" target="_blank" href="http://www.iis.net/getstarted/IntegratedMediaPlatform">IIS Media Services</a> che consente di effettuare uno streaming &ldquo;adattativo&rdquo; verso il client in base alla banda a lui a disposizione, ed il client ovviamente dovr&agrave; essere munito del plugin di <a rel="nofollow" target="_blank" href="http://silverlight.net/">Silverlight</a>.</p>
+
+<p>Il risultato &egrave; veramente impressionante: riuscire a vedere un video in streaming senza effettuare buffering e con la massima qualit&agrave; ottenibile dalla propria connessione. Sbalorditivo! <br />
+Di seguito trovate un filmato che mostra lo Smooth Streaming in azione.</p>
+
+<p>&nbsp;</p>
+
+<p><a rel="nofollow" target="_blank" href="http://www.iis.net/media/experiencesmoothstreaming"><img title="SEIISAddon" border="0" alt="SEIISAddon" width="455" height="292" style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" src="http://imperugo.tostring.it/Content/Uploaded/image/SEIISAddon_3.png" /></a></p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/26/attenzione-ad-usare-la-mail-come-logger/" itemprop="url">Attenzione ad usare la mail come Logger</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-26T02:13:51Z"  itemprop="datePublished">June 26, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/26/attenzione-ad-usare-la-mail-come-logger/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-26-attenzione-ad-usare-la-mail-come-logger.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Spesso si utilizza la mail come <strong>Log per tutti quegli errori di cui si ha l&rsquo;esigenza di avere una notifica nell&rsquo;immediato</strong>; un esempio potrebbe riguardare tutte le eccezioni che impediscono l&rsquo;utilizzo dell&rsquo;applicazione da parte degli utenti.</p>
+
+<p>Anche se pu&ograve; sembrare un&rsquo;operazione piuttosto semplice quella di inviare un&rsquo;eccezione via mail, bisogna ugualmente <strong>prestare attenzione</strong> in tutti quei casi in cui si utilizza la propriet&agrave; <em>Message</em> dell&rsquo;eccezione come <em>Subject</em> della mail; lo script seguente chiarisce la situazione.</p>
+
+<pre class="brush: csharp; ruler: true;">
+MailMessage message = new MailMessage();
+message.Subject = exc.Message;
+...</pre>
+
+<p>Un approccio di questo tipo vi pu&ograve; portare incontro ad un&rsquo;eccezione come la seguente:</p>
+
+<blockquote>
+<p>ArgumentException: The specified string is not in the form required for a subject</p>
+</blockquote>
+
+<p>Il problema &egrave; dovuto al fatto che il contenuto della propriet&agrave; <em>Message</em> pu&ograve; contente una nuova linea, quindi <em>&ldquo;\r\n&rdquo;, </em>che genera un errore nel metodo <em>Send</em> come spiegato <a rel="nofollow" target="_blank" href="http://blog.dotsmart.net/2008/02/15/systemnetmail-the-specified-string-is-not-in-the-form-required-for-a-subject/">qui</a>.</p>
+
+<p>La soluzione consiste nell&rsquo;effettuare il replace delle stringhe non consentite con uno spazio vuoto, come mostrato di seguito:</p>
+
+<pre class="brush: csharp; ruler: true;">
+MailMessage message = new MailMessage();
+message.Subject = exc.Message.Replace(&quot;\r&quot;, &quot; &quot;).Replace(&quot;\n&quot;, &quot; &quot;);
+...</pre>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/24/un-nuovo-user-group-net-allorizzonte/" itemprop="url">Un nuovo User Group .NET all'orizzonte.</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-24T06:06:56Z"  itemprop="datePublished">June 24, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/24/un-nuovo-user-group-net-allorizzonte/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-24-un-nuovo-user-group-net-allorizzonte.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Anche se in ritarto, &egrave; con estremo piacere che riporto la notizia che uno <strong>User Group .NET</strong> sta nascendo in <strong>Sicilia</strong>.     <br />
+Se pur io non sia siciliano, ma marchigiano doc, sono molto affezzionato a questa regione, in quanto due miei carissimi amici ne fanno parte ed hanno avuto la bellissima idea di creare uno <strong>UserGroup</strong> proprio l&igrave;.    <br />
+Di chi sto parlando? Beh dello <a title="Giancarlo Sudano" target="_blank" rel="nofollow" href="http://blogs.ugidotnet.org/janky/Default.aspx">sciuro Sudano</a> e il grandissimo <a title="Salvatore Di Fazio" target="_blank" rel="nofollow" href="http://blogs.ugidotnet.org/salvodifazio/Default.aspx">Salvo</a>!    <br />
+<strong>La partecipazione &egrave; d&rsquo;obbligo</strong>, per qualsiasi info e idee vi segnalo questi due post <a title="UgiSicilia by Giancarlo Sudano" target="_blank" rel="nofollow" href="http://blogs.ugidotnet.org/janky/archive/2009/06/18/uno-user-group-.net-anche-in-siciliahellip.aspx">1</a> e <a title="Ugi Sicilia by Salvatore Di Fazio" target="_blank" rel="nofollow" href="http://blogs.ugidotnet.org/SalvoDiFazio/archive/2009/06/19/ugi-sicilia.aspx">2</a>.</p>
+
+<p>Un mega &quot;<strong>IN BOCCA AL LUPO</strong>&quot; &egrave; di dovere.</p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/39" class="prev">Prev</a>
+    
+    
+        <a href="/page/41" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

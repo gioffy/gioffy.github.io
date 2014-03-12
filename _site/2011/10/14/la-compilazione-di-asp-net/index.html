@@ -1,0 +1,249 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>La compilazione di ASP.NET - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2011/10/14/la-compilazione-di-asp-net/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">La compilazione di ASP.NET</h1>
+	<div class="entry-content" itemprop="articleBody"><p>Il web.config è sicuramente familiare a tutti noi sviluppatori web, ma ci sono alcuni attributi che valgono la scrittura di un post ad hoc.</p>  <p>Oltre al classico connectionstrings e appsettings, in tutti i file di configurazione per applicazioni web esiste una sezione chiamata “<em>compilation</em>”, che permette di impostare un set di parametri che andranno ad influenzare la compilazione delle nostre pagine web.</p>  <p>Alcuni di questi attributi parlano da soli - inutile spiegare a cosa serve l’attributo <em>debub=”true”</em> - , ma ce ne sono altri che spesso si tralasciano o non si conoscono affatto.</p>  <p>Per esempio recentemente ho scoperto l’esistenza dell’attributo <em>optimizeCompilations</em> che, se impostato su <em>true</em>, può aumentare in maniera significativa i tempi di compilazione delle pagine web (maggiori informazioni qui <a href="http://blogs.msdn.com/b/davidebb/archive/2009/04/15/a-new-flag-to-optimize-asp-net-compilation-behavior.aspx">http://blogs.msdn.com/b/davidebb/archive/2009/04/15/a-new-flag-to-optimize-asp-net-compilation-behavior.aspx</a>).</p>  <p>Anche l’attributo <em>batch</em> ha lo scopo di migliorare le performance di compilazione ma, a differenza dell’attributo <em>optimizeCompilations</em>, questo è impostato di default su true, quindi possiamo omettere questo attributo nel nostro file di configurazione.</p>  <p>Un altro interessante attributo è <em>numRecompilesBeforeAppRestart</em> che, se impostato con dei valori corretti, può evitare alcuni noiosi restart dell’applicativo.</p>  <p>In ogni caso il mio preferito resta l’attributo <em>tempDirectory</em> <img style="border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none" class="wlEmoticon wlEmoticon-smile" alt="Smile" src="http://tostring.it/UserFiles/imperugo/wlEmoticon-smile_2_11.png" />. Questo attributo permette di specificare la directory dove verranno salvati i file temporanei di compilazione.     <br />Il perché mi piace particolarmente questo attributo è dovuto al fatto che uso un RAM Disk (personalmente uso questo <a href="http://memory.dataram.com/products-and-services/software/ramdisk">http://memory.dataram.com/products-and-services/software/ramdisk</a>) e, impostando la compilazione dei file di ASP.NET su questo particolare drive, si ottengono delle performance notevoli, specie in fase di startup.</p>  <p>Concludo con un pezzo della mia configurazione :</p>  
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;compilation</span> <span class="na">tempDirectory=</span><span class="s">&quot;G:\aspnet.temp\&quot;</span> 
+                    <span class="na">optimizeCompilations=</span><span class="s">&quot;true&quot;</span> 
+                    <span class="na">batch=</span><span class="s">&quot;true&quot;</span> 
+                    <span class="na">debug=</span><span class="s">&quot;true&quot;</span> 
+                    <span class="na">defaultLanguage=</span><span class="s">&quot;c#&quot;</span> 
+                    <span class="na">numRecompilesBeforeAppRestart=</span><span class="s">&quot;250&quot;</span> 
+                    <span class="na">targetFramework=</span><span class="s">&quot;4.0&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;assemblies&gt;</span>
+        <span class="nt">&lt;add</span> <span class="na">assembly=</span><span class="s">&quot;System.Web.Abstractions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;add</span> <span class="na">assembly=</span><span class="s">&quot;System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;add</span> <span class="na">assembly=</span><span class="s">&quot;System.Web.Routing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;add</span> <span class="na">assembly=</span><span class="s">&quot;System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;add</span> <span class="na">assembly=</span><span class="s">&quot;System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/assemblies&gt;</span>
+<span class="nt">&lt;/compilation&gt;</span>
+</code></pre></div>
+
+<p>Ciauz!</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Ottimizzazione" title="">Ottimizzazione</a>
+	
+	  <a href="/tag#ASP.NET" title="">ASP.NET</a>
+	
+	  <a href="/tag#Configurazione" title="">Configurazione</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2011/10/11/alcuni-webcast-su-asp-net-mvc-e-molto-altro/" title="Previous Post: 
+Alcuni webcast su ASP.NET MVC e molto altro.">&laquo; Alcuni webcast su ASP.NET MVC e molto altro.</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2011/10/25/dominio-stai-lontano-dalle-mie-view/" title="next Post: 
+Dominio stai lontano dalle mie View">Dominio stai lontano dalle mie View &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2011/10/14/la-compilazione-di-asp-net/';
+        var disqus_url = 'http://gioffy.github.io/2011/10/14/la-compilazione-di-asp-net/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

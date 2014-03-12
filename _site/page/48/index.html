@@ -1,0 +1,495 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/48/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2008/02/21/managed-services-engine/" itemprop="url">Managed Services Engine</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2008-02-21T01:00:00Z"  itemprop="datePublished">February 21, 2008</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2008/02/21/managed-services-engine/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2008-02-21-managed-services-engine.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><span>Su suggerimento dello <a onclick="function onclick(event) { function onclick(event) { blankUrl(this.href); return false; } }" href="http://blogs.ugidotnet.org/janky">Sciuro Sudano</a> ho dato un'occhiata a <strong>Managed Services Engine</strong> che in ambienti tipo quello descritto in questo <a onclick="function onclick(event) { function onclick(event) { blankUrl(this.href); return false; } }" href="http://blogs.aspitalia.com/imperugo/post2229/bello-lavori.aspx">post</a>, in cui si ha un alto numero di endpoint pu&ograve; essere una manna dal cielo. </span></p>
+
+<p>Per chi non lo conoscesse gi&agrave;, <strong>MSE</strong> (scaricabile da <a onclick="function onclick(event) { function onclick(event) { blankUrl(this.href); return false; } }" href="http://www.codeplex.com/servicesengine">CodePlex</a>), non &egrave; altro che un repository di servizi con il compito di fare da routing di tutti i client verso i vari servizi sparsi nella rete. <br />
+<br />
+Si provi ad immaginare di dover cambiare indirizzo ad un servizio referenziato da 40 client? Sarebbe di difficile e di scomoda gestione, almeno 40 cambi configurazione e 40 riavvii dei vari applicativi.</p>
+
+<p>Con MSE vi basta far puntare il vostro client al servizio che a sua volta ridiriger&agrave; le chiamate al servizio corretto, cos&igrave; nel caso si decida di cambiare un endopoint, una porta, o quel che volete, vi basta farlo solo su <strong>MSE,</strong> e non su tutti i client, poi come per incanto i 40 cambi di configurazione si traducono in un'unica operazione!</p>
+
+<p>Beh mica male direi.</p>
+
+<p>A tutto ci&ograve; va aggiunto il fatto che questo tool &egrave; dotato di un'ottimo wizard che segue l'utente durante la configurazione dei vari endpoint.</p>
+
+<p>Ovviamente gli endpoint supportati da wcf li abbiamo tutti come mostrato dallo screenshot seguente:</p>
+
+<p><img width="437" height="218" alt="" src="/content/Uploaded/image/image_thumb.png" /><span class="Apple-style-span" style="color: rgb(0, 0, 238); text-decoration: underline;"><br />
+</span></p>
+
+<p>&nbsp;</p>
+
+<p>ma si ha la possibilit&agrave; di definirne dei propri.</p>
+
+<p>Per la memorizzazione delle varie configurazione si appoggia a SQL Server, ma la creazione delle varie tabelle necessarie al suo funzionamento &egrave; del tutto automatizzata dal suo setup (cosa non sempre scontata in progetti open source)</p>
+
+<p>Sono rimasto cos&igrave; impressionato dall'efficacia e utilit&agrave; di questo tool che mi sembrava giusto parlarne.</p>
+
+<p>Una grazie allo <a onclick="function onclick(event) { function onclick(event) { blankUrl(this.href); return false; } }" href="http://blogs.ugidotnet.org/janky">Sciuro Sudano</a> per la dritta.</p>
+
+<p>Ciauz</p>
+
+<p>&nbsp;</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2008/02/04/wcf-msmq-binding/" itemprop="url">WCF + MSMQ Binding</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2008-02-04T01:00:00Z"  itemprop="datePublished">February  4, 2008</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2008/02/04/wcf-msmq-binding/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2008-02-04-wcf-msmq-binding.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><span>In quest'ultimo periodo, in azienda, stiamo organizzando e progettando delle nuove parti di un'applicativo fortemente basato su servizi. </span></p>
+
+<p>In questo e in molti altri scenari, si ha la necessit&agrave; di avere una forte scalabilit&agrave; e la certezza di non perdere nessun dato anche nel caso uno dei servizi si offline per manutenzione e/o problemi tecnici di qualsiasi tipo.</p>
+
+<p>Dopo varie analisi con lo sciur Sudano aka <a onclick="blankUrl(this.href); return false;" href="http://www.giancarlosudano.it/">Janky</a> (spinto dalle teorie di <a onclick="blankUrl(this.href); return false;" href="http://blogs.msdn.com/pathelland/">Pat Helland</a> :D, altro che notepad) abbiamo deciso di implementare per i punti crifiti dell'applicativo <strong>Microsoft Message Queue con WCF</strong> e, devo dar atto che le suo potenzialit&agrave; e casi di utilizzo sono veramente impressionati.</p>
+
+<p>Basti pensare che in tutte quelle situazioni in cui si ha la necessit&agrave; di avere cahiamate OneWay verso un servizio, MSMQ pu&ograve; essere utilissimo.</p>
+
+<p>Non voglio dilungarmi in particolari scenari e specifiche troppo tecniche, magari ne esce un qualcosa di scritto successivamente.</p>
+
+<p>A chiunque sia interessato sull'argomento consiglio la lettura e visione di questo articolo /screencast</p>
+
+<p><a title="http://code.msdn.microsoft.com/msmqpluswcf" href="http://code.msdn.microsoft.com/msmqpluswcf">http://code.msdn.microsoft.com/msmqpluswcf</a></p>
+
+<p>Quindi come dice il caro <a onclick="blankUrl(this.href); return false;" href="http://blogs.aspitalia.com/sm15455">Mostardone nazionale</a> stay tuned</p>
+
+<p><br />
+Ciauz a tutti.</p>
+
+<p>&nbsp;</p>
+
+<p>P.S: il gatto &egrave; sotto l'auto e il lupo guarda lontano.</p>
+
+<p>&nbsp;</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2007/10/05/usercontrol-updatepanel-urlrewrite-una-combinazione-vincente/" itemprop="url">UserControl, UpdatePanel UrlRewrite, una combinazione vincente!</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2007-10-05T00:00:00Z"  itemprop="datePublished">October  5, 2007</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2007/10/05/usercontrol-updatepanel-urlrewrite-una-combinazione-vincente/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2007-10-05-usercontrol-updatepanel-urlrewrite-una-combinazione-vincente.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><span>&Egrave;&nbsp;un po' di tempo che non faccio post sul blog, ma oggi con <a href="http://blogs.aspitalia.com/sm15455">Stefano</a> e <a onclick="blankUrl(this.href); return false;" href="http://www.gvnn.it/">GVNN</a>, stavamo cercando di risolvere un problema in una situazione tipo la seguente: </span></p>
+
+<p>UserControl normalissimo con all'interno un semplice UdatePanel che al click esegue delle semplici operazioni di select ed insert sul database.<br />
+E fin qui nulla di particolare se non fosse per il fatto che al primo colpo veniva eseguito il codice perfettamente, mentre al secondo giro la chiamata asincrona non andava pi&ugrave; e veniva mostrato un messaggio di errore tipo il seguente:</p>
+
+<blockquote>
+<p><em>Validation of viewstate MAC failed. If this application is hosted by a Web Farm or cluster, ensure that &lt;machinekey&gt;&nbsp;configuration specifies the same validationKey and validation algorithm. AutoGenerate cannot be used in a cluster.</em></p>
+</blockquote>
+
+<p>Ovviamente sia <strong>EnableViewStateMac </strong>che <strong>ViewStateEncryptionMode</strong> sono impostati su false ed eravamo in locale quindi niente cluster.</p>
+
+<p>Andando a guardare con fiddler le chiamate ci siamo accorti che al primo giro veniva effettuata una chiamata ad un url, mentre al secondo l'url era differente, o meglio non era pi&ugrave; il RawUrl ad essere chiamato ma l'url non riscritto da un HttpModule interno.</p>
+
+<p>Indagando un po' pi&ugrave; a fondo ci siamo accorti che all'interno dell'evento pageLoading della classe Sys.WebForms.PageRequestManager veniva riscritto l'url da chiamare.</p>
+
+<p>Il problema &egrave; risolvibile aggiungedo questo 4 righe di JavaScript:</p>
+
+<pre title="code" class="brush: csharp">
+Sys.Application.add_load(function()
+{
+var form = Sys.WebForms.PageRequestManager.getInstance()._form;
+form._initialAction = form.action = window.location.href;
+});</pre>
+
+<p>&nbsp;</p>
+
+<p>Devo dire che ormai non mi stupisco pi&ugrave; quando trovo stranezze sul Framework Ajax 1.0 che ritengo pi&ugrave; una versione 0.8, e aggiungo questo comportamento all'elenco delle cose che spero Fixate nella prossima Release (Encoding non UTF-8, WebPart, ecc)&nbsp;del Framework ASP.NET&nbsp;AJAX.</p>
+
+<p>Ciauz</p>
+
+<p>&nbsp;</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2007/05/21/i-composite-control-e-ajax/" itemprop="url">I composite Control e AJAX</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2007-05-21T00:00:00Z"  itemprop="datePublished">May 21, 2007</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2007/05/21/i-composite-control-e-ajax/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2007-05-21-i-composite-control-e-ajax.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><span>&egrave; un po' che volevo fare questo post, ma causa deadline vicinissima non ho avuto il tempo. </span></p>
+
+<p>Nell'ultimo periodo ho dovuto sviluppare parecchi Custom Control ed ho fatto uso abbastanza spinto del Framework Ajax di Microsoft riscontrando anche diversi bug (e il <a href="http://blogs.aspitalia.com/sm15455/">romano</a> lo sa bene), ma mi sono imbattuto in una situazione un po' &quot;strana&quot; che non &egrave; giusto definirla bug.</p>
+
+<p>Nel realizzare un Custom Control che ereditava da Composite Control (che a sua volta eredita da WebControl) ho avuto la necessit&agrave; di rimuovere il tag iniziale che questo mi creava, per precisione un span.<br />
+Ora tramite la propriet&agrave; TagKey del WebControl era possibile specificare un tag di uscita diverso dallo span, ma a me non andava bene e non lo volevo proprio.<br />
+Da qui &egrave; nata l'idea di effettuare l'override dei metodi RenderBeginTag e RenderEndTag, commetanto la chiamata al base del metodo stesso.<br />
+Purtroppo questo ha scatenato un'improvvisa incompatibilit&agrave; dei miei eventi contenuti all'interno del Composite Control nei confronti del framework ajax, in quanto qualsiasi evento sollevato da un linkbutton (ma &egrave; uguale per qualsiasi altro Control) presente all'interno del mio controllo, effettua un PostBack Sincrono ignorando la propriet&agrave; ChilderAsTrigger dell'update panel impostata su true, e, anche forzando il trigger a mano il postback rimane sempre asyncrono.<br />
+L'unica soluzione che ho trovato &egrave; stata quella di recuperare lo ScriptManager della pagina dal controllo e registrare a mano i controlli figli che scatenano l'evento.</p>
+
+<p>Il codice mostra la procedura.</p>
+
+<pre title="code" class="brush: csharp">
+ScriptManage sm = ScriptManager.GetCurrent(Page); 
+LinkButton myLinkButton = new LinkButton(); 
+if(sm != null) 
+{ 
+ sm.RegisterAsyncPostBackControl(myLinkButton); 
+}</pre>
+
+<p><span id="PostView"> </span></p>
+
+<p>In questo modo le chiamate sono tornate asincrone.<br />
+Questa operazione deve essere fatta prima del metodo PreRender, dopo di che non &egrave; pi&ugrave; possibile registrare il controllo allo ScriptManager.</p>
+
+<p>Ora in quel periodo lavoravo molto di fretta, magari non &egrave; la soluzione migliore o il metodo migliore per rimuovere il tag dal Composite Control, ma magari se qualcuno ha avuto lo stesso problema gli faccio risparmiare del tempo :D.</p>
+
+<p>Ciauz</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2007/01/21/windows-vista-messenger-live-81000306/" itemprop="url">Windows Vista, Messenger Live &amp; 81000306</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2007-01-21T01:00:00Z"  itemprop="datePublished">January 21, 2007</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2007/01/21/windows-vista-messenger-live-81000306/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2007-01-21-windows-vista-messenger-live-81000306.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><span>Questo week-end mi sono deciso, ho fatto il format del pc fisso che ho a casa e ho montato Windows Vista, tutto fantastico, Aero va alla grande, il pc schizza, ma per qualche motivo che solo lui pu&ograve; sapere&nbsp;il messenger non va, mi restituiva sempre errore 81000306. </span></p>
+
+<p>Per risolvere basta aprire il prompt del DOS e digitare:</p>
+
+<p><strong>netsh int tcp set global autotuninglevel=disabled</strong></p>
+
+<p>fatto ci&ograve;&nbsp;il messenger comincia a funzionare :D<br />
+Bah, eppure lo ho fatto un sacco di volte, ma questa volta proprio non andava.</p>
+
+<p>BAFANDO !!!</p>
+
+<p>&nbsp;</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/47" class="prev">Prev</a>
+    
+    
+        <a href="/page/49" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Abilitare la History nel browser per le chiamate AJAX - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2009/06/24/abilitare-la-history-nel-browser-per-le-chiamate-ajax/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Abilitare la History nel browser per le chiamate AJAX</h1>
+	<div class="entry-content" itemprop="articleBody"><p>Ormai sempre pi&ugrave; applicazioni web fanno uso della tecnologia <a rel="nofollow" target="_blank" href="http://en.wikipedia.org/wiki/Ajax_(programming)">AJAX</a>, in quanto essa offre numerosi vantaggi: dall&rsquo;ottimizzazione del traffico di rete ad una maggior velocit&agrave; di navigazione. L&rsquo;uso di questa tecnologia permette s&igrave; la navigazione tra contenuti differenti senza effettuare il reload della pagina, ma purtroppo toglie usabilit&agrave; al sito, in quanto l&rsquo;utente &egrave; portato ad utilizzare il bottone <strong>Back</strong> del browser per tornare al contenuto precedente, cosa che non avviene se si sta utilizzando <strong>AJAX</strong>.</p>
+
+<p><br />
+Per risolvere questo incoveniente Microsoft ha introdotto, tramite il <strong>Service Pack 1</strong> del <strong>.NET Framework 3.5</strong>, la possibilit&agrave; di utilizzare i bottoni per la navigazione integrati con il browser per muoversi attraverso l&rsquo;hystory delle chiamate <strong>AJAX</strong>.</p>
+
+<p>Come per ogni <a rel="nofollow" target="_blank" href="http://www.asp.net">ASP.NET</a> WebForm che utilizza AJAX, &egrave; necessario che nella pagina sia presente lo <a rel="nofollow" target="_blank" href="http://msdn.microsoft.com/it-it/library/system.web.ui.scriptmanager.aspx">ScriptManager</a>, dove si andr&agrave; ad abilitare l&rsquo;utilizzo dell&rsquo;Hystory e ad associare l&rsquo;evento che dovr&agrave; essere scatenato durante la navigazione, come mostrato di seguito:</p>
+
+<pre class="brush: xml; ruler: true;">
+&lt;asp:ScriptManager ID=&quot;ScriptManager1&quot; runat=&quot;server&quot; EnableHistory=&quot;True&quot; 
+    onnavigate=&quot;ScriptManager1_Navigate&quot;&gt;
+&lt;/asp:ScriptManager&gt;</pre>
+
+<p>Nello snippet seguente viene mostrato come aggiungere un <strong>HystoryPoint</strong>, e l&rsquo;evento che viene invocato alla pressione dei tasti <strong>Back</strong> e <strong>Forward</strong> del browser.</p>
+
+<pre class="brush: csharp; ruler: true;">
+protected void GridView1_PageIndexChanged(object sender, EventArgs e)
+{
+    if(ScriptManager1.IsInAsyncPostBack &amp;&amp; !ScriptManager1.IsNavigating)
+    {
+        ScriptManager1.AddHistoryPoint(&quot;Gridview1&quot;,GridView1.PageIndex.ToString());
+    }
+}
+
+protected void ScriptManager1_Navigate(object sender, HistoryEventArgs e)
+{
+    int pageIndex = 0;
+
+    if(string.IsNullOrEmpty(e.State[&quot;Gridview1&quot;]))
+    {
+        GridView1.PageIndex = pageIndex;
+    }
+    else
+    {
+        pageIndex = int.Parse(e.State[&quot;Gridview1&quot;]);
+        GridView1.PageIndex = pageIndex;
+
+        Title = &quot;Paginda del gridview numero:&quot; + (pageIndex + 1);
+
+    }
+}</pre>
+
+<p>In questo esempio si &egrave; optato per l&rsquo;associazione degli HystoryPoint alla paginazione di un GridView, ma la stessa cosa &egrave; applicabile a qualsiasi tipo di chiamata AJAX.</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Usabilità" title="">Usabilità</a>
+	
+	  <a href="/tag#Browser" title="">Browser</a>
+	
+	  <a href="/tag#ASP.NET" title="">ASP.NET</a>
+	
+	  <a href="/tag#Ajax" title="">Ajax</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2009/06/23/alcuni-link-utili-su-asp-net-mvc/" title="Previous Post: 
+Alcuni Link utili su ASP.NET MVC">&laquo; Alcuni Link utili su ASP.NET MVC</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2009/06/24/un-nuovo-user-group-net-allorizzonte/" title="next Post: 
+Un nuovo User Group .NET all'orizzonte.">Un nuovo User Group .NET all'orizzonte. &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2009/06/24/abilitare-la-history-nel-browser-per-le-chiamate-ajax/';
+        var disqus_url = 'http://gioffy.github.io/2009/06/24/abilitare-la-history-nel-browser-per-le-chiamate-ajax/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

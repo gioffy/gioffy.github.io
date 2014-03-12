@@ -1,0 +1,400 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/13/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/09/06/compilare-le-applicazioni-a-64bit/" itemprop="url">Compilare le applicazioni a 64Bit</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-09-06T15:45:00Z"  itemprop="datePublished">September  6, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/09/06/compilare-le-applicazioni-a-64bit/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-09-06-compilare-le-applicazioni-a-64bit.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ultimamente mi è capitato uno strano errore che mi ha fatto “scervellare” (passatemi il termine) per individuarne la causa, poi la soluzione si è presentata davanti agli occhi ed era più semplice di quel che pensavo (anche se devo ammettere che il messaggio di errore non era di aiuto); ma partiamo dall’inizio.</p>  <p>Un paio di settimane fa ho sviluppato un plugin per <a href="http://www.imperugo.tostring.it/categories/archive/Dexter">Dexter</a> che non fa altro che mostrare informazioni provenienti da vari feeds rss; nel mio caso specifico sono feeds RSS dei principali social network a cui partecipo, ed il mio scopo era di creare una pagina che li aggregasse tutti insieme in modo da riassumere le mie ultime attività (per chi fosse interessato al funzionamento può vedere il risultato finale <a title="LifeStream" href="http://tostring.it/lifestream" target="_blank">qui</a>).</p>  <p>I plugin in Dexter non sono altro che delle semplici librerie caricate automaticamente a runtime ed aggiunte all’application domain principale (ancora per poco ); al contrario degli altri plugin, come il like di facebook, questo non ne voleva sapere di partire, restituendo sempre il seguente errore:</p>  <blockquote>   <p>Server Error in '/' Application.      <br />Could not load file or assembly 'Dexter.Plugins.LifeStream' or one of its dependencies. An attempt was made to load a program with an incorrect format.       <br />Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code.       <br />Exception Details: System.BadImageFormatException: Could not load file or assembly 'Dexter.Plugins.LifeStream' or one of its dependencies. An attempt was made to load a program with an incorrect format.       <br />Source Error:</p>    <p>An unhandled exception was generated during the execution of the current web request. Information regarding the origin and location of the exception can be identified using the exception stack trace below.</p>    <p>Assembly Load Trace: The following information can be helpful to determine why the assembly 'Dexter.Plugins.LifeStream' could not be loaded.</p> </blockquote>  <p>Ora io ero certo che l’applicazione si trovasse nel path corretto e che tutto funzionasse a norma; di fatto in locale il plugin sembrava perfetto, eppure doveva esserci un fattore che ne impediva il funzionamento nel server di produzione.    <br />Indagando un po’ a fondo e cercando errori simili in rete sono risalito al problema, scoprendo che il tutto era dovuto alla compilazione della libreria in questione che non era a 64bit come richiesto dal server di produzione.</p>  <p>Purtroppo non so per quale motivo, ma il nuovo progetto del plugin aggiunto a <a href="http://tostring.it/tags/archive/visual+studio">Visual Studio</a> aveva la compilazione abilitata solo per i 32bit e non “Any CPU” come mi aspettavo, e l’application pool in produzione era configurato per eseguire soltanto codice compilato per i 64bit e quindi si rifiutava (giustamente) di caricare l’assembly, bloccando il flusso corretto di funzionamento dell’applicativo.     <br />Al contrario nella mia macchina di sviluppo era tutto funzionante perché nella configurazione di IIS era stata impostata l’opzione “Enable 32-bit Application” negli “Advanced Settings” dell’application pool, come mostrato dallo screenshot seguente.     <br />    <br /><a href="http://tostring.it/UserFiles/imperugo/SNAGHTML20b8c76f.png" rel="shadowbox[64Bit]"><img style="background-image: none; border-bottom: 0px; border-left: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top: 0px; border-right: 0px; padding-top: 0px" title="SNAGHTML20b8c76f" border="0" alt="SNAGHTML20b8c76f" src="http://tostring.it/UserFiles/imperugo/SNAGHTML20b8c76f_thumb.png" width="141" height="172" /></a></p>  <p>Come potete vedere il problema è piuttosto banale e facilmente risolvibile se non per il “non bel” messaggio di notifica.    <br />64-bit Rulez!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/08/02/gestire-httprequestvalidationexception-in-asp-net-mvc/" itemprop="url">Gestire HttpRequestValidationException in ASP.NET MVC</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-08-02T15:30:00Z"  itemprop="datePublished">August  2, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/08/02/gestire-httprequestvalidationexception-in-asp-net-mvc/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-08-02-gestire-httprequestvalidationexception-in-asp-net-mvc.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Chi lavora con le applicazioni web si sarà sicuramente imbattuto nell’eccezione <a title="http://msdn.microsoft.com/it-it/library/system.web.httprequestvalidationexception.aspx" href="http://msdn.microsoft.com/it-it/library/system.web.httprequestvalidationexception.aspx" rel="nofollow" target="_blank">HttpRequestValidationException</a> scatenata dall’engine di <a title="ASP.NET Category" href="http://www.tostring.it/categories/archive/asp.net" target="_blank">ASP.NET</a> quando un client cerca di effettuare il submit di informazioni potenzialmente pericolose, aka codice html, verso il server.    <br />Personalmente ritengo questa una comodissima feature in quanto ci consente di “alleggerire” la nostra applicazione nell’analisi dei dati in ingresso e demandare il tutto ad ASP.NET; al contrario, se si vuole gestire questa casistica secondo dei propri requirements, è possibile disattivarla e prendersi carico e <strong>responsabilità</strong> del fatto che ciò che arriverà dal client non è stato validato da nessuno.    <br />    <br />Dando per assodato che, dal mio punto di vista, questa funzione dovrebbe rimanere abilitata, quello che vorrei specificare in questo post è come mostrare all’utente un messaggio “friendly” che lo invita ad inserire del plaintext nel campo di input. L’idea è nata analizzando il log del mio blog, in cui ho trovato una miriade di tentativi di commenti che cercavano di inserire link (praticamente tutto spam), ma senza successo grazie a questo blocco.    <br />    <br />Questo è possibile in diversi modi, come con l’utilizzo di httpmodule, applicationError, etc., ma in applicazioni MVC preferisco utilizzare il meno possibile HttpModule (vuoi perchè in IntegratedMode passa veramente di tutto) e gestire la cosa dal controller.     <br />In <a title="Dexter Blog Engine Category" href="http://www.imperugo.tostring.it/categories/archive/Dexter" target="_blank">Dexter</a> ho un ControllerBase da cui ereditano tutti i controller, dove, oltre ad esporre delle ActionResult custom, ho la gestione dei log per ciò che riguarda la parte di MVC, in soldoni ho l’override del metodo <em>OnException</em> dove butto dentro la mia logica di logging, etc.</p>  <p>Quando una qualsiasi eccezione riguardante una richiesta MVC viene sollevata dal framework, si può essere certi che verrà intercettata e verrà invocato quel metodo, permettendoci di gestirla a nostro piacimento. </p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">OnException</span><span class="p">(</span><span class="n">ExceptionContext</span> <span class="n">filterContext</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HttpException</span> <span class="n">httpException</span> <span class="p">=</span> <span class="n">filterContext</span><span class="p">.</span><span class="n">Exception</span> <span class="k">as</span> <span class="n">HttpException</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">httpException</span> <span class="k">is</span> <span class="n">HttpRequestValidationException</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Logger</span><span class="p">.</span><span class="n">Info</span> <span class="p">(</span> <span class="n">httpException</span><span class="p">.</span><span class="n">Message</span> <span class="p">,</span> <span class="n">httpException</span> <span class="p">);</span>
+
+        <span class="kt">var</span> <span class="n">currentUrl</span> <span class="p">=</span> <span class="n">filterContext</span><span class="p">.</span><span class="n">RequestContext</span><span class="p">.</span><span class="n">HttpContext</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">Url</span><span class="p">.</span><span class="n">AbsolutePath</span><span class="p">;</span>
+
+        <span class="n">filterContext</span><span class="p">.</span><span class="n">ExceptionHandled</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+
+        <span class="n">filterContext</span><span class="p">.</span><span class="n">Result</span> <span class="p">=</span>  <span class="n">RedirectToAction</span><span class="p">(</span><span class="s">&quot;HttpRequestValidation&quot;</span><span class="p">,</span> <span class="s">&quot;Errors&quot;</span><span class="p">,</span> <span class="k">new</span>
+                                                                    <span class="p">{</span>
+                                                                 <span class="n">aspxerrorpath</span> <span class="p">=</span> <span class="n">currentUrl</span>
+                                                                    <span class="p">});</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">httpException</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">&amp;&amp;</span> <span class="n">httpException</span><span class="p">.</span><span class="n">GetHttpCode</span><span class="p">()</span> <span class="p">==</span> <span class="m">404</span><span class="p">)</span>
+        <span class="n">Logger</span><span class="p">.</span><span class="n">Info</span><span class="p">(</span><span class="n">httpException</span><span class="p">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">httpException</span><span class="p">);</span>
+    <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">filterContext</span><span class="p">.</span><span class="n">Exception</span> <span class="k">is</span> <span class="n">HttpAntiForgeryException</span><span class="p">)</span>
+        <span class="n">Logger</span><span class="p">.</span><span class="n">Info</span><span class="p">(</span><span class="n">filterContext</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">filterContext</span><span class="p">.</span><span class="n">Exception</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">Logger</span><span class="p">.</span><span class="n">Error</span><span class="p">(</span><span class="s">&quot;Generic Exception&quot;</span><span class="p">,</span> <span class="n">filterContext</span><span class="p">.</span><span class="n">Exception</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Come potete vedere non è nulla di fantascientifico ed è più o meno quello che si andrebbe a fare con un’applicazione WebForm classica, fatta eccezione per l’utilizzo della proprietà ExceptionHandled, che notifica a MVC che siamo noi a prenderci in carico il <em>Result</em> da quel momento in poi, e di fatto subito dopo si va ad effettuare un redirect.</p>
+
+<p>Il risultato è <a title="HttpRequestValidation example" href="http://tostring.it/errors/HttpRequestValidation" target="_blank">questo</a>.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/07/28/habemus-mvc3-preview-1/" itemprop="url">Habemus MVC3 (preview 1)</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-07-28T15:30:00Z"  itemprop="datePublished">July 28, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/07/28/habemus-mvc3-preview-1/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-07-28-habemus-mvc3-preview-1.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>L’annuncio arriva direttamente dal blog di <a title="Scott Guthrie&#39;s Blog" href="http://weblogs.asp.net/scottgu/" rel="nofollow" target="_blank">Scott Guthrie</a>, anche se il <a title="MVC 3 Preview 1 Download" href="http://www.microsoft.com/downloads/details.aspx?FamilyID=cb42f741-8fb1-4f43-a5fa-812096f8d1e8&amp;displaylang=en" rel="nofollow" target="_blank">download</a> era apparso sui server Microsoft già da alcune ore: sta di fatto che MVC 3 Preview 1 è stato rilasciato, e lo potete scaricare direttamente <a title="ASP.NET MVC 3 Preview 1" href="http://www.microsoft.com/downloads/details.aspx?FamilyID=cb42f741-8fb1-4f43-a5fa-812096f8d1e8&amp;displaylang=en" rel="nofollow" target="_blank">qui</a>.     <br />Anche la versione 3 sembra percorrere quanto già fatto dalla versione 2, ossia evolvere quanto di già buono c’è senza stravolgere la struttura, quindi non aspettatevi di trovare grandissimi cambiamenti all’interno di questa release.</p>  <p>Tra le novità è stato incluso Razor, un view engine “csharp like” che va ad affiancarsi al view engine già presente, permettendo così di avere <em>View</em> scritte con differenti sintassi; un’altra novità molto interessante è la presenza dell’<a href="http://bradwilson.typepad.com/blog/2010/07/service-location-pt1-introduction.html">IServiceLocator</a>, che personalmente ritenevo una mancanza in <a href="http://www.tostring.it/categories/archive/mvc">MVC2</a> (in <a href="http://www.imperugo.tostring.it/categories/archive/Dexter">dexter</a> abbiamo implementato un qualcosa di simile).     <br />In linea di massima tutta la parte di Dependency Injection è stata migliorata e di fatto ora è possibile andare a “giocare” con controller, viewengine, views, validation providers, model meta data provider, model binder, e chi più ne ha più ne metta.</p>  <p>Sono presenti anche altre novità di minor rilievo come ViewData dinamico, che sfrutta la keyword <em>dynamics</em> di c# 4 e di conseguenza vincola l’utilizzo di MVC3 all’ultima release del <a href="http://www.imperugo.tostring.it/tags/archive/.net">.NET Framework</a>.</p>  <p>Direi che di argomenti e spunti per poter parlare e provare MVC3 ce ne sono, e sicuramente un confronto di Razor con Spark non tarderà ad arrivare.</p>  <p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/07/26/slide-della-mia-sessione-allevento-groundzero-di-dotnetlombardia/" itemprop="url">Slide della mia sessione all’evento GroundZero di DotNetLombardia</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-07-26T18:28:03Z"  itemprop="datePublished">July 26, 2010</time></span>
+	<span class="categories">eventi</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/07/26/slide-della-mia-sessione-allevento-groundzero-di-dotnetlombardia/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-07-26-slide-della-mia-sessione-allevento-groundzero-di-dotnetlombardia.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Da pochi giorni si è concluso l’evento GroundZero di <a title="DotNetLombardia" href="http://dotnetlombardia.org/" rel="nofollow" target="_blank">DotNetLombardia</a>, dove ho avuto l’opportunità di parlare un po’ delle novità introdotte con il <a title=".NET Framework Search" href="http://www.imperugo.tostring.it/tags/archive/.net" target="_blank">.NET Framework</a> 4.0 per il mondo web, quindi di <a title="ASP.NET Category" href="http://www.tostring.it/categories/archive/asp.net" target="_blank">ASP.NET</a>, <a title="MVC Category" href="http://www.tostring.it/categories/archive/mvc" target="_blank">MVC2</a> ed <a title="AJAX Category" href="http://www.tostring.it/categories/archive/ajax" target="_blank">AJAX</a>.     <br />Ringrazio tutta l’organizzazione e le persone presenti per aver scelto di passare una passare una giornata a parlare di tecnologia.</p>  <p>Purtroppo&#160; non ho avuto modo di assistere a tutte le sessioni della giornata (molto bravo <a title="Il blog di Federico Degrandis" href="http://blogs.ugidotnet.org/federicoD/Default.aspx" rel="nofollow" target="_blank">Federico</a>); in particolar modo mi avrebbe fatto piacere assistere la sessione del mio super Desk Neighbor <a title="Matteo Pagani&#39;s Blog" href="http://qmatteoq.tostring.it/" rel="nofollow" target="_blank">Matteo</a> e di <a title="Giuseppe Marchi&#39;s Blog" href="http://www.peppedotnet.it/" rel="nofollow" target="_blank">Giuseppe</a> che sicuramente sarebbe riuscito a farmi capire un po’ Sharepoint.</p>  <p>   <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:fb3a1972-4489-4e52-abe7-25a00bb07fdf:63725590-f407-4647-b8f7-f1599609a75a" class="wlWriterEditableSmartContent"><p>Il download delle slide è disponibile <a href="http://tostring.it/UserFiles/imperugo/Sessione%20ASP.NET_2.pdf" target="_blank">qui</a></p></div></p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/07/14/where-the-hell-is-dexter/" itemprop="url">Where The Hell is Dexter</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-07-14T15:40:00Z"  itemprop="datePublished">July 14, 2010</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/07/14/where-the-hell-is-dexter/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-07-14-where-the-hell-is-dexter.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>È un po’ che non faccio un post su <a title="Dexter Blog Engine Category" href="http://www.imperugo.tostring.it/categories/archive/Dexter" target="_blank">Dexter</a>, ma questo non vuol dire che il progetto è fermo, anzi: ci stiamo lavorando tanto e nel <a title="Dexter&#39;s staff" href="http://dexterblogengine.codeplex.com/team/view" rel="nofollow" target="_blank">dev team</a> sono apparsi nomi nuovi, alcuni anche di un certo peso, il che mi fa molto piacere.     <br />Detto ciò, ieri sera ho aggiornato la versione attuale del mio blog all’ultima release della trunk, che apporta una serie di migliorie ed ovviamente un gran numero di nuove features.</p>  <p>In primis è stato fortemente potenziato il supporto per Windows Live Writer che ora gestisce nativamente Tagging (con intellisense), Categorie Multiple (con sottocategorie), Abstract, Slug Customizzati e, dulcis in fundo, offre la possibilità di creare dinamicamente le proprie pagine (la mia pagina about è stata creata con WLW) con la possibilità di avere un vero e proprio <em>Tree</em> di pagine (maggiori info <a title="Dexter is growing: Dynamic Pages and better Windows Live Writer support" href="http://www.primordialcode.com/blog/post/dexter-dynamic-pages-windows-live-writer-support" rel="nofollow" target="_blank">qui</a>). </p>  <p>Alcuni screenshot:</p>  <p><a href="http://tostring.it/UserFiles/imperugo/WIndows%20Live%20Writer%20001_2.jpg" rel="shadowbox[DexterWLW]"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" class="wlDisabledImage" title="WIndows Live Writer 001" border="0" alt="WIndows Live Writer 001" src="http://tostring.it/UserFiles/imperugo/WIndows%20Live%20Writer%20001_thumb.jpg" width="89" height="104" /></a><a href="http://tostring.it/UserFiles/imperugo/WIndows%20Live%20Writer%20002_2.jpg" rel="shadowbox[DexterWLW]"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" class="wlDisabledImage" title="WIndows Live Writer 002" border="0" alt="WIndows Live Writer 002" src="http://tostring.it/UserFiles/imperugo/WIndows%20Live%20Writer%20002_thumb.jpg" width="349" height="104" /></a><a href="http://tostring.it/UserFiles/imperugo/WIndows%20Live%20Writer%20003_2.jpg" rel="shadowbox[DexterWLW]"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" class="wlDisabledImage" title="WIndows Live Writer 003" border="0" alt="WIndows Live Writer 003" src="http://tostring.it/UserFiles/imperugo/WIndows%20Live%20Writer%20003_thumb.jpg" width="75" height="104" /></a><a href="http://tostring.it/UserFiles/imperugo/WIndows%20Live%20Writer%20004_2.jpg" rel="shadowbox[DexterWLW]"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" class="wlDisabledImage" title="WIndows Live Writer 004" border="0" alt="WIndows Live Writer 004" src="http://tostring.it/UserFiles/imperugo/WIndows%20Live%20Writer%20004_thumb.jpg" width="88" height="104" /></a></p>  <p>   <br />Per chi è un fan di WLW i complimenti vanno al buon <a title="Alessandro Giorgetti&#39;s Blog" href="http://www.primordialcode.com/" rel="nofollow" target="_blank">Alessandro</a> che ha dedicato molto del suo tempo libero a realizzare questa parte.     <br />Oltre a questo, da come si era intuito dai miei ultimi post, è possibile realizzare skin anche utilizzando <a title="SparkViewEngine&#39;s psots" href="http://tostring.it/tags/archive/sparkviewengine" target="_blank">SparkViewEngine</a>; ovviamente rimane la possibilità di scriverle in maniera “classica” o, se si preferisce, mista.     <br />L’attuale skin è il porting della precedente in Spark e sembra girare bene, a dimostrazione dell’ottimo prodotto.</p>  <p>Di migliorie ce ne sono davvero tante, dalle notifiche con template, incluse di master page e localizzazione, fino ad arrivare ai post schedulati, autochiusura dei commenti per i post più vecchi di x giorni, OpenSearch, plugin, etc.    <br />Importanti novità sono “in canna”: nelle prossime settimane prenderà luce la prima beta dotata di un sistema di autoinstallazione, configurazione ed upgrade automatico, e, da lì a breve, si aggiungeranno molte altre cose che ora non posso svelare.</p>  <p>Per chi fosse interessato ad un’eventuale migrazione è pronto un tool per l’import da Wordpress, e a breve da BlogML e RSS.</p>  <p>Che dire, un mega grazie a tutti quelli che mi hanno scritto e supportato in questa pazza avventura.    <br />Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/12" class="prev">Prev</a>
+    
+    
+        <a href="/page/14" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

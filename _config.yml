@@ -1,0 +1,48 @@
+#
+# Blog Settings
+#
+author: Giorgio Formica
+description: Giorgio Formica's Blog
+url: http://gioffy.github.io
+title: Giorgio Formica
+subtitle: The other one.
+gravatar_url: https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9
+subscribe_rss: http://feeds.feedburner.com/Gioffy
+encoding: utf-8
+lang: it-IT
+excerpt_separator: ""   # Workaround for http://blog.slaks.net/2013-08-09/jekyll-tag-was-never-closed
+exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
+pygments: true
+
+# Github repositories
+github_user: gioffy
+github_repo_url: https://github.com/gioffy/gioffy.github.io/
+
+# Twitter
+twitter_user: gioffy
+twitter_tweet_button: true
+
+# Google Plus
+googleplus_user: +GiorgioFormica
+
+# Facebook
+facebook_user: gioffy
+
+# Disqus Comments
+disqus_short_name: it-tostring
+disqus_show_comment_count: true
+
+# Google Analytics
+google_analytics_tracking_id: UA-18516027-1
+google_analytics_domain: .gioffy.com
+
+#
+# Jekyll Settings
+#
+markdown: redcarpet
+redcarpet:
+  extensions: ["tables"]
+permalink: /:year/:month/:day/:title/
+paginate: 5
+paginate_path: "page/:num"
+category_dir: categories

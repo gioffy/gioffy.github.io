@@ -1,0 +1,357 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Service Oriented e i tanti file di configurazione - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2008/11/11/service-oriented-e-i-tanti-file-di-configurazione/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Service Oriented e i tanti file di configurazione</h1>
+	<div class="entry-content" itemprop="articleBody"><p><span>Una delle cose scomode che si ha in un'applicazione service oriented &egrave; il deploy e i numerosi file di configurazione. Se penso alla nostra attuale struttura parliamo di circa 20 servizi e di altrettanti file di configurazione. </span></p>
+
+<p>Molto spesso questi file di configurazione hanno parti in comune tra loro, tipo custom section, behaviors, ecc e ogni qual volta devi cambiare una di queste parti sei costretto a dover modificare decine di file di configurazione.<br />
+Per ovviare il problema mi sono venute in mente due soluzione (se ne avete altre sono ben accette :D):</p>
+
+<ol>
+    <li>Mettere le configurazioni in comune su file di configurazione esterni;</li>
+    <li>Creare un file di configurazione comune a tutti i servizi.</li>
+</ol>
+
+<p>Diciamo che mi &egrave; piaciuta pi&ugrave; la seconda opzione, minor numero di file da gestire e maggior difficolt&agrave; nel realizzare la cosa :D (per la serie le cose semplici non ci piacciono).</p>
+
+<p>Detto ci&ograve; ne &egrave; uscita la seguente classe:</p>
+
+<pre title="code" class="brush: csharp; ruler: true;">
+using System; 
+using System.Configuration; 
+using System.IO; 
+using System.ServiceModel; 
+using System.ServiceModel.Configuration; 
+using System.Web.Hosting; 
+
+public class MyServiceHost : ServiceHost 
+{ 
+    private string configPath; 
+
+    /// &lt;summary&gt; 
+    /// Initializes a new instance of the &lt;see cref=&quot;MyServiceHost&quot;&gt; class. 
+    /// &lt;/see&gt; 
+    /// &lt;/summary&gt; 
+    /// &lt;param name=&quot;serviceType&quot; /&gt;Type of the service. 
+    /// &lt;param name=&quot;baseAddresses&quot; /&gt;The base addresses. 
+    public MyServiceHost(Type serviceType, params Uri[] baseAddresses) : base(serviceType, baseAddresses) 
+    { 
+    } 
+
+    /// &lt;summary&gt; 
+    /// Initializes a new instance of the &lt;see cref=&quot;MyServiceHost&quot;&gt; class. 
+    /// &lt;/see&gt; 
+    /// &lt;param name=&quot;singletonInstance&quot; /&gt;The instance of the hosted service. 
+    /// &lt;param name=&quot;baseAddresses&quot; /&gt;An &lt;see cref=&quot;T:System.Array&quot;&gt; of type &lt;see cref=&quot;T:System.Uri&quot;&gt; that contains the base addresses for the hosted service. 
+    /// &lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt; 
+    ///     &lt;paramref name=&quot;singletonInstance&quot;&gt; is null.&lt;/paramref&gt; 
+    public MyServiceHost(object singletonInstance, params Uri[] baseAddresses) 
+        : base(singletonInstance, baseAddresses) 
+    { 
+    } 
+
+    private string ConfigPath 
+    { 
+        get 
+        { 
+            if (configPath == null) 
+            { 
+                // Hostato in IIS 
+                configPath = HostingEnvironment.ApplicationPhysicalPath; 
+
+                if (String.IsNullOrEmpty(configPath)) 
+                    //Non hostato da IIS 
+                    configPath = Directory.GetCurrentDirectory(); 
+            } 
+
+            return configPath; 
+        } 
+    } 
+
+    /// &lt;summary&gt; 
+    /// Loads the service description information from the configuration file and applies it to the runtime being constructed. 
+    /// &lt;/summary&gt; 
+    /// &lt;exception cref=&quot;T:System.InvalidOperationException&quot;&gt;The description of the service hosted is null.&lt;/exception&gt; 
+    protected override void ApplyConfiguration() 
+    { 
+        // generate the name of the custom configFile, from the service name: 
+        string configFilename = Path.Combine(ConfigPath, 
+                                             String.Format(&quot;{0}.config&quot;, Description.Name)); 
+
+        if (!string.IsNullOrEmpty(configFilename) &amp;&amp; File.Exists(configFilename)) 
+            base.ApplyConfiguration(); 
+        else 
+            LoadConfigFromCustomLocation(@&quot;C:\Temp\Services.config&quot;); 
+    } 
+
+
+    /// &lt;summary&gt; 
+    /// Load the config file from custom location. 
+    /// &lt;/summary&gt; 
+    /// &lt;param name=&quot;configFilename&quot; /&gt;The config filename. 
+    private void LoadConfigFromCustomLocation(string configFilename) 
+    { 
+        var filemap = new ExeConfigurationFileMap {ExeConfigFilename = configFilename}; 
+
+        Configuration config = 
+            ConfigurationManager.OpenMappedExeConfiguration 
+                (filemap, 
+                 ConfigurationUserLevel.None); 
+
+        ServiceModelSectionGroup serviceModel = ServiceModelSectionGroup.GetSectionGroup(config); 
+
+        if (serviceModel == null) 
+            throw new ConfigurationErrorsException(&quot;There are a problem with the configuration file.&quot;); 
+
+        bool loaded = false; 
+        foreach (ServiceElement se in serviceModel.Services.Services) 
+        { 
+            if (!loaded) 
+                if (se.Name == Description.ConfigurationName) 
+                { 
+                    LoadConfigurationSection(se); 
+                    loaded = true; 
+                } 
+        } 
+        if (!loaded) 
+            throw new ArgumentException(&quot;ServiceElements not found in the configuration file.&quot;); 
+    } 
+}</pre>
+
+<p><span id="PostView">Il modo di utilizzarlo rimane lo stesso:</span></p>
+
+<pre title="code" class="brush: csharp">
+ServiceHost service = new MtvServiceHost(typeof(EmailService)); 
+service.Open();</pre>
+
+<p><span>Nel file Services.config possiamo configurare tutti i servizi di cui abbiamo bisogno, ma tutto il resto del file di configurazione &egrave; comune a tutti.<br />
+Cambiamo un custom behavior comune a tutti, lo facciamo in un unico posto in un unico file!<br />
+<br />
+Per ora sembra funzionare :D</span></p>
+
+<p>&nbsp;</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Windows Communication Foundation" title="">Windows Communication Foundation</a>
+	
+	  <a href="/tag#SOA" title="">SOA</a>
+	
+	  <a href="/tag#Configurazione" title="">Configurazione</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2008/10/29/pdc-day-2/" title="Previous Post: 
+PDC Day 2">&laquo; PDC Day 2</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2008/12/01/scalabilita-soa-wcf-aop-ai-techdayswpc/" title="next Post: 
+Scalabilità, SOA, WCF, AOP ai TechDays/WPC">Scalabilità, SOA, WCF, AOP ai TechDays/WPC &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2008/11/11/service-oriented-e-i-tanti-file-di-configurazione/';
+        var disqus_url = 'http://gioffy.github.io/2008/11/11/service-oriented-e-i-tanti-file-di-configurazione/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

@@ -1,0 +1,729 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/16/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/06/17/alla-scoperta-di-sparkviewengine/" itemprop="url">alla scoperta di SparkViewEngine</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-06-17T15:45:00Z"  itemprop="datePublished">June 17, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/06/17/alla-scoperta-di-sparkviewengine/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-06-17-alla-scoperta-di-sparkviewengine.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ne avevo già parlato durante una sessione alla V <a title="UgiAlt.Net" href="http://www.ugialt.net/" rel="nofollow" target="_blank">UgiAlt.Net</a> Conference, poi un lettore mi ha consigliato di inserirlo in <a href="http://www.imperugo.tostring.it/categories/archive/Dexter">Dexter</a> e di parlarne un po’, così ho deciso di realizzare una serie di post su <a title="SparkViewEngine" href="http://sparkviewengine.com/" rel="nofollow" target="_blank">SparkViewEngine</a>. Prima di partire con dei post tecnici su come utilizzare Spark e quali vantaggi offre, è giusto fare qualche premessa spiegando cos’è e a cosa serve :). </p>  <p>Spark View Engine è un template engine per <a title="ASP.NET MVC Category" href="http://www.imperugo.tostring.it/tags/archive/mvc" target="_blank">ASP.NET MVC</a> (sia versione 1.0 che versione 2.0) e <a title="Castle Project MonoRail" href="http://www.castleproject.org/monorail/" rel="nofollow" target="_blank">Castle Project MonoRail</a> che ha lo scopo di semplificare e potenziare la stesura del markup da parte dello sviluppatore o di colui che andrà a realizzare la “skin” della propria applicazione web.     <br />Uno degli aspetti sicuramente più interessanti consiste nella possibilità di avere “View” miste, metà spark e metà MVC classiche e quindi ci permette di adottarlo anche in progetti già esistenti.    <br />Con i post seguenti vedremo come Spark affronta il problema della realizzazione di codice HTML dinamico e capiremo il perchè <a title="Luis De Jardin&#39;s Blog" href="http://whereslou.com/" rel="nofollow" target="_blank">Luis De Jardin</a> lo ha definito un <a title="Domain Specific Language definition (wikipedia)" href="http://en.wikipedia.org/wiki/Domain-specific_language" rel="nofollow" target="_blank">DSL</a>; per ora ci basti pensare che è possibile ridurre, in alcuni casi anche dimezzare, il numero di righe di codice HTML/C# presenti all’interno delle nostre View, e di avere delle funzioni molto spinte come la renderizzazione di una View in formato PDF. </p>  <p>Stay tuned!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/06/03/code-contracts-in-net-4-0/" itemprop="url">Code Contracts in .NET 4.0</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-06-03T15:45:00Z"  itemprop="datePublished">June  3, 2010</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/06/03/code-contracts-in-net-4-0/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-06-03-code-contracts-in-net-4-0.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Approfittando del giorno di vacanza mi sono messo a dare uno sguardo ai CodeContracts del <a title=".NET Framework Search" href="http://www.imperugo.tostring.it/tags/archive/.net" target="_blank">.NET Framework</a> 4.0. Per chi non li conoscesse, i CodeContracts non sono altro che un insieme di classi che permettono, grazie anche a dei tools che vanno installati, di definire delle regole di PreCondizione, PostCondizione e Invarianti di Oggetto per le nostre classi. Guardando un po’ il lato pratico, possiamo brevemente riassumere che:</p>  <ul>   <li>Le PreCondizioni equivalgono alla validazione dei parametri di ingresso in un determinato metodo (es: l’oggetto <em>foo</em> non deve essere null); </li>    <li>Le PostCondizioni sono molto simili alle PreCondizioni, ma si rivolgono all’oggetto in uscita dal metodo; </li>    <li>Le Invarianti di Oggetto invece si rivolgono alle proprietà di un oggetto; </li> </ul>  <p>Un aspetto interessante è sicuramente la possibilità di specificare queste regole anche a delle interfacce, forse in maniera abbastanza “strana”, ma pensandoci su corretta. Di fatto, ci basta creare una classe che implementa l’interfaccia a cui vogliamo assegnare i nostri Contracts e decorarla con un apposito attributo; a questo punto il compilatore farà il resto, ossia inserire tutto il necessario su chi andrà ad implementare realmente l’interfaccia.    <br />Inoltre, grazie ai tools (disponibili <a title="Code Contracts Home Page" href="http://msdn.microsoft.com/en-us/devlabs/dd491992.aspx" rel="nofollow" target="_blank">qui</a>) viene generata automaticamente la documentazione in formato XML, che successivamente può essere data in pasto a <a title="Sandcastle - Documentation Compiler for Managed Class Libraries" href="http://sandcastle.codeplex.com/" rel="nofollow" target="_blank">SandCastle</a> per averne un formato leggibile :).</p>  <p>Concludendo, devo dire che il primo approccio è sicuramente positivo e di fatto, dopo un po’ che ci “giocavo”, mi sono apparsi in mente diversi scenari in cui poter sfruttare questa nuova interessante feature e sicuramente ne nasceranno dei posts, quindi Stay tuned!</p>  <p>Ciauz!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/06/01/async-methods-e-la-keyword-dynamic-di-c-4-0/" itemprop="url">Async Methods e la keyword dynamic di C# 4.0</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-06-01T15:45:00Z"  itemprop="datePublished">June  1, 2010</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/06/01/async-methods-e-la-keyword-dynamic-di-c-4-0/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-06-01-async-methods-e-la-keyword-dynamic-di-c-4-0.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Il bello di avere un <a title="Mauro Servienti&#39;s Blog" href="http://topics.it/" rel="nofollow" target="_blank">collega</a> MVP su C#, ma ancor prima devMaskio, è che quando hai un dubbio sul linguaggio lui sa subito risponderti e spesso con una soluzione al tuo problema.     <br />Sorvolando la domanda ed il perchè è nata, l’idea era quella di evitare la noiosa costruzione di apposite classi di “<strong><em>state</em></strong>” per invocare metodi in asincroni.     <br />Osservando la parte pragmatica del problema, prima della versione 4.0 del <a title=".NET Framework Search" href="http://www.imperugo.tostring.it/tags/archive/.net" target="_blank">.NET Framework</a> quello che dovevamo fare per invocare un metodo asincrono era più o meno questo:</p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="k">internal</span> <span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">AsyncCallState</span> <span class="n">obj</span> <span class="p">=</span> <span class="k">new</span> <span class="n">AsyncCallState</span>
+                                 <span class="p">{</span>
+                                     <span class="n">Property1</span> <span class="p">=</span> <span class="s">&quot;String&quot;</span> <span class="p">,</span>
+                                     <span class="n">Property2</span> <span class="p">=</span> <span class="m">10</span> <span class="p">,</span>
+                                     <span class="n">Property3</span> <span class="p">=</span> <span class="k">new</span> <span class="n">AsyncCallState2</span> <span class="p">()</span>
+                                                     <span class="p">{</span>
+                                                         <span class="n">P1</span> <span class="p">=</span> <span class="s">&quot;SubProperty1&quot;</span>
+                                                     <span class="p">}</span>
+                                 <span class="p">};</span>
+
+        <span class="n">ThreadPool</span><span class="p">.</span><span class="n">QueueUserWorkItem</span><span class="p">(</span><span class="n">AsyncCall</span><span class="p">,</span> <span class="n">obj</span><span class="p">);</span>
+
+        <span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">AsyncCall</span><span class="p">(</span><span class="kt">object</span> <span class="n">obj</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">AsyncCallState</span> <span class="n">anonymous</span> <span class="p">=</span> <span class="p">(</span><span class="n">AsyncCallState</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span>
+
+        <span class="kt">string</span> <span class="n">p1</span> <span class="p">=</span> <span class="n">anonymous</span><span class="p">.</span><span class="n">Property1</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">p2</span> <span class="p">=</span> <span class="n">anonymous</span><span class="p">.</span><span class="n">Property2</span><span class="p">;</span>
+
+        <span class="kt">string</span> <span class="n">sP1</span> <span class="p">=</span> <span class="n">anonymous</span><span class="p">.</span><span class="n">Property3</span><span class="p">.</span><span class="n">P1</span><span class="p">;</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">internal</span> <span class="k">class</span> <span class="nc">AsyncCallState</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">Property1</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">Property2</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="n">AsyncCallState2</span> <span class="n">Property3</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">internal</span> <span class="k">class</span> <span class="nc">AsyncCallState2</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">P1</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Come potete vedere le classi AsyncCallState ed AsyncCallState2 hanno un utilizzo ridottissimo e legato soltanto a questa chiamata, infatti difficilmente ci capiterà di riutilizzare questa classe per altre firme all’interno della nostra applicazione. 
+  <br />Grazie alla keyword <em><strong><a title="Using Type dynamic (C# Programming Guide)" href="http://msdn.microsoft.com/en-us/library/dd264736.aspx" rel="nofollow" target="_blank">dynamic</a></strong></em> di C# 4.0 è possibile evitare la costruzione di questa classe e risparmiare un bel po’ di tempo:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="k">internal</span> <span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span> <span class="p">(</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">args</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ThreadPool</span><span class="p">.</span><span class="n">QueueUserWorkItem</span> <span class="p">(</span> <span class="n">AsyncCall</span> <span class="p">,</span> <span class="k">new</span>
+                                                       <span class="p">{</span>
+                                                           <span class="n">Property1</span> <span class="p">=</span> <span class="s">&quot;String&quot;</span> <span class="p">,</span>
+                                                           <span class="n">Property2</span> <span class="p">=</span> <span class="m">10</span> <span class="p">,</span>
+                                                           <span class="n">Property3</span> <span class="p">=</span> <span class="k">new</span>
+                                                                           <span class="p">{</span>
+                                                                               <span class="n">P1</span> <span class="p">=</span> <span class="s">&quot;SubProperty1&quot;</span>
+                                                                           <span class="p">}</span>
+                                                       <span class="p">}</span> <span class="p">);</span>
+
+        <span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span> <span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">AsyncCall</span> <span class="p">(</span> <span class="kt">object</span> <span class="n">obj</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">dynamic</span> <span class="n">anonymous</span> <span class="p">=</span> <span class="n">obj</span><span class="p">;</span>
+
+        <span class="kt">string</span> <span class="n">p1</span> <span class="p">=</span> <span class="n">anonymous</span><span class="p">.</span><span class="n">Property1</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">p2</span> <span class="p">=</span> <span class="n">anonymous</span><span class="p">.</span><span class="n">Property2</span><span class="p">;</span>
+        <span class="kt">dynamic</span> <span class="n">p3</span> <span class="p">=</span> <span class="n">anonymous</span><span class="p">.</span><span class="n">Property3</span><span class="p">;</span>
+
+        <span class="kt">string</span> <span class="n">sP1</span> <span class="p">=</span> <span class="n">p3</span><span class="p">.</span><span class="n">P1</span><span class="p">;</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/05/28/submit-via-jquery-con-asp-net-mvc-2-e-validazione-client-side-un-bel-cocktail/" itemprop="url">Submit via jQuery con ASP.NET MVC 2 e Validazione Client Side, un bel cocktail</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-05-28T15:45:00Z"  itemprop="datePublished">May 28, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/05/28/submit-via-jquery-con-asp-net-mvc-2-e-validazione-client-side-un-bel-cocktail/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-05-28-submit-via-jquery-con-asp-net-mvc-2-e-validazione-client-side-un-bel-cocktail.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ultimamente sto facendo parecchio uso <a title="ASP.NET MVC Search" href="http://www.imperugo.tostring.it/tags/archive/mvc" target="_blank">ASP.NET MVC</a> 2, più precisamente mi sto occupando della parte di markup, jQuery ed input di dati; di fatto in un <a title="Validazione Client-Side su ASP.NET MVC 2 con jQuery" href="http://tostring.it/blog/post/validazione-client-side-su-aspnet-mvc-2-con-jquery" target="_blank">post</a> precedente avevo spiegato come era possibile sfruttare <a title="jQuery" href="http://tostring.it/Tags/Archive/JQuery" target="_blank">jQuery</a> e le DataAnnotations per validare dei dati sul client.    <br />    <br />Quanto detto precedentemente funziona perfettamente nel caso in cui l’oggetto che effettuerà il submit della <strong><em>&lt;form&gt;</em></strong> sarà un input type, al contrario se si ha la necessità di invocare il submit tramite un’immagine o un link è necessario a ricorrere al javascript.    <br />Purtroppo se si invoca il classico metodo <strong><em>submit()</em></strong> per invocare l’action della form, non viene invocata la validazione (questo a prescindere dal fatto che si usi o no jQuery per validare la form) e di conseguenza il controllo dei dati di input avverrebbe totalmente lato server.</p>  <p>Il problema è facilmente aggirabile e consiste nell’invocare via javascript la validzione associata alla form e, nel caso questa venga superata, si può invocare il <strong><em>submit()</em></strong> sopracitato.    <br />Lo script seguente mostra come fare:</p>  
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;submitbox&quot;</span> <span class="na">class=</span><span class="s">&quot;left&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;button submit&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:if($(&#39;#myForm&#39;).validate().form())$(&#39;#myForm&#39;).submit();&quot;</span> <span class="na">title=</span><span class="s">&quot;Submit form&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span&gt;</span>Submit form<span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+
+<p>byez</p>
+
+<p>.u</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/05/27/un-viewengine-per-la-gestione-dei-themes-in-asp-net-mvc-2/" itemprop="url">Un ViewEngine per la gestione dei Themes in ASP.NET MVC 2</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-05-27T15:45:00Z"  itemprop="datePublished">May 27, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/05/27/un-viewengine-per-la-gestione-dei-themes-in-asp-net-mvc-2/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-05-27-un-viewengine-per-la-gestione-dei-themes-in-asp-net-mvc-2.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Tempo fa avevo parlato <a title="Gestione dei temi con ASP.NET MVC" href="http://tostring.it/blog/post/gestione-dei-temi-con-aspnet-mvc" target="_blank">qui</a> di come realizzare un ViewEngine Custom per <a href="http://www.imperugo.tostring.it/tags/archive/mvc">ASP.NET MVC</a> che permettere di gestire diversi temi per la stessa applicazione, ossia offre la possibilità di cambiare la folder dove andare a “pescare” le nostre Views, Master, etc. a runtime, ma il tutto su ASP.NET MVC 1.0.</p>  <p>Con la nuova release di MVC è stata aggiunta una comodissima novità, ossia il supporto alle “Aree”, che non sono altro che dei “sottositi” che hanno lo scopo di semplificare la struttura dei Controllers e delle Views presenti nella struttura principale.    <br />L’immagine seguente rende meglio l’idea di cosa siano le Aree e di come si collochino all’interno del nostro progetto:</p>  <p></p>  <p>&#160;</p>  <p><a href="http://tostring.it/Content/Uploaded/image//imperugo/image_5.png" rel="shadowbox"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="image" border="0" alt="image" src="http://tostring.it/Content/Uploaded/image//imperugo/image_thumb_4.png" width="163" height="244" /></a>&#160;</p>  <p>Cambiando un po’ la struttura delle folders ho dovuto modificare mio “vecchio” ViewEngine in modo che “digerisca” questa nuova feature.    <br />Il codice è più o meno lo stesso del ViewEngine precedente, fatta eccezione per alcune classi (come AreaHelpers, già presente nel framework ma di tipo internal e quindi inutilizzabile).</p>  <p>Di seguito riporto il codice:</p>  <p></p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="k">public</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">WebFormThemeViewEngine</span> <span class="p">:</span> <span class="n">WebFormViewEngine</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="k">static</span> <span class="k">readonly</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">masterLocationFormats</span> <span class="p">=</span> <span class="k">new</span><span class="p">[]</span>
+                                                         <span class="p">{</span>
+                                                             <span class="s">&quot;~/Themes/{2}/Views/{1}/{0}.master&quot;</span> <span class="p">,</span> <span class="s">&quot;~/Themes/{2}/Views/Shared/{0}.master&quot;</span>
+                                                         <span class="p">};</span>
+
+    <span class="k">private</span> <span class="k">static</span> <span class="k">readonly</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">viewLocationFormats</span> <span class="p">=</span> <span class="k">new</span><span class="p">[]</span>
+                                                       <span class="p">{</span>
+                                                           <span class="s">&quot;~/Themes/{2}/Views/{1}/{0}.aspx&quot;</span> <span class="p">,</span> <span class="s">&quot;~/Themes/{2}/Views/{1}/{0}.ascx&quot;</span> <span class="p">,</span> <span class="s">&quot;~/Themes/{2}/Views/Shared/{0}.aspx&quot;</span> <span class="p">,</span> <span class="s">&quot;~/Themes/{2}/Views/Shared/{0}.ascx&quot;</span>
+                                                       <span class="p">};</span>
+
+    <span class="k">public</span> <span class="nf">WebFormThemeViewEngine</span> <span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">MasterLocationFormats</span> <span class="p">=</span> <span class="n">masterLocationFormats</span><span class="p">;</span>
+        <span class="n">ViewLocationFormats</span> <span class="p">=</span> <span class="n">viewLocationFormats</span><span class="p">;</span>
+        <span class="n">PartialViewLocationFormats</span> <span class="p">=</span> <span class="n">viewLocationFormats</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="k">override</span> <span class="kt">bool</span> <span class="nf">FileExists</span> <span class="p">(</span> <span class="n">ControllerContext</span> <span class="n">controllerContext</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">virtualPath</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">try</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">File</span><span class="p">.</span><span class="n">Exists</span> <span class="p">(</span> <span class="n">controllerContext</span><span class="p">.</span><span class="n">HttpContext</span><span class="p">.</span><span class="n">Server</span><span class="p">.</span><span class="n">MapPath</span> <span class="p">(</span> <span class="n">virtualPath</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">catch</span> <span class="p">(</span> <span class="n">HttpException</span> <span class="n">exception</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">exception</span><span class="p">.</span><span class="n">GetHttpCode</span> <span class="p">()</span> <span class="p">!=</span> <span class="m">404</span> <span class="p">)</span>
+                <span class="k">throw</span><span class="p">;</span>
+        
+            <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">catch</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">///     Finds the view.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name = &quot;controllerContext&quot;&gt;The controller context.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name = &quot;viewName&quot;&gt;Name of the view.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name = &quot;masterName&quot;&gt;Name of the master.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name = &quot;useCache&quot;&gt;if set to &lt;c&gt;true&lt;/c&gt; [use cache].&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;The page view.&lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="k">override</span> <span class="n">ViewEngineResult</span> <span class="nf">FindView</span> <span class="p">(</span> <span class="n">ControllerContext</span> <span class="n">controllerContext</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">viewName</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">masterName</span> <span class="p">,</span> <span class="kt">bool</span> <span class="n">useCache</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">string</span><span class="p">[]</span> <span class="n">strArray</span><span class="p">;</span>
+        <span class="kt">string</span><span class="p">[]</span> <span class="n">strArray2</span><span class="p">;</span>
+        
+        <span class="k">if</span> <span class="p">(</span> <span class="n">controllerContext</span> <span class="p">==</span> <span class="k">null</span> <span class="p">)</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentNullException</span> <span class="p">(</span> <span class="s">&quot;controllerContext&quot;</span> <span class="p">);</span>
+        
+        <span class="k">if</span> <span class="p">(</span> <span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span> <span class="p">(</span> <span class="n">viewName</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentException</span> <span class="p">(</span> <span class="s">&quot;viewName must be specified.&quot;</span> <span class="p">,</span> <span class="s">&quot;viewName&quot;</span> <span class="p">);</span>
+        
+        
+        <span class="kt">string</span> <span class="n">themeName</span> <span class="p">=</span> <span class="n">DexterEnvironment</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Context</span><span class="p">.</span><span class="n">CurrentTheme</span><span class="p">();</span>
+        
+        <span class="kt">string</span> <span class="n">requiredString</span> <span class="p">=</span> <span class="n">controllerContext</span><span class="p">.</span><span class="n">RouteData</span><span class="p">.</span><span class="n">GetRequiredString</span> <span class="p">(</span> <span class="s">&quot;controller&quot;</span> <span class="p">);</span>
+        
+        <span class="kt">string</span> <span class="n">viewPath</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetPath</span><span class="p">(</span><span class="n">controllerContext</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">ViewLocationFormats</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">AreaViewLocationFormats</span> <span class="p">,</span> <span class="n">viewName</span><span class="p">,</span> <span class="n">requiredString</span><span class="p">,</span> <span class="s">&quot;View&quot;</span><span class="p">,</span> <span class="n">useCache</span><span class="p">,</span> <span class="k">out</span> <span class="n">strArray</span><span class="p">,</span> <span class="n">themeName</span><span class="p">);</span>
+        <span class="kt">string</span> <span class="n">masterPath</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetPath</span><span class="p">(</span><span class="n">controllerContext</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">MasterLocationFormats</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">AreaMasterLocationFormats</span> <span class="p">,</span> <span class="n">masterName</span><span class="p">,</span> <span class="n">requiredString</span><span class="p">,</span> <span class="s">&quot;Master&quot;</span><span class="p">,</span> <span class="n">useCache</span><span class="p">,</span> <span class="k">out</span> <span class="n">strArray2</span><span class="p">,</span> <span class="n">themeName</span><span class="p">);</span>
+        
+        <span class="k">if</span> <span class="p">(</span> <span class="p">!</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span> <span class="p">(</span> <span class="n">viewPath</span> <span class="p">)</span> <span class="p">&amp;&amp;</span> <span class="p">(</span> <span class="p">!</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span> <span class="p">(</span> <span class="n">masterPath</span> <span class="p">)</span> <span class="p">||</span> <span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span> <span class="p">(</span> <span class="n">masterName</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">ViewEngineResult</span> <span class="p">(</span> <span class="n">CreateView</span> <span class="p">(</span> <span class="n">controllerContext</span> <span class="p">,</span> <span class="n">viewPath</span> <span class="p">,</span> <span class="n">masterPath</span> <span class="p">)</span> <span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
+        
+        <span class="n">ViewEngineResult</span> <span class="n">view</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ViewEngineResult</span> <span class="p">(</span> <span class="n">strArray</span><span class="p">.</span><span class="n">Union</span> <span class="p">(</span> <span class="n">strArray2</span> <span class="p">)</span> <span class="p">);</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">view</span><span class="p">.</span><span class="n">View</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">HttpException</span><span class="p">(</span><span class="m">404</span><span class="p">,</span> <span class="s">&quot;File Not Found&quot;</span><span class="p">);</span>
+        
+        <span class="k">return</span> <span class="n">view</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">///     Finds the partial view.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name = &quot;controllerContext&quot;&gt;The controller context.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name = &quot;partialViewName&quot;&gt;Partial name of the view.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name = &quot;useCache&quot;&gt;if set to &lt;c&gt;true&lt;/c&gt; [use cache].&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;The partial view.&lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="k">override</span> <span class="n">ViewEngineResult</span> <span class="nf">FindPartialView</span> <span class="p">(</span> <span class="n">ControllerContext</span> <span class="n">controllerContext</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">partialViewName</span> <span class="p">,</span> <span class="kt">bool</span> <span class="n">useCache</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">string</span><span class="p">[]</span> <span class="n">strArray</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">controllerContext</span> <span class="p">==</span> <span class="k">null</span> <span class="p">)</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentNullException</span> <span class="p">(</span> <span class="s">&quot;controllerContext&quot;</span> <span class="p">);</span>
+        
+        <span class="k">if</span> <span class="p">(</span> <span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span> <span class="p">(</span> <span class="n">partialViewName</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentException</span> <span class="p">(</span> <span class="s">&quot;partialViewName must be specified.&quot;</span> <span class="p">,</span> <span class="s">&quot;partialViewName&quot;</span> <span class="p">);</span>
+        
+        <span class="kt">string</span> <span class="n">themeName</span> <span class="p">=</span> <span class="n">DexterEnvironment</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Context</span><span class="p">.</span><span class="n">CurrentTheme</span><span class="p">();</span>
+        
+        <span class="kt">string</span> <span class="n">requiredString</span> <span class="p">=</span> <span class="n">controllerContext</span><span class="p">.</span><span class="n">RouteData</span><span class="p">.</span><span class="n">GetRequiredString</span> <span class="p">(</span> <span class="s">&quot;controller&quot;</span> <span class="p">);</span>
+        
+        <span class="kt">string</span> <span class="n">partialViewPath</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetPath</span><span class="p">(</span><span class="n">controllerContext</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">PartialViewLocationFormats</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">AreaPartialViewLocationFormats</span> <span class="p">,</span> <span class="n">partialViewName</span><span class="p">,</span> <span class="n">requiredString</span><span class="p">,</span> <span class="s">&quot;Partial&quot;</span><span class="p">,</span> <span class="n">useCache</span><span class="p">,</span> <span class="k">out</span> <span class="n">strArray</span><span class="p">,</span> <span class="n">themeName</span><span class="p">);</span>
+        
+        <span class="k">if</span> <span class="p">(</span> <span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span> <span class="p">(</span> <span class="n">partialViewPath</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">ViewEngineResult</span> <span class="p">(</span> <span class="n">strArray</span> <span class="p">);</span>
+        
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">ViewEngineResult</span> <span class="p">(</span> <span class="n">CreatePartialView</span> <span class="p">(</span> <span class="n">controllerContext</span> <span class="p">,</span> <span class="n">partialViewPath</span> <span class="p">)</span> <span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+
+    <span class="k">private</span> <span class="kt">string</span> <span class="nf">GetPath</span><span class="p">(</span> <span class="n">ControllerContext</span> <span class="n">controllerContext</span> <span class="p">,</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">locations</span> <span class="p">,</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">areaLocations</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">name</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">controllerName</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">cacheKeyPrefix</span> <span class="p">,</span> <span class="kt">bool</span> <span class="n">useCache</span> <span class="p">,</span> <span class="k">out</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">searchedLocations</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">themeName</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">searchedLocations</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[</span><span class="m">0</span><span class="p">];</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+        
+        <span class="kt">string</span> <span class="n">areaName</span> <span class="p">=</span> <span class="n">AreaHelper</span><span class="p">.</span><span class="n">GetAreaName</span><span class="p">(</span><span class="n">controllerContext</span><span class="p">.</span><span class="n">RouteData</span><span class="p">);</span>
+        <span class="kt">bool</span> <span class="n">flag</span> <span class="p">=</span> <span class="p">!</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrEmpty</span><span class="p">(</span><span class="n">areaName</span><span class="p">);</span>
+        
+        <span class="n">List</span><span class="p">&lt;</span><span class="n">ViewLocation</span><span class="p">&gt;</span> <span class="n">viewLocations</span> <span class="p">=</span> <span class="n">GetViewLocations</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">flag</span> <span class="p">?</span> <span class="n">areaLocations</span> <span class="p">:</span> <span class="k">null</span><span class="p">);</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">viewLocations</span><span class="p">.</span><span class="n">Count</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">InvalidOperationException</span><span class="p">(</span><span class="s">&quot;locations must not be null or emtpy.&quot;</span><span class="p">);</span>
+        
+        <span class="kt">bool</span> <span class="n">flag2</span> <span class="p">=</span> <span class="n">IsSpecificPath</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+        <span class="kt">string</span> <span class="n">key</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">CreateCacheKey</span><span class="p">(</span><span class="n">cacheKeyPrefix</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">flag2</span> <span class="p">?</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span> <span class="p">:</span> <span class="n">controllerName</span><span class="p">,</span> <span class="n">areaName</span><span class="p">,</span><span class="n">themeName</span><span class="p">);</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">useCache</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">string</span> <span class="n">viewLocation</span> <span class="p">=</span> <span class="n">ViewLocationCache</span><span class="p">.</span><span class="n">GetViewLocation</span><span class="p">(</span><span class="n">controllerContext</span><span class="p">.</span><span class="n">HttpContext</span><span class="p">,</span> <span class="n">key</span><span class="p">);</span>
+        
+            <span class="k">if</span> <span class="p">(</span><span class="n">viewLocation</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">viewLocation</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="p">!</span><span class="n">flag2</span>
+                   <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="n">GetPathFromGeneralName</span> <span class="p">(</span> <span class="n">controllerContext</span> <span class="p">,</span> <span class="n">viewLocations</span> <span class="p">,</span> <span class="n">name</span> <span class="p">,</span> <span class="n">controllerName</span> <span class="p">,</span> <span class="n">areaName</span> <span class="p">,</span> <span class="n">key</span> <span class="p">,</span> <span class="k">ref</span> <span class="n">searchedLocations</span><span class="p">,</span> <span class="n">themeName</span> <span class="p">)</span>
+                   <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="n">GetPathFromSpecificName</span><span class="p">(</span><span class="n">controllerContext</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="k">ref</span> <span class="n">searchedLocations</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">static</span> <span class="kt">bool</span> <span class="nf">IsSpecificPath</span><span class="p">(</span><span class="kt">string</span> <span class="n">name</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">char</span> <span class="n">ch</span> <span class="p">=</span> <span class="n">name</span><span class="p">[</span><span class="m">0</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ch</span> <span class="p">!=</span> <span class="sc">&#39;~&#39;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">ch</span> <span class="p">==</span> <span class="sc">&#39;/&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">private</span> <span class="kt">string</span> <span class="nf">CreateCacheKey</span><span class="p">(</span><span class="kt">string</span> <span class="n">prefix</span><span class="p">,</span> <span class="kt">string</span> <span class="n">name</span><span class="p">,</span> <span class="kt">string</span> <span class="n">controllerName</span><span class="p">,</span> <span class="kt">string</span> <span class="n">areaName</span><span class="p">,</span><span class="kt">string</span> <span class="n">themeName</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="n">CultureInfo</span><span class="p">.</span><span class="n">InvariantCulture</span><span class="p">,</span> <span class="s">&quot;:ViewCacheEntry:{0}:{1}:{2}:{3}:{4}:{5}:&quot;</span><span class="p">,</span> <span class="k">new</span> <span class="kt">object</span><span class="p">[]</span> <span class="p">{</span> <span class="n">GetType</span><span class="p">().</span><span class="n">AssemblyQualifiedName</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">controllerName</span><span class="p">,</span> <span class="n">areaName</span> <span class="p">??</span> <span class="s">&quot;nullArea&quot;</span><span class="p">,</span> <span class="n">themeName</span> <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">static</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ViewLocation</span><span class="p">&gt;</span> <span class="n">GetViewLocations</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">viewLocationFormats</span><span class="p">,</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">areaViewLocationFormats</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">List</span><span class="p">&lt;</span><span class="n">ViewLocation</span><span class="p">&gt;</span> <span class="n">list</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ViewLocation</span><span class="p">&gt;();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">areaViewLocationFormats</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">)</span>
+            <span class="n">list</span><span class="p">.</span><span class="n">AddRange</span> <span class="p">(</span> <span class="n">areaViewLocationFormats</span><span class="p">.</span><span class="n">Select</span> <span class="p">(</span> <span class="n">str</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="n">AreaAwareViewLocation</span> <span class="p">(</span> <span class="n">str</span> <span class="p">)</span> <span class="p">).</span><span class="n">Cast</span><span class="p">&lt;</span><span class="n">ViewLocation</span><span class="p">&gt;</span> <span class="p">()</span> <span class="p">);</span>
+        
+        <span class="k">if</span> <span class="p">(</span> <span class="n">viewLocationFormats</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">)</span>
+            <span class="n">list</span><span class="p">.</span><span class="n">AddRange</span> <span class="p">(</span> <span class="n">viewLocationFormats</span><span class="p">.</span><span class="n">Select</span> <span class="p">(</span> <span class="n">str2</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="n">ViewLocation</span> <span class="p">(</span> <span class="n">str2</span> <span class="p">)</span> <span class="p">)</span> <span class="p">);</span>
+        
+        <span class="k">return</span> <span class="n">list</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="kt">string</span> <span class="nf">GetPathFromGeneralName</span><span class="p">(</span><span class="n">ControllerContext</span> <span class="n">controllerContext</span><span class="p">,</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ViewLocation</span><span class="p">&gt;</span> <span class="n">locations</span><span class="p">,</span> <span class="kt">string</span> <span class="n">name</span><span class="p">,</span> <span class="kt">string</span> <span class="n">controllerName</span><span class="p">,</span> <span class="kt">string</span> <span class="n">areaName</span><span class="p">,</span> <span class="kt">string</span> <span class="n">cacheKey</span><span class="p">,</span> <span class="k">ref</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">searchedLocations</span><span class="p">,</span> <span class="kt">string</span> <span class="n">themeName</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">string</span> <span class="n">virtualPath</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+        <span class="n">searchedLocations</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[</span><span class="n">locations</span><span class="p">.</span><span class="n">Count</span><span class="p">];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">locations</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+        <span class="p">{</span>
+            <span class="kt">string</span> <span class="n">str2</span> <span class="p">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">controllerName</span><span class="p">,</span> <span class="n">areaName</span><span class="p">,</span><span class="n">themeName</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">FileExists</span><span class="p">(</span><span class="n">controllerContext</span><span class="p">,</span> <span class="n">str2</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="n">searchedLocations</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[</span><span class="m">0</span><span class="p">];</span>
+                <span class="n">virtualPath</span> <span class="p">=</span> <span class="n">str2</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">ViewLocationCache</span><span class="p">.</span><span class="n">InsertViewLocation</span><span class="p">(</span><span class="n">controllerContext</span><span class="p">.</span><span class="n">HttpContext</span><span class="p">,</span> <span class="n">cacheKey</span><span class="p">,</span> <span class="n">virtualPath</span><span class="p">);</span>
+                <span class="k">return</span> <span class="n">virtualPath</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">searchedLocations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">=</span> <span class="n">str2</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">virtualPath</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="kt">string</span> <span class="nf">GetPathFromSpecificName</span><span class="p">(</span><span class="n">ControllerContext</span> <span class="n">controllerContext</span><span class="p">,</span> <span class="kt">string</span> <span class="n">name</span><span class="p">,</span> <span class="kt">string</span> <span class="n">cacheKey</span><span class="p">,</span> <span class="k">ref</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">searchedLocations</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">string</span> <span class="n">virtualPath</span> <span class="p">=</span> <span class="n">name</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(!</span><span class="k">this</span><span class="p">.</span><span class="n">FileExists</span><span class="p">(</span><span class="n">controllerContext</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">virtualPath</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+            <span class="n">searchedLocations</span> <span class="p">=</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="n">name</span> <span class="p">};</span>
+        <span class="p">}</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="n">ViewLocationCache</span><span class="p">.</span><span class="n">InsertViewLocation</span><span class="p">(</span><span class="n">controllerContext</span><span class="p">.</span><span class="n">HttpContext</span><span class="p">,</span> <span class="n">cacheKey</span><span class="p">,</span> <span class="n">virtualPath</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">virtualPath</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">//Classe introdotta per il supporto alle aree</span>
+<span class="k">internal</span> <span class="k">class</span> <span class="nc">ViewLocation</span>
+<span class="p">{</span>
+
+    <span class="k">protected</span> <span class="k">readonly</span> <span class="kt">string</span> <span class="n">VirtualPathFormatString</span><span class="p">;</span>
+    
+    <span class="k">public</span> <span class="nf">ViewLocation</span> <span class="p">(</span> <span class="kt">string</span> <span class="n">virtualPathFormatString</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">VirtualPathFormatString</span> <span class="p">=</span> <span class="n">virtualPathFormatString</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">public</span> <span class="k">virtual</span> <span class="kt">string</span> <span class="nf">Format</span> <span class="p">(</span> <span class="kt">string</span> <span class="n">viewName</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">controllerName</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">areaName</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">themeName</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span> <span class="p">(</span> <span class="n">CultureInfo</span><span class="p">.</span><span class="n">InvariantCulture</span> <span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">VirtualPathFormatString</span> <span class="p">,</span> <span class="k">new</span> <span class="kt">object</span><span class="p">[]</span>
+                                                                                                  <span class="p">{</span>
+                                                                                                      <span class="n">viewName</span> <span class="p">,</span>     <span class="n">controllerName</span><span class="p">,</span><span class="n">themeName</span>
+                                                                                                  <span class="p">}</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">//Classe introdotta per il supporto alle aree</span>
+<span class="k">internal</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">AreaHelper</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="nf">GetAreaName</span> <span class="p">(</span> <span class="n">RouteData</span> <span class="n">routeData</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">object</span> <span class="n">obj2</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">routeData</span><span class="p">.</span><span class="n">DataTokens</span><span class="p">.</span><span class="n">TryGetValue</span> <span class="p">(</span> <span class="s">&quot;area&quot;</span> <span class="p">,</span> <span class="k">out</span> <span class="n">obj2</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span> <span class="n">obj2</span> <span class="k">as</span> <span class="kt">string</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nf">GetAreaName</span> <span class="p">(</span> <span class="n">routeData</span><span class="p">.</span><span class="n">Route</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="nf">GetAreaName</span> <span class="p">(</span> <span class="n">RouteBase</span> <span class="n">route</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">IRouteWithArea</span> <span class="n">area</span> <span class="p">=</span> <span class="n">route</span> <span class="k">as</span> <span class="n">IRouteWithArea</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">area</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">area</span><span class="p">.</span><span class="n">Area</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">Route</span> <span class="n">route2</span> <span class="p">=</span> <span class="n">route</span> <span class="k">as</span> <span class="n">Route</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">route2</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">)</span> <span class="p">&amp;&amp;</span> <span class="p">(</span> <span class="n">route2</span><span class="p">.</span><span class="n">DataTokens</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span> <span class="n">route2</span><span class="p">.</span><span class="n">DataTokens</span> <span class="p">[</span> <span class="s">&quot;area&quot;</span> <span class="p">]</span> <span class="k">as</span> <span class="kt">string</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">//Classe introdotta per il supporto alle aree</span>
+<span class="k">internal</span> <span class="k">class</span> <span class="nc">AreaAwareViewLocation</span> <span class="p">:</span> <span class="n">ViewLocation</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="nf">AreaAwareViewLocation</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPathFormatString</span><span class="p">)</span>
+        <span class="p">:</span> <span class="k">base</span><span class="p">(</span><span class="n">virtualPathFormatString</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">override</span> <span class="kt">string</span> <span class="nf">Format</span><span class="p">(</span> <span class="kt">string</span> <span class="n">viewName</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">controllerName</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">areaName</span> <span class="p">,</span> <span class="kt">string</span> <span class="n">themeName</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="n">CultureInfo</span><span class="p">.</span><span class="n">InvariantCulture</span><span class="p">,</span> <span class="n">VirtualPathFormatString</span><span class="p">,</span> <span class="k">new</span> <span class="kt">object</span><span class="p">[]</span> <span class="p">{</span> <span class="n">viewName</span><span class="p">,</span> <span class="n">controllerName</span><span class="p">,</span> <span class="n">areaName</span> <span class="p">});</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Ciauz</p>
+
+<p>.u</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/15" class="prev">Prev</a>
+    
+    
+        <a href="/page/17" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

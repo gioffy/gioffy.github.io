@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Leggere parametri custom dall’object di Silverlight - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2009/11/03/leggere-parametri-custom-dallobject-di-silverlight/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Leggere parametri custom dall’object di Silverlight</h1>
+	<div class="entry-content" itemprop="articleBody"><p>Ultimamente sto lavorando ad una piccola applicazione in <a href="http://silverlight.net/" rel="nofollow" target="_blank">Silverlight</a>, nello specifico un wall di DeepZoom che ha il compito di mostrare le immagini caricate dagli utenti, sfruttando questa fantastica tecnologia.     <br />L’applicazione offre sì la possibilità di caricare le foto direttamente dagli utenti di una community, ma offre anche la possibilità di creare il wall lato editoriale, quindi da backoffice dell’applicativo, e di far ridistribuire sui clients soltanto l’object tag ed il <a href="http://en.wikipedia.org/wiki/Javascript_" rel="nofollow" target="_blank">javascript</a> necessario.</p>  <p>Proprio per questo tipo di richieste si può avere la necessità di aggiungere dei parametri custom all’object che si rilascia, in modo che fornisca alcune informazioni utili alla visualizzazione.</p>  <p>In pratica è sufficiente aggiungere un parametro, il cui name sarà <em><strong>initParams,</strong></em> nel tag object della pagina, con al suo interno la coppia chiave-valore che si desidera utilizzare in Silverlight, separati dalla virgola.     <br />L’esempio seguente mostra il markup dell’object.</p>  <pre class="brush: xml; ruler: true;">&lt;object data=&quot;data:application/x-silverlight-2,&quot; type=&quot;application/x-silverlight-2&quot; width=&quot;100%&quot; height=&quot;100%&quot;&gt;
+    &lt;param name=&quot;source&quot; value=&quot;ClientBin/MyApplication.xap&quot; /&gt;
+    &lt;param name=&quot;onError&quot; value=&quot;onSilverlightError&quot; /&gt;
+    &lt;param name=&quot;background&quot; value=&quot;white&quot; /&gt;
+    &lt;param name=&quot;minRuntimeVersion&quot; value=&quot;3.0.40624.0&quot; /&gt;
+    &lt;param name=&quot;autoUpgrade&quot; value=&quot;true&quot; /&gt;
+    &lt;param name=&quot;initParams&quot; value=&quot;param=1,param2=prova&quot; /&gt;
+    &lt;a href=&quot;http://go.microsoft.com/fwlink/?LinkID=149156&amp;v=3.0.40624.0&quot; style=&quot;text-decoration: none&quot;&gt;
+        &lt;img src=&quot;http://go.microsoft.com/fwlink/?LinkId=108181&quot; alt=&quot;Get Microsoft Silverlight&quot; style=&quot;border-style: none&quot; /&gt;
+    &lt;/a&gt;
+&lt;/object&gt;</pre>
+
+<p>Lato server, all’avvio dell’applicazione viene effettuato uno split dei vari elementi ed vengono forniti tramite un dictionary nel metodo Application_Startup della classe App del progetto Silverlight. 
+  <br />Il codice seguente mostra come recuperare i valori inseriti nell’object e passarli alla nostra “Page”.</p>
+
+<pre class="brush: csharp; ruler: true;">public partial class App : Application
+    {
+    
+        public App()
+        {
+            Startup += Application_Startup;
+            Exit += Application_Exit;
+            UnhandledException += Application_UnhandledException;
+
+            InitializeComponent();
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            int parameter1= 0;
+            string parameter2 = string.Empty;
+            
+            if (e.InitParams != null &amp;&amp; e.InitParams.Count &gt; 0)
+            {
+                parameter1= int.Parse(e.InitParams[&quot;param1&quot;]);
+                parameter2 = e.InitParams[&quot;param2&quot;];
+            }
+
+            RootVisual = new MainPage(parameter1, parameter2);
+        }
+
+        private void Application_Exit(object sender, EventArgs e)
+        {
+        }
+}</pre>
+
+<p>Enjoy Silverlight!</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Silverlight" title="">Silverlight</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2009/10/27/utilizzare-il-parallel-for-ed-il-parallel-foreach-in-net-4-0/" title="Previous Post: 
+Utilizzare il Parallel For ed il Parallel ForEach in .NET 4.0">&laquo; Utilizzare il Parallel For ed il Parallel ForEach in .NET 4.0</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2009/11/04/gestire-piu-files-di-configurazione-con-visual-studio-2010-e-xdt-xml-data-trasformation/" title="next Post: 
+Gestire più files di configurazione con Visual Studio 2010 e XDT (Xml Data Trasformation)">Gestire più files di configurazione con Visual Studio 2010 e XDT (Xml Data Trasformation) &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2009/11/03/leggere-parametri-custom-dallobject-di-silverlight/';
+        var disqus_url = 'http://gioffy.github.io/2009/11/03/leggere-parametri-custom-dallobject-di-silverlight/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

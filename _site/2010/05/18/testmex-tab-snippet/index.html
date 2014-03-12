@@ -1,0 +1,322 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Testmex =&gt; tab (snippet) - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2010/05/18/testmex-tab-snippet/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Testmex =&gt; tab (snippet)</h1>
+	<div class="entry-content" itemprop="articleBody"><p>In questo periodo sto scrivendo test in continuazione, un po’ perchè sto leggendo il libro di <a href="http://weblogs.asp.net/rosherove/">Roy Osherove</a> “<a href="http://www.amazon.com/Art-Unit-Testing-Examples-Net/dp/1933988274/ref=sr_1_1?ie=UTF8&amp;s=books&amp;qid=1274130780&amp;sr=8-1">The Art of Unit Test</a>”, ed un po’ perchè sto cercando di colmare un gap su dexter. Chi mi frequenta pensa che ormai sono vittima del testing in quanto non faccio altro che parlare di unit test, di come scrivere test, etc., e devo ammettere che un po’ è anche vero :). </p>  <p>Il tutto è partito da una certa <a href="http://blogs.ugidotnet.org/pape/Default.aspx">persona</a> (un po’ contabile ed un po’ commercialista :D) che mi ha spronato più e più volte a guardare lo sviluppo anche da una prospettiva differente, ossia da quella del testing...per questo&#160; non posso che ringraziarlo, anche se per assimilare bene i concetti e metterli in pratica ho impiegato un po’ di tempo, ma credo che sia del tutto normale. </p>  <p>Parlando dell’aspetto pragmatico dei test scritti in questi giorni, posso dire che hanno una cosa che li contraddistingue, ossia la presenza di <a href="http://sharptestex.codeplex.com/">SharpTestEx</a> e <a href="http://www.ayende.com/projects/rhino-mocks.aspx">RhinoMock</a>; di fatto mi sono creato uno snippet che mi creasse a sua volta un metodo con la struttura secondo la mia nomenclatura preferita e, nel caso mi aspettassi un’eccezione dal test, mi implementasse anche il controllo della stessa.    <br />Per farla breve tutti i miei test devono avere un nome leggibilissimo, che rispecchi il più possibile i tre aspetti base, quindi far capire cosa si sta testando, con quali valori e cosa ci si aspetta: </p>  <p><em><b>“MethodUnderTest_Scenario_ExpectedBehavior”</b></em></p>  <p>In un esempio pratico in cui si voglia testare un metodo “GetList”, passando un valore negativo al parametro “pageSize” e aspettandosi dal metodo da testare un’eccezione, il nome del test dovrebbe essere una cosa tipo: “<em><b>GetList_WithNegativePageSize_ShouldThrowArgumentOutOfRangeException</b></em>” che, tradotto in soldoni, dovrebbe essere implementato più o meno così:</p>  <p></p>  <p></p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="na">[TestMethod]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">GetList_WithNegativePageIndex_ShouldThrowNewArgumentOutOfRangeException</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">//TODO:Arrage</span>
+
+    <span class="c1">//TODO:Act</span>
+
+    <span class="c1">//TODO:Assert</span>
+    <span class="n">ActionAssert</span><span class="p">.</span><span class="n">Throws</span><span class="p">&lt;</span><span class="n">ArgumentOutOfRangeException</span><span class="p">&gt;(()</span> <span class="p">=&gt;</span> <span class="n">something</span><span class="p">).</span><span class="n">ParamName</span><span class="p">.</span><span class="n">Should</span><span class="p">().</span><span class="n">Be</span><span class="p">.</span><span class="n">EqualTo</span><span class="p">(</span><span class="s">&quot;pageSize&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Purtroppo anche con il copia/incolla può essere scomodo ripetere ogni volta questo codice, così mi sono deciso a scrivere uno snippet che, digitando !testmex + tab!, mi crea automaticamente lo scheletro. </p>
+
+<p>Di seguito lo snippet che possiamo copiare ed incollare direttamente nell’apposita folder</p>
+
+<p></p>
+
+<div class="highlight"><pre><code class="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="nt">&lt;CodeSnippets</span> <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;CodeSnippet</span> <span class="na">Format=</span><span class="s">&quot;1.0.0&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;Header&gt;</span>
+            <span class="nt">&lt;SnippetTypes&gt;</span>
+                <span class="nt">&lt;SnippetType&gt;</span>Expansion<span class="nt">&lt;/SnippetType&gt;</span>
+            <span class="nt">&lt;/SnippetTypes&gt;</span>
+            <span class="nt">&lt;Title&gt;</span>Test Method With Exception Management<span class="nt">&lt;/Title&gt;</span>
+            <span class="nt">&lt;Shortcut&gt;</span>testmex<span class="nt">&lt;/Shortcut&gt;</span>
+            <span class="nt">&lt;Description&gt;</span>Code snippet for a test method with Exception <span class="nt">&lt;/Description&gt;</span>
+            <span class="nt">&lt;Author&gt;</span>Ugo Lattanzi<span class="nt">&lt;/Author&gt;</span>
+        <span class="nt">&lt;/Header&gt;</span>
+        <span class="nt">&lt;Snippet&gt;</span>
+            <span class="nt">&lt;Imports&gt;</span>
+                <span class="nt">&lt;Import&gt;</span>
+                    <span class="nt">&lt;Namespace&gt;</span>SharpTestsEx<span class="nt">&lt;/Namespace&gt;</span>
+                <span class="nt">&lt;/Import&gt;</span>
+                <span class="nt">&lt;Import&gt;</span>
+                    <span class="nt">&lt;Namespace&gt;</span>Rhino.Mocks<span class="nt">&lt;/Namespace&gt;</span>
+                <span class="nt">&lt;/Import&gt;</span>
+            <span class="nt">&lt;/Imports&gt;</span>
+            <span class="nt">&lt;References&gt;</span>
+                <span class="nt">&lt;Reference&gt;</span>
+                    <span class="nt">&lt;Assembly&gt;</span>SharpTestsEx.MSTest.dll<span class="nt">&lt;/Assembly&gt;</span>
+                    <span class="nt">&lt;Assembly&gt;</span>Rhino.Mocks.dll<span class="nt">&lt;/Assembly&gt;</span>
+                <span class="nt">&lt;/Reference&gt;</span>
+            <span class="nt">&lt;/References&gt;</span>
+            <span class="nt">&lt;Declarations&gt;</span>
+                <span class="nt">&lt;Literal&gt;</span>
+                    <span class="nt">&lt;ID&gt;</span>MethodName<span class="nt">&lt;/ID&gt;</span>
+                    <span class="nt">&lt;ToolTip&gt;</span>Replace with the name of the test method<span class="nt">&lt;/ToolTip&gt;</span>
+                    <span class="nt">&lt;Default&gt;</span>MethodName<span class="nt">&lt;/Default&gt;</span>
+                <span class="nt">&lt;/Literal&gt;</span>
+                <span class="nt">&lt;Literal&gt;</span>
+                    <span class="nt">&lt;ID&gt;</span>StateUnderTest<span class="nt">&lt;/ID&gt;</span>
+                    <span class="nt">&lt;ToolTip&gt;</span>Replace with the state under test name<span class="nt">&lt;/ToolTip&gt;</span>
+                    <span class="nt">&lt;Default&gt;</span>StateUnderTest<span class="nt">&lt;/Default&gt;</span>
+                <span class="nt">&lt;/Literal&gt;</span>
+                <span class="nt">&lt;Literal&gt;</span>
+                    <span class="nt">&lt;ID&gt;</span>ExpectedParameterName<span class="nt">&lt;/ID&gt;</span>
+                    <span class="nt">&lt;ToolTip&gt;</span>Replace with the expected exception parameter name<span class="nt">&lt;/ToolTip&gt;</span>
+                    <span class="nt">&lt;Default&gt;</span>ExpectedParameterName<span class="nt">&lt;/Default&gt;</span>
+                <span class="nt">&lt;/Literal&gt;</span>
+                <span class="nt">&lt;Literal&gt;</span>
+                    <span class="nt">&lt;ID&gt;</span>ExceptionType<span class="nt">&lt;/ID&gt;</span>
+                    <span class="nt">&lt;ToolTip&gt;</span>Exception type<span class="nt">&lt;/ToolTip&gt;</span>
+                    <span class="nt">&lt;Function&gt;</span>SimpleTypeName(global::System.Exception)<span class="nt">&lt;/Function&gt;</span>
+                <span class="nt">&lt;/Literal&gt;</span>
+            <span class="nt">&lt;/Declarations&gt;</span>
+            <span class="nt">&lt;Code</span> <span class="na">Language=</span><span class="s">&quot;csharp&quot;</span><span class="nt">&gt;</span>
+                <span class="cp">&lt;![CDATA[[TestMethod]</span>
+<span class="cp">          public void $MethodName$_$StateUnderTest$_ShouldThrowNew$ExceptionType$()</span>
+<span class="cp">        {</span>
+<span class="cp">            //TODO:Arrage</span>
+<span class="cp">            </span>
+<span class="cp">            //TODO:Act</span>
+<span class="cp">            </span>
+<span class="cp">            //TODO:Assert</span>
+<span class="cp">            ActionAssert.Throws&lt;$ExceptionType$&gt; ( () =&gt; something ).ParamName.Should().Be.EqualTo ( &quot;$ExpectedParameterName$&quot; );</span>
+<span class="cp">          }]]&gt;</span>
+            <span class="nt">&lt;/Code&gt;</span>
+        <span class="nt">&lt;/Snippet&gt;</span>
+    <span class="nt">&lt;/CodeSnippet&gt;</span>
+<span class="nt">&lt;/CodeSnippets&gt;</span>
+</code></pre></div>
+
+<p>enjoy the snippet!</p>
+
+<p>Ciauz</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Visual Studio" title="">Visual Studio</a>
+	
+	  <a href="/tag#Testing" title="">Testing</a>
+	
+	  <a href="/tag#Unit Test" title="">Unit Test</a>
+	
+	  <a href="/tag#Snippet" title="">Snippet</a>
+	
+	  <a href="/tag#SharpTestEx" title="">SharpTestEx</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2010/05/17/disponibile-il-mio-webcast-su-asp-net-mvc-2/" title="Previous Post: 
+Disponibile il mio webcast su ASP.NET MVC 2">&laquo; Disponibile il mio webcast su ASP.NET MVC 2</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2010/05/19/unit-test-su-httpmodule-ed-un-httphandler/" title="next Post: 
+Unit test su HttpModule ed un HttpHandler">Unit test su HttpModule ed un HttpHandler &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2010/05/18/testmex-tab-snippet/';
+        var disqus_url = 'http://gioffy.github.io/2010/05/18/testmex-tab-snippet/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

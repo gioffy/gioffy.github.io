@@ -1,0 +1,302 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Alcune novità di ASP.NET 4.0 - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2009/05/26/alcune-novita-di-asp-net-4-0/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Alcune novità di ASP.NET 4.0</h1>
+	<div class="entry-content" itemprop="articleBody"><p>Nel <a target="_blank" href="http://imperugo.tostring.it/Blog/Post/Visual-Studio-2010-e-NET-Framework-40">post precedente</a> ho riportato alcune delle principali novit&agrave; introdotte con la <strong>Beta 1</strong> del <strong>.NET Framework 4.0</strong> e <strong>Visual Studio 2010</strong>; da questo post in poi vorrei iniziare una serie di pubblicazioni che entrano un po&rsquo; pi&ugrave; in dettaglio su come possono essere utilizzate queste importanti features introdotte da Microsoft.</p>
+
+<p>Le novit&agrave; di <strong>ASP.NET 4.0</strong> sono divise nelle sei categorie seguenti:</p>
+
+<ul>
+    <li><strong>Core</strong>;</li>
+    <li><strong>AJAX Functionality in ASP.NET 4.0</strong>;</li>
+    <li><strong>Web Forms</strong>;</li>
+    <li><strong>Dynamic Data</strong>;</li>
+    <li><strong>Visual Studio 2010 Web Designer Improvements</strong>;</li>
+    <li><strong>Web Application Deployment with Visual Studio 2010</strong>;</li>
+</ul>
+
+<p>Ovviamente ogni categoria racchiude diverse migliorie rispetto alle versioni precedenti del <strong>.NET Framework</strong>; per esempio nella categoria Core possiamo trovare il <strong>PermantRedirect</strong>, <strong>Extensible Output Caching</strong>, <strong>Auto-start</strong>, ecc.</p>
+
+<p>In questo post si vedr&agrave; nel dettaglio il funzionamento di due nuove features presenti nella sezione Core:</p>
+
+<ul>
+    <li>Permanent Redirect;</li>
+    <li>Session State Compression;</li>
+</ul>
+
+<p><b>Permanent Redirect: <br />
+</b>Quando un indirizzo web viene cambiato &egrave; necessario effettuare un redirect dal vecchio indirizzo verso il nuovo, per far s&igrave; che non venga restituito un errore 404.</p>
+
+<p>Nel caso il client richiedente l&rsquo;indirizzo sia un motore di ricerca &egrave; necessario comunicare che il cambiamento &egrave; di tipo Permanent (status code 301); questo permetter&agrave; al Bot del search engine di sostiturire il vecchio indirizzo con il nuovo.</p>
+
+<p>Questo tipo di approccio &egrave; importantissimo per le pratiche <strong>SEO</strong> (<strong>Search Engine Optimization</strong>) ed andrebbe sempre utilizzando per questo tipo di redirect. <br />
+Dalla versione Beta 1 &egrave; disponibile un apposito metodo che ci permette di effettuare questo tipo di Redirect; il codice seguente mostra la differenza tra la nuovissima Beta 1 del .NET Framework 4.0 e le versioni precedenti.</p>
+
+<p><em>Versione antecedente al Framework 4.0:</em></p>
+
+<pre class="brush: csharp; ruler: true;">
+Response.Status = &quot;301 Moved Permanently&quot;;
+Response.AddHeader(&quot;Location&quot;,&quot;http://www.mysite.com/newurl/&quot;);</pre>
+
+<p><em>Versione del Framewrok 4.0:</em></p>
+
+<pre class="brush: csharp; ruler: true;">
+RedirectPermanent(&quot;http://www.mysite.com/newurl/&quot;);</pre>
+
+<p>&nbsp;</p>
+
+<p><b>Session State Compression: <br />
+</b>Quando si fa uso della <strong>Sessione Out Of Process</strong>, i dati che vengono inseriti in questo repository devono essere serializzati al momento del salvataggio e deserializzati al momento della lettura, per fare in modo che vengano salvati in un qualcosa che possa essere letto al di fuori del processo corrente.</p>
+
+<p>Se si prova ad immaginare un&rsquo;applicazione web che risiede su una server farm o, senza andare cos&igrave; lontano, un&rsquo;applicazione il cui Application Pool ha la WebGarden abilitata, ci si rende subito conto del perch&egrave; i dati debbano essere serializzati.</p>
+
+<p>Ovviamente il processo di <strong>Serializzazione/Deserializzazione</strong> ha un costo che pu&ograve; crescere se lo si aggiunge al trasporto delle informazioni da un server ad un altro; proprio quest&rsquo;ultima parte pu&ograve; essere migliorata andando a comprimere il dato, garantendo cos&igrave; una riduzione del tempo di trasporto delle informazioni.</p>
+
+<p>Con il .NET Framework 4.0 &egrave; stata aggiunta la possibilit&agrave; di attivare questa compressione per la Session Out Of Process. <br />
+L&rsquo;abilitazione di questa funzione avviene tramite file di configurazione, come mostrato di seguito:</p>
+
+<pre class="brush: xml; ruler: true;">
+&lt;sessionState    
+    mode=&quot;SqlServer&quot;    
+    sqlConnectionString=&quot;data source=mydbserver;Initial Catalog=myDatabase&quot;    
+    allowCustomSqlDatabase=&quot;true&quot;    
+    compressionEnabled=&quot;true&quot;/&gt;</pre>
+
+<p>La parte della compressione viene eseguita in automatico dalla libreria System.IO.Compression.GZipStream.</p>
+
+<p>Ciauz</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Ottimizzazione" title="">Ottimizzazione</a>
+	
+	  <a href="/tag#Session" title="">Session</a>
+	
+	  <a href="/tag#SEO" title="">SEO</a>
+	
+	  <a href="/tag#Visual Studio 2010" title="">Visual Studio 2010</a>
+	
+	  <a href="/tag#Beta" title="">Beta</a>
+	
+	  <a href="/tag#.NET" title="">.NET</a>
+	
+	  <a href="/tag#ASP.NET 4.0" title="">ASP.NET 4.0</a>
+	
+	  <a href="/tag#.NET Framework 4.0" title="">.NET Framework 4.0</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2009/05/19/visual-studio-2010-e-net-framework-4-0/" title="Previous Post: 
+Visual Studio 2010 e .NET Framework 4.0">&laquo; Visual Studio 2010 e .NET Framework 4.0</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2009/05/27/outputcache-di-asp-net-4-0/" title="next Post: 
+OutputCache di ASP.NET 4.0">OutputCache di ASP.NET 4.0 &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2009/05/26/alcune-novita-di-asp-net-4-0/';
+        var disqus_url = 'http://gioffy.github.io/2009/05/26/alcune-novita-di-asp-net-4-0/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/20/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/04/07/unit-test-con-sharptestex/" itemprop="url">Unit Test con SharpTestEx</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-04-07T15:43:00Z"  itemprop="datePublished">April  7, 2010</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/04/07/unit-test-con-sharptestex/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-04-07-unit-test-con-sharptestex.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ultimamente, lavorando in <a title="Dexter Blog Engine" href="http://dexterblogengine.codeplex.com/" rel="nofollow" target="_blank">Dexter</a>, ho deciso di metter su un po’ di test; diciamo pure che le buone intenzioni ci sono, e come prima cosa ho deciso di testare tutto ciò che di nuovo introduco (al momento ho messo solo 108 test, ma spero aumentino velocemente). Ovviamente primo test primo “problema” :). Come prima cosa avevo la necessità di testare un metodo tipo il seguente:</p>  <pre class="brush: csharp; ruler: true;">public class Foo
+{
+    public void TestMethod(string value1, string value2, string value3)
+    {
+        if (string.IsNullOrEmpty(value1))
+            throw new ArgumentNullException(&quot;value1&quot;);
+
+        if (string.IsNullOrEmpty(value2))
+            throw new ArgumentNullException(&quot;value2&quot;);
+
+        if (string.IsNullOrEmpty(value3))
+            throw new ArgumentNullException(&quot;value3&quot;);
+
+        //DO SOMETHING
+    }
+}</pre>
+
+<p>ed il primo test era una cosa tipo questa:</p>
+
+<pre class="brush: csharp; ruler: true;">[TestMethod()]
+[ExpectedException(typeof(ArgumentNullException))]
+public void TestMethodTest()
+{
+    Foo foo = new Foo();
+    foo.TestMethod(null,null,null);
+}</pre>
+
+<p>Il problema era legato alle eccezioni, nello specifico volevo verificare che, nel caso i parametri fossero nulli, venisse sollevata l’oppurtuna ArgumentNullException. Detto così nessun problema, basta inserire l’attributo ExpectedException (come mostrato nel codice precedente) ed il gioco è fatto. Però la cosa che non mi piace è che, ipoteticamente, io potrei non avere la certezza che l’eccezione è stata sollevata per il primo, il secondo o il terzo parametro (nel caso fossero tutti e tre nulli) e, per esserne sicuro, devo verificare il ParameterName dell’eccezione.
+  <br />Purtroppo l’attributo di MSTest non permette di specificarlo, così ho avuto tre idee:</p>
+
+<ul>
+  <li>Metto un try/catch nel test e verifico manualmente il ParameterName;</li>
+
+  <li>Creo un attributo custom che permette di specificare l’eventuale parametro;</li>
+
+  <li>Chiamo <a href="http://www.codewrecks.com/blog/index.php" rel="nofollow friend met co-worker colleague" target="_new">Gian Maria</a> che sicuramente ha affrontato il problema;</li>
+</ul>
+
+<p>Sono bastati 5 secondi e la terza opzione si è concretizzata e, su suggerimento del buon <a href="http://www.codewrecks.com/blog/index.php" rel="nofollow friend acquaintance met co-worker colleague" target="_new">Alkampfer</a>, ho deciso di provare <a title="SharpTestEx Home Page" href="http://sharptestex.codeplex.com/" rel="nofollow" target="_blank">SharpTestEx</a> del buon <a title="Fabio Maulo&#39;s Blog" href="http://fabiomaulo.blogspot.com/" rel="nofollow" target="_blank">Fabio Maulo</a>. Devo dire che la prima impressione è ottima: l’utilizzo Fluent è molto comodo, in più lo stesso Framework può essere utilizzato non solo con MSTest, ma anche con NUnit, xUnit, MbUnit.
+
+  <br />Ovviamente il consiglio di Gian Maria non poteva che essere ottimo, ed il problema si è risolto molto velocemente:</p>
+
+<pre class="brush: csharp; ruler: true;">[TestMethod()]
+public void TestMethodTest2()
+{
+    Foo foo = new Foo();
+    ActionAssert.Throws&lt;ArgumentNullException&gt;(() =&gt; foo.TestMethod(&quot;prova&quot;, null, &quot;prova2&quot;))
+                            .ParamName
+                            .Should ( )
+                            .Be
+                            .EqualTo(&quot;value2&quot;);
+}</pre>
+
+<p>Molto probabilmente SharpTextEx sarà il mio Framework di testing per un po’, anche se mi riservo di provare TypeMock per effettuare UnitTest sulle WebForms.
+  <br />Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/04/05/migration-done/" itemprop="url">Migration done!</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-04-05T16:28:00Z"  itemprop="datePublished">April  5, 2010</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/04/05/migration-done/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-04-05-migration-done.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>
+    Se state leggendo questo post vuol dire che la miagrazione da <a href="http://www.webhost4life.com/" rel="nofollow" target="_blank" title="WebHot4Life">WebHost4Life</a> a <a href="http://aspnix.com/" rel="nofollow" target="_blank" title="ASPNix">ASPNix</a> &egrave; andata a buon fine ed i DNS si sono propagati. Purtroppo un cambio necessario, dovuto ad una qualit&agrave; che andava sempre di pi&ugrave; sparendo. Personalmente ho avuto modo di vedere cosa hanno combinato a <a href="http://www.geniodelmale.info/" rel="nofollow" target="_blank" title="Lorenzo Barbieri">Lorenzo</a> (migrazione da Sql2000 a Sql2008 su un db con una <em>Collation</em> differente col il conseguente problema dei dati rovinati all&rsquo;interno del database, il tutto senza dire nulla all&rsquo;utente) ed ho letto quanto accaduto a <a href="http://blogs.ugidotnet.org/Markino/Default.aspx" target="_blank" title="Marco Barzaghi">Markino</a> (vedi <a href="http://blogs.ugidotnet.org/Markino/archive/2010/03/07/webhost4life-ndash-una-tragica-migrazione.aspx" rel="nofollow" target="_blank" title="Webhost4life una tragica migrazione.">qui</a>, <a href="http://blogs.ugidotnet.org/Markino/archive/2010/03/10/webhost4life-ndash-un-innarrestabile-declino.aspx" rel="nofollow" target="_blank" title="Webhost4life – un innarrestabile declino">qui</a> ). Prima che ci&ograve; accadesse anche a me, ho deciso di levare le tende (la preview della migrazione non augurava nulla di buono neanche per il mio blog).</p>
+
+<p>
+    Oltre ai vari problema, la cosa che mi ha spinto di pi&ugrave; a migrare &egrave; stato il totale silenzio ed il far nulla da parte loro. Ormai sono 4gg che <a href="http://www.geniodelmale.info/" rel="nofollow" target="_blank" title="Lorenzo Barbieri">Lorenzo</a> &egrave; stato migrato e, ad oggi, loro non hanno ancora risposto al ticket e fatto nulla per risolvere il problema. <br />
+    Cos&igrave;, su consiglio del buon <a href="http://blogs.ugidotnet.org/Markino/Default.aspx" target="_blank" title="Marco Barzaghi">Markino</a>, ho deciso di migrare a ASPNix con un bel risparmi economico; per ora sembra essere andato tutto liscio ed il sito &egrave; up &amp; running.</p>
+
+<p>
+    Speriamo bene per il futuro :)</p>
+
+<p>
+    Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/03/16/un-resource-manager-molto-fluent-per-migliorare-le-performance/" itemprop="url">Un Resource Manager molto fluent per migliorare le performance</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-03-16T16:53:00Z"  itemprop="datePublished">March 16, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/03/16/un-resource-manager-molto-fluent-per-migliorare-le-performance/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-03-16-un-resource-manager-molto-fluent-per-migliorare-le-performance.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ormai, al giorno d’oggi, se non si sviluppa un qualcosa che offra un utilizzo Fluent allora vuol dire che il codice non è figo :D. Ovviamene in <a title="Dexter Blog Engine" href="http://dexterblogengine.codeplex.com/" rel="nofollow" target="_blank">Dexter</a> non potevamo rimanere indietro, per cui, per seguire questa “moda”, ho deciso di sviluppare un Resource Manager per effettuare il combine ed il minifier dei <a href="http://en.wikipedia.org/wiki/Javascript_" rel="nofollow" target="_blank">javascript</a> e dei css.</p>  <p>Proprio osservando la mia skin mi rendo conto di avere un numero piuttosto alto di includes al suo interno (css del sito, css del codehightlither, shadowbox, etc), e la stessa cosa vale per i js (in realtà sono anche di più dei css). Già in passato (vedi qui) avevo parlato dei vantaggi che si hanno nel ridurre al minimo le chiamate del browser verso il client, ma purtroppo l’approccio mostrato in quel post non era utilizzabile in <a title="ASP.NET" href="http://imperugo.tostring.it/categories/archive/ASP.NET" target="_blank"></a><a title="ASP.NET MVC" href="http://imperugo.tostring.it/Categories/Archive/MVC" target="_blank">ASP.NET MVC</a>.</a></p>  <p>Il goal che mi ero proposto era creare un qualcosa di molto semplice che permettesse di accorpare il numero di files js/css in un unico file e di restituire quest’ultimo effettuando un minify (quindi rimuovendo gli spazi inutili), mettendo in cache il riusultato, con dipendenza sui files in uso.</p>  <p>Ovviamente mi sono dovuto munire di alcuni strumenti che mi rendessero più agevoli alcune operazioni come il minify. Su consiglio di <a href="http://www.primordialcode.com" rel="nofollow friend co-worker colleague" target="_new">Alessandro</a>, ho deciso di appoggiarmi alla libreria offerta da Yahoo, che svolge il suo lavoro egregiamente. Per il resto, con un paio di handlers, alcune interfacce, una classe ed alcuni extension methods ho raggiunto questo risultato:</p>  <pre class="brush: xml; ruler: true;">&lt;%= ResourceManager.Js()
+        .Combine()
+        .Minify()
+        .Add(SkinJs(&quot;codeHighlither/shCore.js&quot;))
+        .Add(SkinJs(&quot;codeHighlither/shBrushCSharp.js&quot;))
+        .Add(SkinJs(&quot;codeHighlither/shBrushXml.js&quot;))
+        .Add(SkinJs(&quot;XFNHighlighter.js&quot;))
+        .Add(SkinJs(&quot;jquery.cookie.js&quot;))
+        .Add(SkinJs(&quot;jquery.highlight-3.yui.js&quot;))
+        .Add(SkinJs(&quot;customFunction.js&quot;))
+        .Add(SkinJs(&quot;xVal.jquery.validate.js&quot;))
+        .Add(SkinJs(&quot;shadowbox.js&quot;))
+        .Render()
+%&gt;
+
+&lt;%= ResourceManager.Css()
+        .Combine()
+        .Minify()
+        .Add(SkinCss(&quot;Site.css&quot;))
+        .Add(SkinCss(&quot;XFNHighlighter.css&quot;))
+        .Add(SkinCss(&quot;shCore.css&quot;))
+        .Add(SkinCss(&quot;shThemeDefault.css&quot;))
+        .Add(SkinCss(&quot;shadowbox.css&quot;))
+        .Add(SkinCss(&quot;CodeSnippets.css&quot;))
+        .Render()
+%&gt;</pre>
+
+<p>A pagina renderizzata si ha una chiamata all’handler in cui i files da comprimere vengono passati in querystring (ho dovuto comprimere il risultato per evitare di eccedere nella lunghezza massima utilizzabile da una querystring), che svolgerà il resto del lavoro.</p>
+
+<p>La cosa che mi è piaciuta di più è che, con questa classe, anche se non si vuole effettuare né il combine né il minify, quindi renderizzare i semplici tag per i css e js come nelle normali pagine, il risultato è più comodo e veloce; di fatto il seguente snippet:</p>
+
+<pre class="brush: xml; ruler: true;">&lt;%= ResourceManager.Js()
+        .DoNotCombine()
+        .DoNotMinify()
+        .Add(SkinJs(&quot;codeHighlither/shCore.js&quot;))
+        .Add(SkinJs(&quot;codeHighlither/shBrushCSharp.js&quot;))
+        .Render()
+%&gt;</pre>
+
+<p>renderizza il seguente markup:</p>
+
+<pre class="brush: xml; ruler: true;">&lt;script src=&quot;/codeHighlither/shCore.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;/codeHighlither/shBrushCSharp.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</pre>
+
+<p>Giusto per aggiungere un po’ di numeri al post, nella mia skin sono riuscito ad accorpare 9 files javascript in un un’unico file, riducendo il peso da 79kb a 60kb; inoltre, accorpando 6 files css, ho ottenuto una riduzione quasi del 30% (53kb contro i 38kb del minify).</p>
+
+<p>Un paio di screenshot per mostrare il fantaggio tratto da tale approccio.</p>
+
+<p><a href="http://tostring.it/Content/Uploaded/image//imperugo/notCombined_2.png" rel="shadowbox[mvcConboJSMinify]"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="notCombined" border="0" alt="notCombined" src="http://tostring.it/Content/Uploaded/image//imperugo/notCombined_thumb.png" width="324" height="85" /></a> </p>
+
+<p><a href="http://tostring.it/Content/Uploaded/image//imperugo/Combined_2.png" rel="shadowbox[mvcConboJSMinify]"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="Combined" border="0" alt="Combined" src="http://tostring.it/Content/Uploaded/image//imperugo/Combined_thumb.png" width="324" height="53" /></a> </p>
+
+<p>A breve il codice sorgente sia dell’interfaccia fluent che degli httphandler per il minify.</p>
+
+<p>Stay tuned.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/03/15/dexter-su-mvc-2-0/" itemprop="url">dexter su MVC 2.0 :)</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-03-15T19:05:00Z"  itemprop="datePublished">March 15, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/03/15/dexter-su-mvc-2-0/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-03-15-dexter-su-mvc-2-0.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ho approfittato del recente rilascio e della possibilità di utilizzare <a title="ASP.NET" href="http://imperugo.tostring.it/categories/archive/ASP.NET" target="_blank"></a><a title="ASP.NET MVC" href="http://imperugo.tostring.it/Categories/Archive/MVC" target="_blank">ASP.NET MVC</a> 2.0</a> su <a title="Search Visual Studio" href="http://imperugo.tostring.it/blog/search?q=Visual+Studio&amp;searchButton=Go" target="_blank">Visual Studio</a> RC per effettuare un po’ di refactoring del repository di <a title="Dexter Blog Engine" href="http://dexterblogengine.codeplex.com/" rel="nofollow" target="_blank">Dexter</a> e migrarlo alla versione 2.0 di <a title="Category: MVC" href="http://tostring.it/Categories/Archive/MVC" target="_blank">MVC</a>.</p>  <p>Per chi segue lo sviluppo del codice la vecchia trunk è stata rinomina in “<strong>trunk (mvc 1.0)”</strong> e la considero come deprecata, non ci saranno sviluppi sopra. Il lavoro si è spostato su una branch (che poi è la nuova trunk) che gira su <a title="ASP.NET" href="http://imperugo.tostring.it/categories/archive/ASP.NET" target="_blank">asp.net</a> mvc 2.     <br />Il porting è stato semplicissimo, basta utilizzare l’apposito tool (lo trovate <a title="Migrating ASP.NET MVC 1.0 applications to ASP.NET MVC 2 RTM" href="http://weblogs.asp.net/leftslipper/archive/2010/03/10/migrating-asp-net-mvc-1-0-applications-to-asp-net-mvc-2-rtm.aspx" rel="nofollow" target="_blank">qui</a>) e, nel caso di dexter, è stato necessario modificare un solo metodo (causa nuovo overload) per il controllerbase. </p>  <p>Una nota da segnalare sono i progetti di Testing, che Visual Studio 2010 converte al Framwework 4.0 e non permette il reverse. Quindi per questi progetti è necessario aprire la solution di VS 2010.</p>  <p>La semplicità di questo porting mostra la buona base che c’è su questo prodotto. Il prossimo step per dexter sarà rimuovere tutti i Frameworks e le implementazioni aggiunte alla versione 1.0 di mvc, per colmare alcune mancanze della vecchia versione (come la validazione client side).</p>  <p>Ah, dimenticavo, <a href="http://www.tostring.it">www.tostring.it</a> gira su mvc 2.0 :)</p>  <p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/03/15/utilizzare-asp-net-mvc-2-0-con-visual-studio-2010-rc/" itemprop="url">Utilizzare ASP.NET MVC 2.0 con Visual Studio 2010 RC</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-03-15T18:30:00Z"  itemprop="datePublished">March 15, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/03/15/utilizzare-asp-net-mvc-2-0-con-visual-studio-2010-rc/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-03-15-utilizzare-asp-net-mvc-2-0-con-visual-studio-2010-rc.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Anche se l’installer della versione RTM di <a title="ASP.NET" href="http://imperugo.tostring.it/categories/archive/ASP.NET" target="_blank"></a><a title="ASP.NET MVC" href="http://imperugo.tostring.it/Categories/Archive/MVC" target="_blank">ASP.NET MVC</a> 2.0</a> è per <a title="Search Visual Studio" href="http://imperugo.tostring.it/blog/search?q=Visual+Studio&amp;searchButton=Go" target="_blank">Visual Studio</a> 2008, esiste ugualmente un modo per utilizzare <a title="ASP.NET" href="http://imperugo.tostring.it/categories/archive/ASP.NET" target="_blank">ASP.NET</a> MVC 2 con Visual Studio 2010 RC.</p>  <p>Questo <a title="Installing ASP.NET MVC 2 RTM on Visual Studio 2010 RC" href="http://weblogs.asp.net/shijuvarghese/archive/2010/03/12/installing-asp-net-mvc-2-rtm-on-visual-studio-2010-rc.aspx" rel="nofollow" target="_blank">post</a> di <a title="Shiju Varghese&#39;s Blog" href="http://weblogs.asp.net/shijuvarghese/default.aspx" rel="nofollow" target="_blank">Shiju Varghese</a> spiega come fare.     <br />    <br />Enjoy <a title="Category: MVC" href="http://tostring.it/Categories/Archive/MVC" target="_blank">MVC</a> on VS2010 RC :)</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/19" class="prev">Prev</a>
+    
+    
+        <a href="/page/21" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

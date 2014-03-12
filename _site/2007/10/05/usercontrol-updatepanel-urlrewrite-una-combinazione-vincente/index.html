@@ -1,0 +1,262 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>UserControl, UpdatePanel UrlRewrite, una combinazione vincente! - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2007/10/05/usercontrol-updatepanel-urlrewrite-una-combinazione-vincente/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">UserControl, UpdatePanel UrlRewrite, una combinazione vincente!</h1>
+	<div class="entry-content" itemprop="articleBody"><p><span>&Egrave;&nbsp;un po' di tempo che non faccio post sul blog, ma oggi con <a href="http://blogs.aspitalia.com/sm15455">Stefano</a> e <a onclick="blankUrl(this.href); return false;" href="http://www.gvnn.it/">GVNN</a>, stavamo cercando di risolvere un problema in una situazione tipo la seguente: </span></p>
+
+<p>UserControl normalissimo con all'interno un semplice UdatePanel che al click esegue delle semplici operazioni di select ed insert sul database.<br />
+E fin qui nulla di particolare se non fosse per il fatto che al primo colpo veniva eseguito il codice perfettamente, mentre al secondo giro la chiamata asincrona non andava pi&ugrave; e veniva mostrato un messaggio di errore tipo il seguente:</p>
+
+<blockquote>
+<p><em>Validation of viewstate MAC failed. If this application is hosted by a Web Farm or cluster, ensure that &lt;machinekey&gt;&nbsp;configuration specifies the same validationKey and validation algorithm. AutoGenerate cannot be used in a cluster.</em></p>
+</blockquote>
+
+<p>Ovviamente sia <strong>EnableViewStateMac </strong>che <strong>ViewStateEncryptionMode</strong> sono impostati su false ed eravamo in locale quindi niente cluster.</p>
+
+<p>Andando a guardare con fiddler le chiamate ci siamo accorti che al primo giro veniva effettuata una chiamata ad un url, mentre al secondo l'url era differente, o meglio non era pi&ugrave; il RawUrl ad essere chiamato ma l'url non riscritto da un HttpModule interno.</p>
+
+<p>Indagando un po' pi&ugrave; a fondo ci siamo accorti che all'interno dell'evento pageLoading della classe Sys.WebForms.PageRequestManager veniva riscritto l'url da chiamare.</p>
+
+<p>Il problema &egrave; risolvibile aggiungedo questo 4 righe di JavaScript:</p>
+
+<pre title="code" class="brush: csharp">
+Sys.Application.add_load(function()
+{
+var form = Sys.WebForms.PageRequestManager.getInstance()._form;
+form._initialAction = form.action = window.location.href;
+});</pre>
+
+<p>&nbsp;</p>
+
+<p>Devo dire che ormai non mi stupisco pi&ugrave; quando trovo stranezze sul Framework Ajax 1.0 che ritengo pi&ugrave; una versione 0.8, e aggiungo questo comportamento all'elenco delle cose che spero Fixate nella prossima Release (Encoding non UTF-8, WebPart, ecc)&nbsp;del Framework ASP.NET&nbsp;AJAX.</p>
+
+<p>Ciauz</p>
+
+<p>&nbsp;</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#UrlRewrite" title="">UrlRewrite</a>
+	
+	  <a href="/tag#ASP.NET" title="">ASP.NET</a>
+	
+	  <a href="/tag#Ajax" title="">Ajax</a>
+	
+	  <a href="/tag#Controls" title="">Controls</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2007/05/21/i-composite-control-e-ajax/" title="Previous Post: 
+I composite Control e AJAX">&laquo; I composite Control e AJAX</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2008/02/04/wcf-msmq-binding/" title="next Post: 
+WCF + MSMQ Binding">WCF + MSMQ Binding &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2007/10/05/usercontrol-updatepanel-urlrewrite-una-combinazione-vincente/';
+        var disqus_url = 'http://gioffy.github.io/2007/10/05/usercontrol-updatepanel-urlrewrite-una-combinazione-vincente/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

@@ -1,0 +1,846 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/42/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/18/un-pager-per-asp-net-mvc/" itemprop="url">Un Pager per ASP.NET MVC</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-18T00:59:01Z"  itemprop="datePublished">June 18, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/18/un-pager-per-asp-net-mvc/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-18-un-pager-per-asp-net-mvc.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Se si è abituati a sviluppare applicazioni con <a href="http://www.asp.net" rel="nofollow" target="_blank">ASP.NET</a> e si passa successivamente a sviluppare con il Framework <a href="http://www.asp.net/mvc" rel="nofollow" target="_blank">ASP.NET MVC</a>, la prima cosa di cui si sente la mancanza sono i controlli, che in MVC mancano proprio.</p>  <p>Uno tra questi è il controllo <strong>Pager</strong> che, come fa ben intuire il nome, serve per gestire la paginazione in tutte quelle parti dei siti web in cui non è possibile mostrare l’elenco completo dei contenuti in un’unica pagina.</p>  <p>Per poter creare un controllo <strong>Pager</strong> riutilizzabile in tutte le applicazion <strong>MVC</strong> based, è necessario stabilire tutto ciò che serve per poter creare questo tipo di controllo, ossia:</p>  <ul>   <li>Numero totale di pagine (<strong>TotalCount</strong>); </li>    <li>Numero di contenuti per pagina (<strong>PageSize</strong>); </li>    <li>Pagina corrente (<strong>PageIndex</strong>); </li>    <li>Parametro da utilizzare in querystring per comunicare al server la nuova pagina (<strong>ParameterName</strong>); </li> </ul>  <p>Dato che gli MVC ViewUserControl, come le MVC ViewPage, possono avere un Model da utilizzare all’interno del controllo, come prima cosa sarà necessario costruirne uno come il seguente:</p>  <pre class="brush: csharp; ruler: true;">public class PagerViewModel
+{
+    public PagerViewModel(string parameterName, int totalCount, int pageSize, int pageIndex)
+    {
+        ParameterName = parameterName;
+        TotalCount = totalCount;
+        PageSize = pageSize;
+        PageIndex = pageIndex;
+    }
+
+    public int PageIndex { get; set; }
+    public int PageSize { get; set; }
+    public int TotalCount { get; set; }
+    public string ParameterName { get; set; }
+
+    public int TotalPages
+    {
+        get { return (int) (TotalCount/(long) PageSize) + (TotalCount%(long) PageSize == 0 ? 0 : 1); }
+    }
+
+    public bool HasPreviousPage
+    {
+        get { return (PageIndex &gt; 1); }
+    }
+
+    public bool HasNextPage
+    {
+        get { return (PageIndex*PageSize) &lt;= TotalCount; }
+    }
+
+    public string PageActionLink(int pageIndex)
+    {
+        if (HttpContext.Current.Request.QueryString.Count &gt; 0)
+        {
+            string q = string.Concat(HttpContext.Current.Request.Url.AbsolutePath, &quot;?&quot;, HttpContext.Current.Request.QueryString.ToString(), &quot;&amp;&quot;, ParameterName + &quot;=&quot;, pageIndex);
+
+            if (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString[ParameterName]))
+            {
+                string qs = HttpContext.Current.Request.QueryString.ToString();
+                string oldvalue = string.Concat(ParameterName, &quot;=&quot;, HttpContext.Current.Request.QueryString[ParameterName]);
+                string newvalue = string.Concat(ParameterName, &quot;=&quot;, pageIndex);
+
+                qs = qs.Replace(oldvalue, newvalue);
+
+                return string.Concat(HttpContext.Current.Request.Url.AbsolutePath, &quot;?&quot;, qs);
+            }
+
+            return q;
+        }
+
+        return string.Concat(HttpContext.Current.Request.Url.AbsolutePath, &quot;?&quot;, ParameterName + &quot;=&quot;, pageIndex);
+    }
+
+    public string GetPageUrl()
+    {
+        return HttpContext.Current.Request.Url.AbsolutePath + &quot;?&quot; + ParameterName + &quot;=&quot; + PageIndex;
+    }
+}</pre>
+
+<p>Da qui, con una serie di istruzioni <strong><em>if,</em></strong> è facile creare la struttura per la paginazione, come mostrato dal markup seguente:</p>
+
+<pre class="brush: xml; ruler: true;">&lt;%@ Control Language=&quot;C#&quot; Inherits=&quot;System.Web.Mvc.ViewUserControl&lt;PagerViewModel&gt;&quot; %&gt;
+&lt;%@ Import Namespace=&quot;imperugo.sample.mvc.pager.Models&quot;%&gt;
+
+&lt;% if (Model.TotalPages &gt; 1) { %&gt;
+&lt;div class=&quot;pnavigation&quot;&gt;
+    &lt;div class=&quot;pager&quot;&gt;
+        &lt;span class=&quot;pages&quot;&gt;&amp;#8201;&lt;%= Model.PageIndex %&gt; di &lt;%= Model.TotalPages %&gt;&amp;#8201;&lt;/span&gt;
+        &lt;% if (Model.PageIndex &gt; 1) { %&gt;
+        &lt;a href=&quot;&lt;%=Model.PageActionLink (1)%&gt;&quot; title=&quot;&amp;laquo; First&quot;&gt;&amp;#8201;&amp;laquo; First&amp;#8201;&lt;/a&gt;
+        &lt;% } %&gt;
+        &lt;% if (Model.PageSize - Model.PageSize &gt; 0) { %&gt;
+            &lt;a href=&quot;&lt;%=Model.PageActionLink((Model.PageIndex - Model.PageSize) + 1)%&gt;&quot; title=&quot;&lt;%=(Model.PageIndex - Model.PageSize) + 1%&gt;&quot;&gt;&amp;#8201;...&amp;#8201;&lt;/a&gt;
+        &lt;% } %&gt;
+        &lt;% if (Model.HasPreviousPage) { %&gt;  
+            &lt;a href=&quot;&lt;%=Model.PageActionLink((Model.PageIndex - 1))%&gt;&quot; title=&quot;Previous&quot; &gt;&amp;laquo;&lt;/a&gt;
+        &lt;% } %&gt;
+        &lt;% for (int page = Model.PageIndex; page &lt; Math.Round((Model.TotalCount / Model.PageSize) + 0.5) &amp;&amp; page &lt; Model.PageIndex + Model.PageSize; page++)
+           { %&gt;
+            &lt;% if (page == Model.PageIndex) { %&gt;
+                &lt;span class=&quot;current&quot;&gt;&amp;#8201;&lt;%= Model.PageIndex %&gt;&amp;#8201;&lt;/span&gt;
+            &lt;% } else { %&gt;
+                &lt;a href=&quot;&lt;%=Model.PageActionLink(page)%&gt;&quot; title=&quot;&lt;%=page.ToString()%&gt;&quot;&gt;&amp;#8201;&lt;%=page.ToString()%&gt;&amp;#8201;&lt;/a&gt;
+            &lt;% } %&gt;
+        &lt;% } %&gt;
+              
+        &lt;% if (Model.HasNextPage) { %&gt;  
+            &lt;a href=&quot;&lt;%=Model.PageActionLink ((Model.PageIndex + 1))%&gt;&quot; title=&quot;Next&quot; &gt;&amp;raquo;&lt;/a&gt;
+        &lt;% } %&gt;
+        &lt;% if (Model.PageIndex + Model.PageSize &lt;= (Math.Round((Model.TotalCount / Model.PageSize) + 0.5) - 1)) { %&gt;
+            &lt;a href=&quot;&lt;%=Model.PageActionLink((Model.PageIndex + Model.PageSize) + 1)%&gt;&quot; title=&quot;&lt;%=(Model.PageIndex + Model.PageSize) + 1%&gt;&quot;&gt;&amp;#8201;...&amp;#8201;&lt;/a&gt;
+        &lt;% } %&gt; 
+        &lt;% if (Model.PageIndex &lt; Model.TotalPages) { %&gt;
+        &lt;a href=&quot;&lt;%=Model.PageActionLink(Model.TotalPages)%&gt;&quot; title=&quot;Last &amp;raquo;&quot;&gt;&amp;#8201;Last &amp;raquo;&amp;#8201;&lt;/a&gt;
+        &lt;% } %&gt;
+    &lt;/div&gt;
+&lt;/div&gt;        
+&lt;% } &gt;</pre>
+
+<p>Ora che si hanno a disposizione sia l’ MVC ViewUserControl che il suo Model, è necessario popolare quest’ultimo dal controller come mostrato di seguito:</p>
+
+<pre class="brush: csharp; ruler: true;">[HandleError]
+public class HomeController : Controller
+{
+    public ActionResult Index(string page)
+    {
+        int pageIndex = string.IsNullOrEmpty(page) ? 1 : int.Parse(page);
+        const int PAGE_SIZE = 10;
+
+        HomeModel hm = new HomeModel();
+        hm.News = GetNews(pageIndex, PAGE_SIZE);
+        hm.NewsPage = new PagerViewModel(&quot;page&quot;, GetTotalNumber(), PAGE_SIZE, pageIndex);
+
+        return View(hm);
+    }
+
+....
+
+}</pre>
+
+<p>L’ultimo snippet mostra come utilizzare l’ MVC ViewUserControl&#160; dalla View.</p>
+
+<pre class="brush: xml; ruler: true;">&lt;asp:Content ID=&quot;indexContent&quot; ContentPlaceHolderID=&quot;MainContent&quot; runat=&quot;server&quot;&gt;
+    &lt;% for (int i = 0; i &lt; Model.News.Count; i++) { %&gt;
+        &lt;div&gt;&lt;%= Model.News[i].Title %&gt;&lt;/div&gt;
+    &lt;% } %&gt;
+    &lt;div class=&quot;pager&quot;&gt;
+        &lt;% Html.RenderPartial(&quot;~/Views/Shared/PagerUserControl.ascx&quot;, Model.NewsPage); %&gt;
+    &lt;/div&gt;
+&lt;/asp:Content&gt;</pre>
+
+<p>Nello screeshot seguente è visibile il risultato raggiunto nell’esempio allegato.</p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/MVC%20Pager_2.png" rel="shadowbox[Un-Pager-per-ASPNET-MVC];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="MVC Pager" border="0" alt="MVC Pager" src="http://imperugo.tostring.it/Content/Uploaded/image/MVC%20Pager_thumb.png" width="244" height="150" /></a> </p>
+
+<div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:fb3a1972-4489-4e52-abe7-25a00bb07fdf:a56b200d-d628-48ce-b9b5-75b5513992ea" class="wlWriterEditableSmartContent"><p>Download esempio <a href="http://imperugo.tostring.it/Content/Uploaded/image/imperugo.sample.mvc.pager.zip" target="_blank">qui</a></p></div>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/17/dto-e-automapper/" itemprop="url">DTO e AutoMapper</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-17T03:49:00Z"  itemprop="datePublished">June 17, 2009</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/17/dto-e-automapper/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-17-dto-e-automapper.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Giuro che non vivo di soli <strong>DTO (Data Trasfer Object)</strong>, ma dopo l’ultimo <a href="http://imperugo.tostring.it/Blog/Post/DTO-IL-e-Reflection-nelle-nostre-applicazioni" target="_blank">post</a>, su consiglio di <a href="http://blogs.ugidotnet.org/bmatte/Default.aspx" rel="nofollow" target="_blank">Matteo</a>, mi sono messo a dare un occhio ad <a href="http://automapper.codeplex.com/" rel="nofollow" target="_blank">AutoMapper</a>, ossia una libreria che semplifica la parte di “trasbordo” dei dati da una classe ad un’altra.</p>  <p>Dopo un primo sguardo le potenzialità&#160; sembrano ottime, ed è molto interessante come hanno implementato la parte di mapping anche per entità e grafi di DTO complessi e non.    <br />I mapping possibili sono diversi:</p>  <ul>   <li><a href="http://automapper.codeplex.com/Wiki/View.aspx?title=Flattening" rel="nofollow" target="_blank">Flattening</a>; </li>    <li><a href="http://automapper.codeplex.com/Wiki/View.aspx?title=Projection" rel="nofollow" target="_blank">Projection</a>; </li>    <li><a href="http://automapper.codeplex.com/Wiki/View.aspx?title=Configuration%20Validation" rel="nofollow" target="_blank">Configuration Validation</a>; </li>    <li><a href="http://automapper.codeplex.com/Wiki/View.aspx?title=Lists%20and%20Arrays" rel="nofollow" target="_blank">Lists and Arrays</a>; </li>    <li><a href="http://automapper.codeplex.com/Wiki/View.aspx?title=Nested%20Mappings" rel="nofollow" target="_blank">Nested Mappings</a>; </li>    <li><a href="http://automapper.codeplex.com/Wiki/View.aspx?title=Custom%20Type%20Converters" rel="nofollow" target="_blank">Custom Type Converters</a>; </li>    <li><a href="http://automapper.codeplex.com/Wiki/View.aspx?title=Custom%20Value%20Resolvers" rel="nofollow" target="_blank">Custom Value Resolvers</a>; </li>    <li><a href="http://automapper.codeplex.com/Wiki/View.aspx?title=Custom%20Value%20Formatters" rel="nofollow" target="_blank">Custom Value Formatters</a>; </li>    <li><a href="http://automapper.codeplex.com/Wiki/View.aspx?title=Null%20Substitution" rel="nofollow" target="_blank">Null Substitution</a>;</li> </ul>  <p>L’unico neo sono le performances. Come già detto nel <a href="http://imperugo.tostring.it/Blog/Post/DTO-IL-e-Reflection-nelle-nostre-applicazioni" target="_blank">post</a> precedente (in realtà è stato detto praticamente da tutti) la Reflection non gode di una fama velocistica, e questa libreria ne fa uso per idratare le entities.</p>  <p>Dopo un veloce sguardo al codice sorgente ho sostituito con estrema facilità la parte in cui si faceva uso della Reflection con la parte utilizzata nel mio snippet precendete, per iniettare IL a runtime.    <br />Il risultato è sbalorditivo, tutte le ottime potenzialità di questa libreria con le performances dell’IL.     <br />    <br />Ovviamente ho segnalato la cosa al <a href="http://automapper.codeplex.com/People/ProjectPeople.aspx" rel="nofollow" target="_blank">Team</a>, che gode della presenza di <a href="http://jeffreypalermo.com/" rel="nofollow" target="_blank">Jeffrey Palermo</a>, e che ha accolto la richiesta e sta analizzando come e quando integrare questo tipo di approccio.</p>  <p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/16/gestione-dei-temi-con-asp-net-mvc/" itemprop="url">Gestione dei temi con ASP.NET MVC</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-16T01:14:12Z"  itemprop="datePublished">June 16, 2009</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/16/gestione-dei-temi-con-asp-net-mvc/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-16-gestione-dei-temi-con-asp-net-mvc.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Nella prima versione di <strong>ASP.NET MVC</strong> non &egrave; presente la possibilit&agrave; di gestire i temi nelle applicazioni: ci&ograve; significa che, per tutti i siti sviluppati con questo <strong>Framework</strong> che necessitino di una forte customizzazione dell&rsquo;interfaccia web, &egrave; necessario realizzare un&rsquo;implementazione custom in grado di far ci&ograve;.</p>
+
+<p>Com&rsquo;&egrave; possibile apprendere dalla roadmap della versione <strong>2.0</strong> di <strong>ASP.NET MVC</strong>&nbsp;<a target="_blank" rel="nofollow" href="http://aspnet.codeplex.com/Wiki/View.aspx?title=Road%20Map&amp;referringTitle=Home">qui</a>, che sar&agrave; inglobata in <strong>ASP.NET</strong>, avr&agrave; incluso un sistema per la gestione dei temi; in attesa del rilascio, una possibile soluzione per affrontare il problema &egrave; quella di sostituire il <strong>WebFormViewEngine</strong> con uno realizzato ad hoc, in grado di cambiare la <strong>View</strong> in base al tema scelto.</p>
+
+<p>Sebbene sia possibile realizzare forti customizzazioni dell&rsquo;interfaccia cambiando semplicemente il foglio di stile della pagina, a volte questo pu&ograve; non bastare in quanto si necessita di un particolare markup di output, tipo <strong>HTML Strict</strong>, <strong>Transitional</strong>, ecc;     <br />
+per rendersi meglio conto della situazione basta pensare ad un dispositivo mobile, la cui visualizzazione &egrave; differente da quella di browser su un normale computer, e alle molte interazioni che da una parte avvengono tramite javascript, dall&rsquo;altra devono avvenire senza.</p>
+
+<p>L&rsquo;immagine seguente mostra la nuova struttura per le <strong>Views</strong> e i <strong>Contents</strong> di un&rsquo;applicazione che fa uso del Framework <strong>ASP.NET MVC</strong>:</p>
+
+<p>&nbsp;</p>
+
+<p><a href="http://imperugo.tostring.it/Content/Uploaded/image/Temi_2.png" rel="shadowbox[Gestione-dei-temi-con-ASPNET-MVC];options={counterType:'skip',continuous:true,animSequence:'sync'}"><img SinglelineIgnoreCase title="Temi" style="border-right: 0px; border-top: 0px; display: inline; border-left: 0px; border-bottom: 0px" height="240" alt="Temi" width="244" border="0" src="http://imperugo.tostring.it/Content/Uploaded/image/Temi_thumb.png" /></a></p>
+
+<p>Per far s&igrave; che l&rsquo;applicazione cambi il percorso da cui leggere la <strong>View</strong>, &egrave; necessario realizzare un nuovo <strong>WebFormViewEngine</strong>; nell&rsquo;esempio, come quello mostrato di seguito, si chiamer&agrave; <strong>WebFormThemeViewEngine</strong>:</p>
+
+<pre class="brush: csharp; ruler: true;">
+public class WebFormThemeViewEngine : WebFormViewEngine
+{
+    private static readonly string[] masterLocationFormats = new[] { &quot;~/Themes/{2}/Views/{1}/{0}.master&quot;, &quot;~/Themes/{2}/Views/Shared/{0}.master&quot; };
+    private static readonly string[] viewLocationFormats = new[] { &quot;~/Themes/{2}/Views/{1}/{0}.aspx&quot;, &quot;~/Themes/{2}/Views/{1}/{0}.ascx&quot;, &quot;~/Themes/{2}/Views/Shared/{0}.aspx&quot;, &quot;~/Themes/{2}/Views/Shared/{0}.ascx&quot; };
+
+    public WebFormThemeViewEngine()
+    {
+        MasterLocationFormats = masterLocationFormats;
+        ViewLocationFormats = viewLocationFormats;
+        PartialViewLocationFormats = viewLocationFormats;
+    }
+
+    protected override bool FileExists(ControllerContext controllerContext, string virtualPath)
+    {
+        try
+        {
+            return File.Exists(controllerContext.HttpContext.Server.MapPath(virtualPath));
+        }
+        catch (HttpException exception)
+        {
+            if (exception.GetHttpCode() != 0x194)
+            {
+                throw;
+            }
+            return false;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Finds the view.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;controllerContext&quot;&gt;The controller context.&lt;/param&gt;
+    /// &lt;param name=&quot;viewName&quot;&gt;Name of the view.&lt;/param&gt;
+    /// &lt;param name=&quot;masterName&quot;&gt;Name of the master.&lt;/param&gt;
+    /// &lt;param name=&quot;useCache&quot;&gt;if set to &lt;c&gt;true&lt;/c&gt; [use cache].&lt;/param&gt;
+    /// &lt;returns&gt;The page view.&lt;/returns&gt;
+    /// &lt;exception cref=&quot;ArgumentNullException&quot;&gt;&lt;c&gt;controllerContext&lt;/c&gt; is null.&lt;/exception&gt;
+    /// &lt;exception cref=&quot;ArgumentException&quot;&gt;viewName must be specified.&lt;/exception&gt;
+    public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+    {
+        string[] strArray;
+        string[] strArray2;
+
+        if (controllerContext == null)
+            throw new ArgumentNullException(&quot;controllerContext&quot;);
+        
+        if (string.IsNullOrEmpty(viewName))
+            throw new ArgumentException(&quot;viewName must be specified.&quot;, &quot;viewName&quot;);
+
+        string themeName = GetThemeToUse(controllerContext);
+
+        string requiredString = controllerContext.RouteData.GetRequiredString(&quot;controller&quot;);
+
+        string viewPath = GetPath(controllerContext, ViewLocationFormats, viewName, themeName, requiredString, &quot;View&quot;, useCache, out strArray);
+        string masterPath = GetPath(controllerContext, MasterLocationFormats, masterName, themeName, requiredString, &quot;Master&quot;, useCache, out strArray2);
+
+        if (!string.IsNullOrEmpty(viewPath) &amp;&amp; (!string.IsNullOrEmpty(masterPath) || string.IsNullOrEmpty(masterName)))
+            return new ViewEngineResult(CreateView(controllerContext, viewPath, masterPath), this);
+            
+        return new ViewEngineResult(strArray.Union(strArray2));
+    }
+
+    /// &lt;summary&gt;
+    /// Finds the partial view.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;controllerContext&quot;&gt;The controller context.&lt;/param&gt;
+    /// &lt;param name=&quot;partialViewName&quot;&gt;Partial name of the view.&lt;/param&gt;
+    /// &lt;param name=&quot;useCache&quot;&gt;if set to &lt;c&gt;true&lt;/c&gt; [use cache].&lt;/param&gt;
+    /// &lt;returns&gt;The partial view.&lt;/returns&gt;
+    /// &lt;exception cref=&quot;ArgumentNullException&quot;&gt;&lt;c&gt;controllerContext&lt;/c&gt; is null.&lt;/exception&gt;
+    /// &lt;exception cref=&quot;ArgumentException&quot;&gt;partialViewName must be specified.&lt;/exception&gt;
+    public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
+    {
+        string[] strArray;
+        if (controllerContext == null)
+            throw new ArgumentNullException(&quot;controllerContext&quot;);
+            
+        if (string.IsNullOrEmpty(partialViewName))
+            throw new ArgumentException(&quot;partialViewName must be specified.&quot;, &quot;partialViewName&quot;);
+
+        string themeName = GetThemeToUse(controllerContext);
+
+        string requiredString = controllerContext.RouteData.GetRequiredString(&quot;controller&quot;);
+        string partialViewPath = GetPath(controllerContext, PartialViewLocationFormats, partialViewName, themeName, requiredString, &quot;Partial&quot;, useCache, out strArray);
+        if (string.IsNullOrEmpty(partialViewPath))
+        {
+            return new ViewEngineResult(strArray);
+        }
+        return new ViewEngineResult(CreatePartialView(controllerContext, partialViewPath), this);
+    }
+
+    private static string GetThemeToUse(ControllerContext controllerContext)
+    {
+        return controllerContext.HttpContext.Items[&quot;theme&quot;] as string ?? &quot;Default&quot;;
+    }
+
+    /// &lt;summary&gt;
+    /// Gets the path.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;controllerContext&quot;&gt;The controller context.&lt;/param&gt;
+    /// &lt;param name=&quot;locations&quot;&gt;The locations.&lt;/param&gt;
+    /// &lt;param name=&quot;name&quot;&gt;The name.&lt;/param&gt;
+    /// &lt;param name=&quot;themeName&quot;&gt;Name of the theme.&lt;/param&gt;
+    /// &lt;param name=&quot;controllerName&quot;&gt;Name of the controller.&lt;/param&gt;
+    /// &lt;param name=&quot;cacheKeyPrefix&quot;&gt;The cache key prefix.&lt;/param&gt;
+    /// &lt;param name=&quot;useCache&quot;&gt;if set to &lt;c&gt;true&lt;/c&gt; [use cache].&lt;/param&gt;
+    /// &lt;param name=&quot;searchedLocations&quot;&gt;The searched locations.&lt;/param&gt;
+    /// &lt;returns&gt;&lt;/returns&gt;
+    /// &lt;exception cref=&quot;InvalidOperationException&quot;&gt;locations must not be null or emtpy.&lt;/exception&gt;
+    private string GetPath(ControllerContext controllerContext, string[] locations, string name, string themeName, string controllerName, string cacheKeyPrefix, bool useCache, out string[] searchedLocations)
+    {
+        searchedLocations = new string[0];
+        if (string.IsNullOrEmpty(name))
+            return string.Empty;
+            
+        if ((locations == null) || (locations.Length == 0))
+            throw new InvalidOperationException(&quot;locations must not be null or emtpy.&quot;);
+
+        bool flag = IsSpecificPath(name);
+        string key = CreateCacheKey(cacheKeyPrefix, name, flag ? string.Empty : controllerName, themeName);
+        
+        if (useCache)
+        {
+            string viewLocation = ViewLocationCache.GetViewLocation(controllerContext.HttpContext, key);
+            
+            if (viewLocation != null)
+                return viewLocation;
+        }
+        
+        if (!flag)
+            return GetPathFromGeneralName(controllerContext, locations, name, controllerName, themeName, key, ref searchedLocations);
+        
+        return GetPathFromSpecificName(controllerContext, name, key, ref searchedLocations);
+    }
+
+    private static bool IsSpecificPath(string name)
+    {
+        char ch = name[0];
+        
+        if (ch != '~')
+            return (ch == '/');
+        
+        return true;
+    }
+
+    private string CreateCacheKey(string prefix, string name, string controllerName, string themeName)
+    {
+        return string.Format(CultureInfo.InvariantCulture, &quot;:ViewCacheEntry:{0}:{1}:{2}:{3}:{4}&quot;, new object[] {GetType().AssemblyQualifiedName, prefix, name, controllerName, themeName});
+    }
+
+    private string GetPathFromGeneralName(ControllerContext controllerContext, string[] locations, string name, string controllerName, string themeName, string cacheKey, ref string[] searchedLocations)
+    {
+        string virtualPath = string.Empty;
+        searchedLocations = new string[locations.Length];
+        for (int i = 0; i &lt; locations.Length; i++)
+        {
+            string str2 = string.Format(CultureInfo.InvariantCulture, locations[i], new object[] {name, controllerName, themeName});
+
+            if (FileExists(controllerContext, str2))
+            {
+                searchedLocations = new string[0];
+                virtualPath = str2;
+                ViewLocationCache.InsertViewLocation(controllerContext.HttpContext, cacheKey, virtualPath);
+                return virtualPath;
+            }
+            searchedLocations[i] = str2;
+        }
+        return virtualPath;
+    }
+
+    private string GetPathFromSpecificName(ControllerContext controllerContext, string name, string cacheKey, ref string[] searchedLocations)
+    {
+        string virtualPath = name;
+        if (!FileExists(controllerContext, name))
+        {
+            virtualPath = string.Empty;
+            searchedLocations = new[] {name};
+        }
+        ViewLocationCache.InsertViewLocation(controllerContext.HttpContext, cacheKey, virtualPath);
+        return virtualPath;
+    }
+}</pre>
+
+<p>Come si pu&ograve; notare, basta replicare i metodi delle classi <strong>WebFormViewEngine</strong> e <strong>VirtualPathProviderViewEngine</strong>, andando a cambiare i percorsi tramite le 3 variabili impostate dal costruttore dell&rsquo;engine.    <br />
+&Egrave; importante notare il metodo che restituisce il tema corrente, <strong><em>GetThemeToUse</em></strong>, che sar&agrave; utilizzato per andare a costruire il path da dove leggere le <strong>Views</strong> e i <strong>Contents</strong>.    <br />
+Nell&rsquo;esempio mostrato &egrave; stata utilizzata la collection Items dell&rsquo;<strong>HttpContext</strong> in modo da poter cambiare anche solo provvisoriamente il tema da visualizzare (<em>http://localhost:1659/?theme=yellow</em>), come mostrato dallo snippet seguente:</p>
+
+<pre class="brush: csharp; ruler: true;">
+public abstract class ControllerBase : Controller
+{
+    private string currentTheme;
+
+    protected override void Initialize(RequestContext requestContext)
+    {
+        //Andrebbe recuperato dal profilo
+        string defaultTheme = &quot;Default&quot;;
+
+        string previewTheme = requestContext.HttpContext.Request.QueryString[&quot;theme&quot;];
+
+        requestContext.HttpContext.Items[&quot;theme&quot;] = !string.IsNullOrEmpty(previewTheme) ? previewTheme : defaultTheme;
+
+        currentTheme = (string)requestContext.HttpContext.Items[&quot;theme&quot;];
+
+        base.Initialize(requestContext);
+
+        ViewData[&quot;ThemeName&quot;] = currentTheme;
+    }
+}</pre>
+
+<p>Questa funzione pu&ograve; risultare particolamente comoda quando si ha la necessit&agrave; di vedere un&rsquo;anteprima di una skin con i propri contenuti.</p>
+
+<p>Per concludere ed utilizzare la nuova skin <strong>&egrave; necessario registrare il nuovo WebFormViewEngine nel file Global.asax</strong>, come mostrato di seguito:</p>
+
+<pre class="brush: csharp; ruler: true;">
+protected void Application_Start()
+{
+    RegisterRoutes(RouteTable.Routes);
+
+    // Sostituisco il Default WebFormViewEngine con il nostro WebFormThemeViewEngine
+    ViewEngines.Engines.Clear();
+    ViewEngines.Engines.Add(new WebFormThemeViewEngine());
+}</pre>
+
+<p>Ciauz</p>
+
+<p>&nbsp;</p>
+
+<div class="wlWriterEditableSmartContent" id="scid:fb3a1972-4489-4e52-abe7-25a00bb07fdf:52655c24-1c13-4895-80ab-60857200df94" style="padding-right: 0px; display: inline; padding-left: 0px; float: none; padding-bottom: 0px; margin: 0px; padding-top: 0px">
+<p>Download Esempio <a target="_blank" href="http://imperugo.tostring.it/Content/Uploaded/image/imperugo.sample.mvc.themes.zip">qui</a></p>
+</div>
+
+<p>&nbsp;</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/11/il-metodo-gethashcode/" itemprop="url">Il metodo GetHashCode</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-11T02:00:33Z"  itemprop="datePublished">June 11, 2009</time></span>
+	<span class="categories">.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/11/il-metodo-gethashcode/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-11-il-metodo-gethashcode.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Ancora oggi noto come il metodo <strong>GetHashCode</strong> risulti un mistero per molte persone (nascerebbe la domanda: <em>Ma se non lo conosci perch&egrave; lo implementi?</em>).    <br />
+Proprio ieri mi &egrave; capitato di leggere un articolo in rete e trovare al suo interno un'implementazione del metodo <strong>GetHashCode</strong>, come il seguente:</p>
+
+<pre class="brush: csharp; ruler: true;">
+public class Book
+{
+    public Book()
+    {
+        BookID = -1;
+        BookTitle = string.Empty;
+    }
+
+
+    public int BookID { get; set; }
+    public string BookTitle { get; set; }
+
+
+    public override string ToString()
+    {
+        return BookTitle ?? string.Empty;
+    }
+
+
+    public override bool Equals(object obj)
+    {
+        var book = obj as Book;
+        if (book != null)
+            return (BookID == book.BookID);
+        return false;
+    }
+
+
+    public override int GetHashCode()
+    {
+        return string.Format(&quot;{0}{1}&quot;, BookID, BookTitle).GetHashCode();
+    }
+}</pre>
+
+<p>Come dice il buon <a target="_blank" rel="nofollow" href="http://www.wintellect.com/cs/blogs/jeffreyr/default.aspx">Jeffrey Richter</a> (padre del CRL) in &quot;<a target="_blank" rel="nofollow" href="http://www.amazon.co.uk/CLR-Via-Applied-Framework-Programming/dp/0735621632/ref=sr_1_1?ie=UTF8&amp;s=books&amp;qid=1244704411&amp;sr=8-1">CLR via C#</a>&quot;, l&rsquo;<strong>HashCode</strong> &egrave; rappresentativo dell'oggetto e deve essere consistente con la relazione di uguaglianza.</p>
+
+<p>Andando a ridefinire quest&rsquo;ultima tramite il metodo <strong>Equals</strong> &egrave; necessario fare lo stesso anche per il metodo <strong>GetHashCode</strong>, e di fatto il compilatore solleva un <strong>Warning</strong> se ci&ograve; non avviene.    <br />
+Questo serve a garantire che due oggetti definiti uguali abbiano lo stesso <strong>HashCode</strong>, altrimenti alcuni classi (come l'<strong>Hashtable, HashSet&lt;T&gt;, Dictionary&lt;T,K&gt;</strong>, ecc) potrebbero non funzionare.</p>
+
+<p>L'implementazione del metodo <strong>GetHashCode</strong> deve rispettera tre criteri:</p>
+
+<p>- Se due oggetti dello stesso tipo rappresentano lo stesso valore, la funzione hash deve restituire lo stesso valore di costante per entrambi gli oggetti.</p>
+
+<p>- Per ottenere le migliori prestazioni, una funzione hash deve generare una distribuzione casuale per tutti gli input.</p>
+
+<p>- La funzione hash deve restituire esattamente lo stesso valore indipendentemente da qualsiasi modifica apportata all'oggetto.</p>
+
+<p>Partendo da quest'ultimo punto, si pu&ograve; capire che l'implementazione andrebbe fatta in un <strong>ValueType</strong> o, al massimo, in una classe in cui i <strong>field utilizzati per il calcolo dell'Hash siano readonly e quindi immutabili</strong>.</p>
+
+<p>Lo snippet seguente mostra come due classi aventi valori differenti risultino uguali al metodo <strong>Equals</strong> ma differenti al metodo <strong>GetHashCode</strong>, a causa dell'errata implementazione mostrata sopra:</p>
+
+<pre class="brush: csharp; ruler: true;">
+var b1 = new Book();
+b1.BookID = 10;
+b1.BookTitle = &quot;Titolo1&quot;;
+
+
+var b2 = new Book();
+b2.BookID = 10;
+b2.BookTitle = &quot;Titolo2&quot;;
+
+
+int hc1 = b1.GetHashCode();
+int hc2 = b2.GetHashCode();
+
+
+Console.WriteLine(hc1 == hc2); //ritorna false
+Console.WriteLine(b1.Equals(b2)); //ritorna true</pre>
+
+<p>Anche se molti esempi in rete riportano l'utilizzo dell'operatore XOR (eXclusive OR) per il calcolo dell'<strong>HashCode</strong> della classe, io consiglio sempre l'implementazione mostrata da <a target="_blank" rel="nofollow" href="http://www.codemetropolis.com/">Marco</a> <a target="_blank" rel="nofollow" href="http://www.aspitalia.com/script/890/Limportanza-Definire-Metodo-GetHashCode.aspx">qui</a>, in quanto se si hanno due fields dello stesso tipo e si inverte il loro valore, l'<strong>HashCode</strong> restituito &egrave; sempre lo stesso, mentre non dovrebbe esserlo.    <br />
+Ovviamente si potrebbe aggiungere che nel .NET Framework moltissime classi (Hashtable, Dictionary, ecc) fanno uso massiccio di questo metodo e ne consegue che invocare uno <strong>string.format</strong> ad ogni richiesta non &egrave; ottimale per l'applicaizone.</p>
+
+<p>Per concludere, fate attenzione e soprattutto interrogatevi sulla reale necessit&agrave; di reimplementare Equals e GetHashCode.</p>
+
+<p><br />
+Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2009/06/09/wow/" itemprop="url">WOW</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2009-06-09T12:42:02Z"  itemprop="datePublished">June  9, 2009</time></span>
+	<span class="categories">various</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2009/06/09/wow/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2009-06-09-wow.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>&Egrave; stata la mia espressione appena arrivati alla location del <strong>&ldquo;Workshop 3.5 e oltre&rdquo;,</strong> ed &egrave; stata la stessa espressione del momento in cui <a rel="nofollow" target="_blank" href="http://blogs.ugidotnet.org/raffaele/Default.aspx">Raf</a> ha concluso la sua super sessione.</p>
+
+<p>Sono stati due giorni di grande entusiamo, emozione e divertimento quelli passati insieme a tutte le persone presenti all&rsquo;evento, dagli speaker con cui ho condiviso questa esperienza, ai partecipanti con cui ho avuto modo di scambiare opinioni ed idee sulle passioni che ci accomunano.</p>
+
+<p>Personalmente &egrave; stato un piacere partecipare come speaker all&rsquo;evento e, data la forte emozione, non s&ograve; se sarei riuscito a farlo senza il supporto di <a rel="nofollow" target="_blank" href="http://blogs.ugidotnet.org/pape/Default.aspx">Andrea</a> e di tutti gli altri. <br />
+Vedere il proprio nome affiancato a quelli di <a rel="nofollow" target="_blank" href="http://blogs.ugidotnet.org/raffaele/Default.aspx">Raf</a>, <a rel="nofollow" target="_blank" href="http://blogs.ugidotnet.org/corrado/Default.aspx">Corrado</a>, <a rel="nofollow" target="_blank" href="http://blogs.ugidotnet.org/RobyMes/Default.aspx">Roberto</a>, <a rel="nofollow" target="_blank" href="http://blogs.ugidotnet.org/topics/Default.aspx">Mauro</a>, <a rel="nofollow" target="_blank" href="http://www.geniodelmale.info/">Lorenzo</a>, <a rel="nofollow" target="_blank" href="http://blogs.ugidotnet.org/massi/Default.aspx">Massimiliano</a> e del compagno di battaglia <a rel="nofollow" target="_blank" href="http://blogs.ugidotnet.org/pape/Default.aspx">Andrea</a> - che ringrazio in particolar modo per avermi dato la possibilit&agrave; di tenere la sessione e per aver accettato di affiancarmi - fa un certo effetto.</p>
+
+<p>Purtroppo, chi non ha avuto la possibilit&agrave; di partecipare all&rsquo;evento si &egrave; perso delle sessioni spettacolari, dalle novit&agrave; di <strong>C# 4.0</strong>, <strong>VS2010</strong>, <strong>TFS 2010</strong>, <strong>Mono</strong>, <strong>EntityFramework</strong>, <strong>Win7,</strong> fino al <strong>SurfRaf</strong>. <br />
+Per far capire cosa sia <strong>SurfRaf</strong> posso solo dire che quanto <strong>Microsoft</strong> ha fatto con <strong>Surface</strong> e <strong>Apple</strong> ha fatto con l&rsquo;<strong>IPhone</strong> <a rel="nofollow" target="_blank" href="http://blogs.ugidotnet.org/raffaele/Default.aspx">Raf</a> &egrave; riuscito a farlo con un cestino dell&rsquo;IKEA e, in assoluto, ancora una volta ha dimostrato di essere unico!</p>
+
+<p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/41" class="prev">Prev</a>
+    
+    
+        <a href="/page/43" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Gestione dello schema database tramite NHibernate - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2010/12/13/gestione-dello-schema-database-tramite-nhibernate/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Gestione dello schema database tramite NHibernate</h1>
+	<div class="entry-content" itemprop="articleBody"><p>Dopo mesi di assenza, finalmente trovo di nuovo il tempo di “bloggare”, e la mia intenzione, questa volta, è di parlare di <a title="Posts su NHibernate" href="http://www.tostring.it/categories/archive/nhibernate/">NHibernate</a> (fresco di GA), di cui sto facendo un uso abbastanza “spinto” in un progetto.     <br />Nello specifico ho avuto l’esigenza di dover gestire con NHibernate la creazione del database - e fin qui nulla di speciale - ma con l’obbligo di creare anche delle funzioni SQL per i vari databases supportati.</p>  <p>Uno dei principali requirements dell’applicazione è il supporto a ben <strong>tre versioni differenti di Sql Server</strong> più <strong>due di Oracle</strong>; per come sono strutturati il dominio ed il database, per poter effettuare determinate queries ho dovuto far uso di alcune funzioni lato database, in quanto non riproducibili tramite Object Query Language.</p>  <p>Fortunatamente NHibernate permette di utilizzare delle funzioni SQL Custom all’interno delle proprie queries sia se si fa uso di HQL, sia di Criteria API che di Linq.    <br />Il loro utilizzo è veramente semplice; per prima cosa è necessario creare un proprio dialect, che erediti da quello più adatto al nostro database, e registrare le funzioni all’interno del suo costruttore, come mostrato dal codice seguente:</p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="k">internal</span> <span class="k">class</span> <span class="nc">SqlServer2008Dialect</span> <span class="p">:</span> <span class="n">MsSql2008Dialect</span> <span class="p">{</span>
+    
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Initializes a new instance of the &lt;see cref=&quot;SqlServer2008Dialect&quot;/&gt; class.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="k">public</span> <span class="nf">SqlServer2008Dialect</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+
+        <span class="kt">string</span> <span class="n">monthFunction</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;{0}.IsMonth&quot;</span><span class="p">,</span> <span class="n">NHConfiguration</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">DatabaseSchema</span><span class="p">);</span>
+        <span class="kt">string</span> <span class="n">yearFunction</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;{0}.IsYear&quot;</span><span class="p">,</span> <span class="n">NHConfiguration</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">DatabaseSchema</span><span class="p">);</span>
+
+        <span class="k">base</span><span class="p">.</span><span class="n">RegisterFunction</span> <span class="p">(</span> <span class="s">&quot;IsMonth&quot;</span> <span class="p">,</span> <span class="k">new</span> <span class="n">StandardSQLFunction</span> <span class="p">(</span> <span class="n">monthFunction</span> <span class="p">,</span> <span class="n">NHibernateUtil</span><span class="p">.</span><span class="n">Int32</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="k">base</span><span class="p">.</span><span class="n">RegisterFunction</span> <span class="p">(</span> <span class="s">&quot;IsYear&quot;</span> <span class="p">,</span> <span class="k">new</span> <span class="n">StandardSQLFunction</span> <span class="p">(</span> <span class="n">yearFunction</span> <span class="p">,</span> <span class="n">NHibernateUtil</span><span class="p">.</span><span class="n">Int32</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>A questo punto possiamo utilizzare la funzione all’interno delle nostre query in maniera molto semplice:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="n">Session</span><span class="p">.</span><span class="n">CreateQuery</span> <span class="p">(</span> <span class="s">&quot;from Article p where IsMonth( p.PublishDate ) = :month and IsYear( p.PublishDate ) = :year&quot;</span> <span class="p">)</span>
+    <span class="p">.</span><span class="n">SetParameter</span><span class="p">(</span><span class="s">&quot;month&quot;</span><span class="p">,</span><span class="n">month</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetParameter</span><span class="p">(</span><span class="s">&quot;year&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetFirstResult</span><span class="p">(</span><span class="n">pageIndex</span> <span class="p">*</span> <span class="n">pageSize</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetFirstResult</span><span class="p">(</span><span class="n">pageIndex</span> <span class="p">*</span> <span class="n">pageSize</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetMaxResults</span><span class="p">(</span><span class="n">pageSize</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetReadOnly</span><span class="p">(!</span><span class="n">enableTracking</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">List</span><span class="p">&lt;</span><span class="n">Article</span><span class="p">&gt;();</span>
+</code></pre></div>
+
+<p>Come già detto in apertura, una delle caratteristiche dell’applicazione è la creazione ed aggiornamento del database tramite Nhibernate, il che si traduce nell’aggiungere gli scripts di creazione delle funzioni SQL lato codice; tuttavia, essendo lo schema del database impostato lato configurazione, è necessario manipolare gli scripts prima che questi siano “dati in pasto” a NHibernate per la creazione dello schema.</p>
+
+<p>Gli steps da seguire sono pochi e piuttosto semplici, a dimostrazione dell’ottima struttura e flessibilità offerta da NHibernate. Per prima cosa è necessario preparare gli scripts di creazione e cancellazione delle funzioni SQL, tipo la seguente:</p>
+
+<div class="highlight"><pre><code class="sql"><span class="c1">--SCRIPT DI CREAZIONE</span>
+
+<span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="p">[</span><span class="n">IsMonth</span><span class="p">]</span>
+       <span class="p">(</span>
+<span class="o">@</span><span class="nb">date</span> <span class="n">datetime</span>
+       <span class="p">)</span>
+       <span class="k">RETURNS</span> <span class="nb">int</span>
+
+       <span class="k">WITH</span> <span class="k">EXECUTE</span> <span class="k">AS</span> <span class="n">CALLER</span>
+<span class="k">AS</span>
+<span class="k">BEGIN</span>
+  <span class="n">IF</span> <span class="o">@</span><span class="nb">date</span> <span class="k">IS</span> <span class="k">NULL</span> <span class="k">RETURN</span> <span class="mi">0</span>
+    <span class="k">RETURN</span> <span class="n">Datepart</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span><span class="o">@</span><span class="nb">date</span><span class="p">)</span>
+<span class="k">END</span>
+
+<span class="k">GO</span>
+
+<span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="p">[</span><span class="n">IsYear</span><span class="p">]</span>
+<span class="p">(</span>
+  <span class="o">@</span><span class="nb">date</span> <span class="n">datetime</span>
+<span class="p">)</span>
+<span class="k">RETURNS</span> <span class="nb">int</span>
+
+<span class="k">WITH</span> <span class="k">EXECUTE</span> <span class="k">AS</span> <span class="n">CALLER</span>
+  <span class="k">AS</span>
+  <span class="k">BEGIN</span>
+    <span class="n">IF</span> <span class="o">@</span><span class="nb">date</span> <span class="k">IS</span> <span class="k">NULL</span> <span class="k">RETURN</span> <span class="mi">0</span>
+      <span class="k">RETURN</span> <span class="n">Datepart</span><span class="p">(</span><span class="n">yy</span><span class="p">,</span><span class="o">@</span><span class="nb">date</span><span class="p">)</span>
+  <span class="k">END</span>
+
+<span class="k">GO</span>
+
+<span class="c1">--SCRIPT DI CANCELLAZIONE</span>
+
+<span class="n">IF</span>  <span class="k">EXISTS</span> <span class="p">(</span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="n">objects</span> <span class="k">WHERE</span> <span class="n">object_id</span> <span class="o">=</span> <span class="n">OBJECT_ID</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;[IsMonth]&#39;</span><span class="p">)</span> <span class="k">AND</span> <span class="k">type</span> <span class="k">in</span> <span class="p">(</span><span class="n">N</span><span class="s1">&#39;FN&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;IF&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;TF&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;FS&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;FT&#39;</span><span class="p">))</span>
+    <span class="k">DROP</span> <span class="k">FUNCTION</span> <span class="p">[</span><span class="n">IsMonth</span><span class="p">]</span>
+<span class="k">GO</span>
+
+<span class="n">IF</span>  <span class="k">EXISTS</span> <span class="p">(</span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="n">objects</span> <span class="k">WHERE</span> <span class="n">object_id</span> <span class="o">=</span> <span class="n">OBJECT_ID</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;[IsYear]&#39;</span><span class="p">)</span> <span class="k">AND</span> <span class="k">type</span> <span class="k">in</span> <span class="p">(</span><span class="n">N</span><span class="s1">&#39;FN&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;IF&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;TF&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;FS&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;FT&#39;</span><span class="p">))</span>
+    <span class="k">DROP</span> <span class="k">FUNCTION</span> <span class="p">[</span><span class="n">IsYear</span><span class="p">]</span>
+<span class="k">GO</span>
+</code></pre></div>
+
+<p>È importante rimuovere gli schema del database tipo “dbo” dallo script, in modo da poter aggiungere lo schema desiderato a runtime.</p>
+
+<p>A questo punto va preparato un file XML di mapping che conterrà questi scripts, come mostrato di seguito:</p>
+
+<div class="highlight"><pre><code class="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;</span>
+<span class="nt">&lt;hibernate-mapping</span> <span class="na">xmlns=</span><span class="s">&quot;urn:nhibernate-mapping-2.2&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;database-object&gt;</span>
+        <span class="nt">&lt;create&gt;</span>
+      <span class="c">&lt;!-- Inserire qui gli script di creazione --&gt;</span>
+        <span class="nt">&lt;/create&gt;</span>
+        <span class="nt">&lt;drop&gt;</span>
+      <span class="c">&lt;!-- Inserire qui gli script di cancellazione --&gt;</span>
+        <span class="nt">&lt;/drop&gt;</span>
+    <span class="nt">&lt;/database-object&gt;</span>
+<span class="nt">&lt;/hibernate-mapping&gt;</span>
+</code></pre></div>
+
+<p>Da qui in poi è sufficiente eseguire una Regular Expression per poter aggiungere lo schema proveniente dal nostro file di configurazione e, solo a questo punto, è possibile passare a NHibernate il codice di XML contenente gli scripts di creazione e cancellazione delle funzioni.</p>
+
+<div class="highlight"><pre><code class="xml">db.Dialect<span class="nt">&lt;SqlServer2008Dialect&gt;</span>();
+db.Driver<span class="nt">&lt;SqlClientDriver&gt;</span>();
+databaseObjects = Resources.DatabaseObjects.MsSQL2008;
+
+if (databaseObjects != null)
+    databaseObjects = Regex.Replace(databaseObjects, @&quot;(\[.*\])&quot;, string.Format(&quot;[{0}].$1&quot;, dbSchema));
+
+if (!string.IsNullOrEmpty(databaseObjects)){
+    //configuration è la configuration di NHibernate
+    configuration.AddXmlString ( databaseObjects);
+}
+</code></pre></div>
+
+<p>Anche in scenari in cui non si abbia l’esigenza di dover supportare diverse tipologie di database, consiglio sempre, quando possibile, di lasciare l’onere della creazionde del database all’ORM, in modo da poter creare e cancellare lo schema del database durante l’esecuzione dei nostri integration tests con molta semplicitià.</p>
+
+<p>Ciauz </p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Sql" title="">Sql</a>
+	
+	  <a href="/tag#Nhibernate" title="">Nhibernate</a>
+	
+	  <a href="/tag#Oracle" title="">Oracle</a>
+	
+	  <a href="/tag#ORM" title="">ORM</a>
+	
+	  <a href="/tag#Database" title="">Database</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2010/11/18/23-24-e-25-novembre-techdays-wpc/" title="Previous Post: 
+23, 24 e 25 novembre TechDays-WPC!">&laquo; 23, 24 e 25 novembre TechDays-WPC!</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2010/12/15/configurare-azure-tools-su-sql-server/" title="next Post: 
+Configurare Azure Tools su SQL Server">Configurare Azure Tools su SQL Server &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2010/12/13/gestione-dello-schema-database-tramite-nhibernate/';
+        var disqus_url = 'http://gioffy.github.io/2010/12/13/gestione-dello-schema-database-tramite-nhibernate/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Registrare un mime type dal web.config - Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/2011/04/04/registrare-un-mime-type-dal-web-config/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">Registrare un mime type dal web.config</h1>
+	<div class="entry-content" itemprop="articleBody"><p>
+    <a href="http://tostring.it/tags/archive/iis" target="_blank" title="Internet Information Service posts">Internet Information Service</a> (IIS) versione 7.x offre la possibilit&agrave; di configurare il proprio sito un po&rsquo; pi&ugrave; in autonomia rispetto alle versioni precedenti.</p>
+
+<p>
+    Quando parlo di autonomia mi riferisco alla possibilit&agrave; di cambiare tutti quei parametri che normalmente richiedono l&rsquo;accesso alla console di IIS sul server, come compressione dei files, static content, mime types, etc. ; e proprio dell&rsquo;abilitazione dei mime-type volevo parlare quest&rsquo;oggi.</p>
+
+<p>
+    Prima di vedere come aggiungere nuovi <em>mime-type</em> alla configurazione di IIS, &egrave; giusto capire il perch&eacute; un webserver non consenta l&rsquo;accesso ad alcune estensioni di default, bloccando di conseguenza alcuni file a noi utili. <br />
+    La risposta si racchiude in una sola parola: <strong>Sicurezza</strong>.</p>
+
+<p>
+    Di fatto, se non ci fosse questo tipo di blocco, un utente potrebbe scaricare anche files con dati sensibili, tipo .mdb, .inc, etc., ossia tutti quei files che il client non dovrebbe mai vedere J.</p>
+
+<p>
+    Capito il perch&eacute; esistono questi blocchi, &egrave; necessario capire come abilitarne alcuni non accessibili normalmente. <br />
+    A partire dalla versione 7.x di IIS siamo abituati a vedere una nuova sezione nel file di configurazione: &ldquo;system.webServer&rdquo;, sezione questa che viene ignorata nel caso l&rsquo;applicazione stia girando in una versione antecedente alla 7.x (quindi non spaventiamoci se ci troviamo su Windows 2003 ed abbiamo questa strana sezione J).</p>
+
+<p>
+    Al suo interno possiamo impostare parecchi parametri, tra i quali ci sono i mime-type. Questa procedura &egrave; veramente molto semplice, ci basta infatti aggiungere poche righe di XML per avere ci&ograve; che ci serve, come mostrato dal codice seguente:</p>
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;system.webserver&gt;</span>
+    <span class="nt">&lt;staticcontent&gt;</span>
+        <span class="nt">&lt;mimemap</span> <span class="na">fileextension=</span><span class="s">&quot;.mp4&quot;</span> <span class="na">mimetype=</span><span class="s">&quot;video/mp4&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;mimemap</span> <span class="na">fileextension=</span><span class="s">&quot;.m4v&quot;</span> <span class="na">mimetype=</span><span class="s">&quot;video/m4v&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/mimemap&gt;&lt;/mimemap&gt;&lt;/staticcontent&gt;</span>
+<span class="nt">&lt;/system.webserver&gt;</span>
+</code></pre></div>
+
+<p>
+    &Egrave; molto importante fare attenzione a cosa ci &egrave; consentito fare e cosa no da IIS. Infatti non &egrave; detto che l&rsquo;amministratore di sistema voglia offrire la possibilit&agrave; allo sviluppatore di cambiare alcuni settaggi. Infatti &egrave; necessario che le &ldquo;Delegation&rdquo; di IIS siano impostate in &ldquo;Allow&rdquo; per le sezioni che ci interessano.</p>
+
+<p>
+    Chi fosse interessato all&#39;argomento pu&ograve; buttare un occhio qui <a href="http://learn.iis.net/page.aspx/94/delegating-administration/">http://learn.iis.net/page.aspx/94/delegating-administration/</a></p>
+
+<p>
+    IIS Rulez!</p>
+<br /></div>
+	<div class="meta">
+    <span class="tags">
+
+
+
+	
+	  <a href="/tag#Configurazione" title="">Configurazione</a>
+	
+	  <a href="/tag#IIS" title="">IIS</a>
+	
+	  <a href="/tag#IIS 7.5" title="">IIS 7.5</a>
+	
+</span>
+  </div>
+
+</article>
+
+<div data-type="ad" data-publisher="lqm.youvebeenhacked.site" data-zone="ron" data-format="728x90"></div>
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_tweet"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<div id="page-navigation"> 
+        <div class="previous"> 
+         
+                <a href="/2011/03/30/migrare-un-progetto-esistente-ad-azure/" title="Previous Post: 
+Migrare un progetto esistente ad Azure">&laquo; Migrare un progetto esistente ad Azure</a>
+         
+        </div>
+
+        <div class="next"> 
+         
+               <a href="/2011/04/13/un-mix-2011-ricco-di-novita/" title="next Post: 
+Un MIX 2011 ricco di novità">Un MIX 2011 ricco di novità &raquo; </a> 
+         
+        </div>
+</div> 
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gioffy.github.io/2011/04/04/registrare-un-mime-type-dal-web-config/';
+        var disqus_url = 'http://gioffy.github.io/2011/04/04/registrare-un-mime-type-dal-web-config/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+          
+      var embedScript = document.createElement('script');
+      embedScript.type = 'text/javascript';
+      embedScript.async = true;
+      embedScript.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(embedScript);
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>

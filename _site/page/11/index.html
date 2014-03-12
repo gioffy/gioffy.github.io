@@ -1,0 +1,482 @@
+<!DOCTYPE HTML>
+
+<html lang="it-IT">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giorgio Formica</title>
+	<meta name="author" content="Giorgio Formica">
+	
+	<meta name="description" content="
+		Giorgio Formica's Blog
+	">
+	
+
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/Gioffy" rel="alternate" title="Giorgio Formica" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://gioffy.github.io/page/11/">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700,800' rel='stylesheet' type='text/css'>
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/code.css" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="/js/slash.js" async></script>
+	
+  	
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-18516027-1']);
+		
+		
+      _gaq.push(['_setDomainName','.gioffy.com']);
+		
+		
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner"><div class="profilepic">
+	
+	<img src="https://2.gravatar.com/avatar/8948c057447f75653fa747229189cdb9?s=160" alt="Profile Picture" style="width: 160px;" />
+	
+</div>
+<hgroup>
+  <h1><a href="/">Giorgio Formica</a></h1>
+  
+    <h2>The other one.</h2>
+  
+</hgroup>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/about/">about</a></li>
+  <li><a href="/archive">archives</a></li>
+  <li><a href="/tags">tags</a></li>
+  <li><a href="https://github.com/imperugo/feedback/issues/new">contact</a></li>
+</ul>
+
+
+<section class="aboutme">
+  <p>
+    Giorgio Formica's Blog
+  </p>
+</section>
+
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+			<a class="twitter" href="http://twitter.com/gioffy" title="Twitter">Twitter</a>
+		
+		
+			<a class="github" href="https://github.com/gioffy" title="GitHub">GitHub</a>
+		
+		
+			<a class="rss" href="http://feeds.feedburner.com/Gioffy" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+</header>				
+			</div>
+		</div>
+		<div class="mid-col">
+			<div class="mid-col-container">
+				<div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/12/13/gestione-dello-schema-database-tramite-nhibernate/" itemprop="url">Gestione dello schema database tramite NHibernate</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-12-13T17:45:00Z"  itemprop="datePublished">December 13, 2010</time></span>
+	<span class="categories">orm</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/12/13/gestione-dello-schema-database-tramite-nhibernate/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-12-13-gestione-dello-schema-database-tramite-nhibernate.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Dopo mesi di assenza, finalmente trovo di nuovo il tempo di “bloggare”, e la mia intenzione, questa volta, è di parlare di <a title="Posts su NHibernate" href="http://www.tostring.it/categories/archive/nhibernate/">NHibernate</a> (fresco di GA), di cui sto facendo un uso abbastanza “spinto” in un progetto.     <br />Nello specifico ho avuto l’esigenza di dover gestire con NHibernate la creazione del database - e fin qui nulla di speciale - ma con l’obbligo di creare anche delle funzioni SQL per i vari databases supportati.</p>  <p>Uno dei principali requirements dell’applicazione è il supporto a ben <strong>tre versioni differenti di Sql Server</strong> più <strong>due di Oracle</strong>; per come sono strutturati il dominio ed il database, per poter effettuare determinate queries ho dovuto far uso di alcune funzioni lato database, in quanto non riproducibili tramite Object Query Language.</p>  <p>Fortunatamente NHibernate permette di utilizzare delle funzioni SQL Custom all’interno delle proprie queries sia se si fa uso di HQL, sia di Criteria API che di Linq.    <br />Il loro utilizzo è veramente semplice; per prima cosa è necessario creare un proprio dialect, che erediti da quello più adatto al nostro database, e registrare le funzioni all’interno del suo costruttore, come mostrato dal codice seguente:</p>  
+
+<div class="highlight"><pre><code class="csharp"><span class="k">internal</span> <span class="k">class</span> <span class="nc">SqlServer2008Dialect</span> <span class="p">:</span> <span class="n">MsSql2008Dialect</span> <span class="p">{</span>
+    
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Initializes a new instance of the &lt;see cref=&quot;SqlServer2008Dialect&quot;/&gt; class.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="k">public</span> <span class="nf">SqlServer2008Dialect</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+
+        <span class="kt">string</span> <span class="n">monthFunction</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;{0}.IsMonth&quot;</span><span class="p">,</span> <span class="n">NHConfiguration</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">DatabaseSchema</span><span class="p">);</span>
+        <span class="kt">string</span> <span class="n">yearFunction</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;{0}.IsYear&quot;</span><span class="p">,</span> <span class="n">NHConfiguration</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">DatabaseSchema</span><span class="p">);</span>
+
+        <span class="k">base</span><span class="p">.</span><span class="n">RegisterFunction</span> <span class="p">(</span> <span class="s">&quot;IsMonth&quot;</span> <span class="p">,</span> <span class="k">new</span> <span class="n">StandardSQLFunction</span> <span class="p">(</span> <span class="n">monthFunction</span> <span class="p">,</span> <span class="n">NHibernateUtil</span><span class="p">.</span><span class="n">Int32</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="k">base</span><span class="p">.</span><span class="n">RegisterFunction</span> <span class="p">(</span> <span class="s">&quot;IsYear&quot;</span> <span class="p">,</span> <span class="k">new</span> <span class="n">StandardSQLFunction</span> <span class="p">(</span> <span class="n">yearFunction</span> <span class="p">,</span> <span class="n">NHibernateUtil</span><span class="p">.</span><span class="n">Int32</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>A questo punto possiamo utilizzare la funzione all’interno delle nostre query in maniera molto semplice:</p>
+
+<div class="highlight"><pre><code class="csharp"><span class="n">Session</span><span class="p">.</span><span class="n">CreateQuery</span> <span class="p">(</span> <span class="s">&quot;from Article p where IsMonth( p.PublishDate ) = :month and IsYear( p.PublishDate ) = :year&quot;</span> <span class="p">)</span>
+    <span class="p">.</span><span class="n">SetParameter</span><span class="p">(</span><span class="s">&quot;month&quot;</span><span class="p">,</span><span class="n">month</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetParameter</span><span class="p">(</span><span class="s">&quot;year&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetFirstResult</span><span class="p">(</span><span class="n">pageIndex</span> <span class="p">*</span> <span class="n">pageSize</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetFirstResult</span><span class="p">(</span><span class="n">pageIndex</span> <span class="p">*</span> <span class="n">pageSize</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetMaxResults</span><span class="p">(</span><span class="n">pageSize</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetReadOnly</span><span class="p">(!</span><span class="n">enableTracking</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">List</span><span class="p">&lt;</span><span class="n">Article</span><span class="p">&gt;();</span>
+</code></pre></div>
+
+<p>Come già detto in apertura, una delle caratteristiche dell’applicazione è la creazione ed aggiornamento del database tramite Nhibernate, il che si traduce nell’aggiungere gli scripts di creazione delle funzioni SQL lato codice; tuttavia, essendo lo schema del database impostato lato configurazione, è necessario manipolare gli scripts prima che questi siano “dati in pasto” a NHibernate per la creazione dello schema.</p>
+
+<p>Gli steps da seguire sono pochi e piuttosto semplici, a dimostrazione dell’ottima struttura e flessibilità offerta da NHibernate. Per prima cosa è necessario preparare gli scripts di creazione e cancellazione delle funzioni SQL, tipo la seguente:</p>
+
+<div class="highlight"><pre><code class="sql"><span class="c1">--SCRIPT DI CREAZIONE</span>
+
+<span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="p">[</span><span class="n">IsMonth</span><span class="p">]</span>
+       <span class="p">(</span>
+<span class="o">@</span><span class="nb">date</span> <span class="n">datetime</span>
+       <span class="p">)</span>
+       <span class="k">RETURNS</span> <span class="nb">int</span>
+
+       <span class="k">WITH</span> <span class="k">EXECUTE</span> <span class="k">AS</span> <span class="n">CALLER</span>
+<span class="k">AS</span>
+<span class="k">BEGIN</span>
+  <span class="n">IF</span> <span class="o">@</span><span class="nb">date</span> <span class="k">IS</span> <span class="k">NULL</span> <span class="k">RETURN</span> <span class="mi">0</span>
+    <span class="k">RETURN</span> <span class="n">Datepart</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span><span class="o">@</span><span class="nb">date</span><span class="p">)</span>
+<span class="k">END</span>
+
+<span class="k">GO</span>
+
+<span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="p">[</span><span class="n">IsYear</span><span class="p">]</span>
+<span class="p">(</span>
+  <span class="o">@</span><span class="nb">date</span> <span class="n">datetime</span>
+<span class="p">)</span>
+<span class="k">RETURNS</span> <span class="nb">int</span>
+
+<span class="k">WITH</span> <span class="k">EXECUTE</span> <span class="k">AS</span> <span class="n">CALLER</span>
+  <span class="k">AS</span>
+  <span class="k">BEGIN</span>
+    <span class="n">IF</span> <span class="o">@</span><span class="nb">date</span> <span class="k">IS</span> <span class="k">NULL</span> <span class="k">RETURN</span> <span class="mi">0</span>
+      <span class="k">RETURN</span> <span class="n">Datepart</span><span class="p">(</span><span class="n">yy</span><span class="p">,</span><span class="o">@</span><span class="nb">date</span><span class="p">)</span>
+  <span class="k">END</span>
+
+<span class="k">GO</span>
+
+<span class="c1">--SCRIPT DI CANCELLAZIONE</span>
+
+<span class="n">IF</span>  <span class="k">EXISTS</span> <span class="p">(</span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="n">objects</span> <span class="k">WHERE</span> <span class="n">object_id</span> <span class="o">=</span> <span class="n">OBJECT_ID</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;[IsMonth]&#39;</span><span class="p">)</span> <span class="k">AND</span> <span class="k">type</span> <span class="k">in</span> <span class="p">(</span><span class="n">N</span><span class="s1">&#39;FN&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;IF&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;TF&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;FS&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;FT&#39;</span><span class="p">))</span>
+    <span class="k">DROP</span> <span class="k">FUNCTION</span> <span class="p">[</span><span class="n">IsMonth</span><span class="p">]</span>
+<span class="k">GO</span>
+
+<span class="n">IF</span>  <span class="k">EXISTS</span> <span class="p">(</span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="n">objects</span> <span class="k">WHERE</span> <span class="n">object_id</span> <span class="o">=</span> <span class="n">OBJECT_ID</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;[IsYear]&#39;</span><span class="p">)</span> <span class="k">AND</span> <span class="k">type</span> <span class="k">in</span> <span class="p">(</span><span class="n">N</span><span class="s1">&#39;FN&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;IF&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;TF&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;FS&#39;</span><span class="p">,</span> <span class="n">N</span><span class="s1">&#39;FT&#39;</span><span class="p">))</span>
+    <span class="k">DROP</span> <span class="k">FUNCTION</span> <span class="p">[</span><span class="n">IsYear</span><span class="p">]</span>
+<span class="k">GO</span>
+</code></pre></div>
+
+<p>È importante rimuovere gli schema del database tipo “dbo” dallo script, in modo da poter aggiungere lo schema desiderato a runtime.</p>
+
+<p>A questo punto va preparato un file XML di mapping che conterrà questi scripts, come mostrato di seguito:</p>
+
+<div class="highlight"><pre><code class="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;</span>
+<span class="nt">&lt;hibernate-mapping</span> <span class="na">xmlns=</span><span class="s">&quot;urn:nhibernate-mapping-2.2&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;database-object&gt;</span>
+        <span class="nt">&lt;create&gt;</span>
+      <span class="c">&lt;!-- Inserire qui gli script di creazione --&gt;</span>
+        <span class="nt">&lt;/create&gt;</span>
+        <span class="nt">&lt;drop&gt;</span>
+      <span class="c">&lt;!-- Inserire qui gli script di cancellazione --&gt;</span>
+        <span class="nt">&lt;/drop&gt;</span>
+    <span class="nt">&lt;/database-object&gt;</span>
+<span class="nt">&lt;/hibernate-mapping&gt;</span>
+</code></pre></div>
+
+<p>Da qui in poi è sufficiente eseguire una Regular Expression per poter aggiungere lo schema proveniente dal nostro file di configurazione e, solo a questo punto, è possibile passare a NHibernate il codice di XML contenente gli scripts di creazione e cancellazione delle funzioni.</p>
+
+<div class="highlight"><pre><code class="xml">db.Dialect<span class="nt">&lt;SqlServer2008Dialect&gt;</span>();
+db.Driver<span class="nt">&lt;SqlClientDriver&gt;</span>();
+databaseObjects = Resources.DatabaseObjects.MsSQL2008;
+
+if (databaseObjects != null)
+    databaseObjects = Regex.Replace(databaseObjects, @&quot;(\[.*\])&quot;, string.Format(&quot;[{0}].$1&quot;, dbSchema));
+
+if (!string.IsNullOrEmpty(databaseObjects)){
+    //configuration è la configuration di NHibernate
+    configuration.AddXmlString ( databaseObjects);
+}
+</code></pre></div>
+
+<p>Anche in scenari in cui non si abbia l’esigenza di dover supportare diverse tipologie di database, consiglio sempre, quando possibile, di lasciare l’onere della creazionde del database all’ORM, in modo da poter creare e cancellare lo schema del database durante l’esecuzione dei nostri integration tests con molta semplicitià.</p>
+
+<p>Ciauz </p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/11/18/23-24-e-25-novembre-techdays-wpc/" itemprop="url">23, 24 e 25 novembre TechDays-WPC!</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-11-18T18:00:00Z"  itemprop="datePublished">November 18, 2010</time></span>
+	<span class="categories">web dev</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/11/18/23-24-e-25-novembre-techdays-wpc/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-11-18-23-24-e-25-novembre-techdays-wpc.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p><a href="http://tostring.it/UserFiles/imperugo/Attendee02_2.png" rel="shadowbox"><img style="background-image: none; border-bottom: 0px; border-left: 0px; margin: 0px 9px 0px 0px; padding-left: 0px; padding-right: 0px; display: inline; float: left; border-top: 0px; border-right: 0px; padding-top: 0px" title="Attendee02" border="0" alt="Attendee02" align="left" src="http://tostring.it/UserFiles/imperugo/Attendee02_thumb.png" width="184" height="203" /></a>In estremo ritardo (causa “troppissimo” lavoro) volevo postare alcune info su un mio prossimo speech. Infatti tra poco meno di due settimane ci saranno i TechDays, ed io avrò la fortuna di partecipare come speaker.    <br />Per chi non lo sapesse, <a title="TechDays-WPC" href="http://www.techdays-wpc.it/" rel="nofollow" target="_blank">TechDays-WPC</a> è sicuramente tra le più importanti conferenze tecniche disponibili in Italia; è una conferenza organizzata da <a title="Microsoft" href="http://www.microsoft.it" rel="nofollow" target="_blank">Microsoft</a> e <a title="OverNet Education" href="http://www.overneteducation.it/" rel="nofollow" target="_blank">OverNet Education</a>, e si terrà nei giorni <strong>23, 24 e 25 novembre qui a Milano</strong>.</p>  <p>Agenda, prezzi, orario ed informazioni sono disponibili sul <a title="TechDays WPC" href="http://www.techdays-wpc.it/" rel="nofollow" target="_blank">sito ufficiale</a> dell’evento. Per chi verrà a vedermi parlerò di <strong>Windows Azure</strong> e delle problematiche riguardanti la migrazione da <strong>On Premise a On The Cloud</strong>.</p>  <p>Vi aspetto!</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/11/03/demo-dello-smau-disponibili-per-il-download/" itemprop="url">Demo dello SMAU disponibili per il download.</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-11-03T16:50:00Z"  itemprop="datePublished">November  3, 2010</time></span>
+	<span class="categories">eventi</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/11/03/demo-dello-smau-disponibili-per-il-download/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-11-03-demo-dello-smau-disponibili-per-il-download.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Da ieri è disponibile il <a title="IE9+HTML5 Demo" href="http://imperugo.codeplex.com/releases/view/54999" rel="nofollow" target="_blank">download</a> della demo utilizzata durante lo <a title="IE9 e HTML5 Streaming" href="http://tostring.it/blog/post/ie9-html5-live-streaming/" rel="nofollow" target="_blank">streaming su IE9 e HTML5 allo SMAU</a>.    <br />Colgo l’occasione per “pubblicizzare” il <a title="imperugo&#39;s samples" href="http://imperugo.codeplex.com/" rel="nofollow" target="_blank">progetto</a> che ho recentemente aperto su <a title="Codeplex" href="http://www.codeplex.com" rel="nofollow" target="_blank">codeplex</a>, dove potete trovare tutte le mie demo e gli esempi che da oggi in poi utilizzerò per i vari posts.</p>  <p>Buon Download.</p>  <p>P.S.: per la demo dello storage, se fatta con IE9, richiede di “hostare” i files tramite un web server (IIS/Cassini per il mondo Microsoft) altrimenti non funziona J</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/10/18/ie9-html5-live-streaming/" itemprop="url">IE9 + HTML5 Live Streaming</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-10-18T15:30:00Z"  itemprop="datePublished">October 18, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/10/18/ie9-html5-live-streaming/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-10-18-ie9-html5-live-streaming.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Giovedì 21 ottobre avrò l’onore ed il piacere di partecipare come speaker per <a title="Microsoft Italia" href="http://www.microsoft.com/it/it/default.aspx" rel="nofollow" target="_blank">Microsoft Italia</a> allo streaming sulla presentazione di IE9.    <br />La mia sessione sarà basata sulle novità (lato sviluppo) dell’html5, quindi canvas, semantics tags, storage, video, etc.    <br />Ovviamente <strong>non potete perderlo</strong>! Maggiori informazioni sullo <strong>streaming e registrazione sono disponibili </strong><a title="Meet Ugo Lattanzi – ASP.NET MVP from Italy" href="http://www.microsoft.com/italy/live/" rel="Microsoft@Smau" target="_blank"><strong>qui</strong></a>. Chi invece partecipa allo SMAU può venire direttamente a trovarci <img style="border-bottom-style: none; border-left-style: none; border-top-style: none; border-right-style: none" class="wlEmoticon wlEmoticon-smile" alt="Smile" src="http://tostring.it/UserFiles/imperugo/wlEmoticon-smile_2_1.png" />.    <br /></p>  <p><a title="Microsoft@Smau" href="http://www.microsoft.com/italy/live/" rel="nofollow" target="_blank"><img style="background-image: none; border-bottom: 0px; border-left: 0px; margin: ; padding-left: 0px; padding-right: 0px; display: inline; border-top: 0px; border-right: 0px; padding-top: 0px" title="17-10-2010 21-24-34" border="0" alt="17-10-2010 21-24-34" src="http://tostring.it/UserFiles/imperugo/17-10-2010%2021-24-34_3.png" width="710" height="445" /></a></p>  <p>Ciauz</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+        
+	<h1 class="title" itemprop="name"><a href="/2010/10/07/nupack-asp-net-mvc-3-beta-1-e-webmatrix-beta-2/" itemprop="url">NuPack, ASP.NET MVC 3 beta 1 e WebMatrix beta 2</a></h1>
+	<div class="meta">
+	<span class="date">
+
+
+
+  
+
+
+<time datetime="2010-10-07T15:00:00Z"  itemprop="datePublished">October  7, 2010</time></span>
+	<span class="categories">asp.net</span>
+	
+		
+  
+
+
+<span class="comments"><a href="/2010/10/07/nupack-asp-net-mvc-3-beta-1-e-webmatrix-beta-2/#disqus_thread">comments</a></span>
+	
+	<span class="edit">
+  
+
+
+<a href="https://github.com/gioffy/gioffy.github.io/edit/gh-pages/_posts/2010-10-07-nupack-asp-net-mvc-3-beta-1-e-webmatrix-beta-2.markdown">edit</a>
+</span>
+</div>
+	<div class="entry-content" itemprop="articleBody">
+		<p>Chi come me usa <a title="Imperugo Twitter Account" href="http://twitter.com/imperugo" rel="nofollow" target="_blank">Twitter</a> sicuramente ieri avrà notato un alternarsi di “retweet” riguardanti alcune novità di Microsoft; nello specifico è stata rilasciata la prima beta di <a href="http://www.imperugo.tostring.it/tags/archive/mvc">ASP.NET MVC</a> 3, la beta 2 di WebMatrix, ed è stato presentato NuPack, il tutto a completare un importante annuncio avvenuto nei giorni precedenti riguardante alcuni plugin per <a href="http://tostring.it/Tags/Archive/JQuery">jQuery</a> realizzati da Microsoft stessa.     <br />Devo dire che la presentazione di NuPack mi ha lasciato un po’ spiazzato; sinceramente non me l’aspettavo, ma personalmente ritengo che l’idea sia grandiosa.</p>  <h3><font style="font-weight: bold">NuPack:</font></h3>  <p>NuPack è un add-on per Visual Studio 2010 che facilita l’utente nell’integrazione delle principali librerie OpenSource, all’interno dei propri progetti. Per intenderci, grazie a pochi click possiamo aggiungere NHibernate, Castle, Log4Net, etc alle nostre applicazioni.    <br />Di seguito un video dimostrativo del suo utilizzo:</p>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:5737277B-5D6D-4f48-ABFC-DD9C333F4C5D:988bbd42-5431-412b-ab98-83c85ad1be54" class="wlWriterEditableSmartContent"><div><object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/Y_n7vwoKVDo?hl=en&amp;hd=1"></param><embed src="http://www.youtube.com/v/Y_n7vwoKVDo?hl=en&amp;hd=1" type="application/x-shockwave-flash" width="480" height="385"></embed></object></div></div>  <p>L’unico neo al momento è che le librerie presenti non sono molto aggiornate, ma non credo che passerà molto tempo prima che questo avverrà.</p>  <h3>   <br /><font style="font-weight: bold">ASP.NET MVC 3 Beta:</font></h3>  <p>Come sempre nessuno stravolgimento, ma tante piccole novità che lo vanno a completare sempre di più:</p>  <ul>   <li><b>Migliorato il supporto a Razor</b>, mancano ancora l’intellisense ed alcune integrazioni con Visual Studio, (come la voce “vai al controller” dal menu contestuale), ma alla creazione del progetto è possibile scegliere il ViewEngine da utilizzare; </li>    <li><b>Nuovi Html Helpers</b> (strongly type ovviamente) , come Chart, Crypto, WebGrid, WebImage e WebMail; </li>    <li><b>Dependency Injection</b> migliorata rispetto alla preview; </li>    <li><b>Unobtrusive JavaScript and HTML 5</b>: ora Ajax e la validazione fanno utilizzo dell’approccio <a title="unobtrusive JavaScript wiki" href="http://en.wikipedia.org/wiki/Unobtrusive_JavaScript" rel="nofollow" target="_blank">unobtrusive JavaScript</a> di default; </li>    <li><b>Intregrazione con NuPack</b>, come MVC Contrib, jQuery, etc; </li> </ul>  <p>&#160;</p>  <h3><font style="font-weight: bold">WebMatrix Beta 2:</font></h3>  <p>Minor numero di nuove features/improvements per questa release rispetto a MVC, ma in ogni caso parliamo di novità di un certo rilievo:</p>  <ul>   <li>La creazione delle pagine ora gode del <strong>supporto di Razor al pari di MVC3</strong>: di fatto ora è possibile creare pagine sia con C# che con VB, sfruttando a pieno il nuovo ViewEngine di casa MS; </li>    <li><strong>Nuovi template</strong> che comprendono anche funzionalità riguardanti <strong>HTML5 e CSS3;</strong> </li>    <li>Una serie di toolkit installabili tramite il NuPack, che comprendono <strong>Analytics, Facebook, GamerCard, Gravatar, LinkShare, Captcha, Twitter</strong>, etc; </li> </ul>  <p>Ed ora la parte più interessante, i downloads:</p>  <p>NuPack è disponibile a questo indirizzo <a href="http://nupack.codeplex.com/">http://nupack.codeplex.com/</a>, ASP.NET MVC 3 Beta lo trovate <a title="ASP.NET MVC3 Beta Downlaod" href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=0abac7a3-b302-4644-bd43-febf300b2c51&amp;displaylang=en" rel="nofollow" target="_blank">qui</a> e WebMatrix Beta 2 <a title="WebMatrix Beta 2 Download" href="http://www.microsoft.com/web/webmatrix/" rel="nofollow" target="_blank">qui</a>.</p>  <p>Buon Download.</p>
+
+		
+		
+	</div>
+
+
+    </article>
+
+
+</div>
+<nav id="pagenavi">
+    
+        <a href="/page/10" class="prev">Prev</a>
+    
+    
+        <a href="/page/12" class="next">Next</a>
+    
+    <div class="center"><a href="/archive">Blog Archives</a></div>
+</nav></div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - Giorgio Formica Blog content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | <a href="/privacy">privacy</a> | <a href="/articles/blogtegrity">blogtegrity</a>
+</p>
+<img id="feedburner-count" src="http://feedproxy.google.com/~fc/imperugo?bg=FFFFFF&amp;fg=999999&amp;anim=0" alt="Reader count" />
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'it-tostring';
+      
+    (function () {
+    
+      var countScript = document.createElement('script');
+      countScript.type = 'text/javascript';
+      countScript.async = true;
+      countScript.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(countScript);
+    }());
+</script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+</footer>
+		</div>
+	</div>
+
+
+<!--  CodeProject AD  -->
+<script>
+    function _dmBootstrap(file) {
+        var _dma = document.createElement('script'); 
+        _dma.type = 'text/javascript';
+        _dma.async = true; 
+        _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);
+    }
+    function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js');}
+    (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000);})();
+</script>
+</body>
+</html>
