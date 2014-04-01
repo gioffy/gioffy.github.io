@@ -1,4 +1,4 @@
-# tostring.it
+# Gioffy.com
 
 This is my blog build using [Jekyll](http://jekyllrb.com/). The skin is based on [Haacked.com](https://github.com/Haacked/haacked.com) repository.
 
